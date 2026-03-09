@@ -16,10 +16,10 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "PaisaDekho Luxe | 2026 Credit Card Intelligence",
+  title: "PaisaDekho Luxe | 2026 Intelligent Wealth manager",
   description:
-    "The 2026 Intelligence Layer for Your Wallet. Optimize your credit card rewards with AI-powered insights for the Indian market.",
-  generator: "v0.app",
+    "The 2026 Intelligence Layer for Your Wallet. Optimize your investments, credit cards with AI-powered insights for the Indian market.",
+  generator: "PD Finserve Pvt Ltd",
 };
 
 export const viewport: Viewport = {
