@@ -488,7 +488,11 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-8">
-                <Wallet className="w-8 h-8 text-gold" />
+                <img
+                  src="/favicon.ico"
+                  alt="Logo"
+                  className="w-10 h-10 rounded-lg"
+                />
                 <span className="font-serif text-3xl font-bold text-white tracking-tighter">
                   PaisaDekho Luxe
                 </span>

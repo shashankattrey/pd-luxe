@@ -215,7 +215,7 @@ function StatCard({ icon: Icon, label, value, subtext, color }: any) {
       <div
         className={`w-10 h-10 rounded-xl ${colorClasses[color as keyof typeof colorClasses]} flex items-center justify-center mb-4`}
       >
-        <Icon className="w-5 h-5" />
+        <img src="/favicon.ico" alt="Logo" className="w-10 h-10 rounded-lg" />
       </div>
       <p className="text-muted-foreground text-xs mb-1 uppercase tracking-wider">
         {label}

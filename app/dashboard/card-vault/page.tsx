@@ -46,20 +46,6 @@ export default function CardVaultPage() {
   const [showFilters, setShowFilters] = useState(false);
   const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
   const [annualSpend] = useState(600000);
-  const [showFilterSheet, setShowFilterSheet] = useState(false);
-
-  const [filters, setFilters] = useState({
-    bank: "All",
-    minAnnualFee: 0,
-    maxAnnualFee: 20000,
-    minIncome: 0,
-    maxIncome: 2000000,
-    loungeAccess: 0, // number of lounges
-    fuelDiscount: 0, // in %
-    movieRewards: 0, // count per month
-    diningDiscount: 0, // in %
-    travelRewards: 0, // points or ₹
-  });
 
   const banks = useMemo(() => {
     return ["All", ...Array.from(new Set(creditCards.map((c) => c.bank)))];
@@ -67,38 +53,15 @@ export default function CardVaultPage() {
 
   const filteredCards = useMemo(() => {
     return creditCards.filter((card) => {
-      // Search filter
       const matchesSearch =
         card.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         card.bank.toLowerCase().includes(searchQuery.toLowerCase()) ||
         card.searchTags.toLowerCase().includes(searchQuery.toLowerCase());
 
-      // Bank filter
-      const matchesBank = filters.bank === "All" || card.bank === filters.bank;
-
-      // Numeric filters (only if filter > 0)
-      const matchesLounge =
-        filters.loungeAccess === 0 || card.loungeAccess >= filters.loungeAccess;
-      const matchesFuel =
-        filters.fuelDiscount === 0 ||
-        card.fuelRewardRate >= filters.fuelDiscount;
-      const matchesMovies =
-        filters.movieRewards === 0 ||
-        card.movieRewardRate >= filters.movieRewards;
-      const matchesDining =
-        filters.diningDiscount === 0 ||
-        card.diningRewardRate >= filters.diningDiscount;
-
-      return (
-        matchesSearch &&
-        matchesBank &&
-        matchesLounge &&
-        matchesFuel &&
-        matchesMovies &&
-        matchesDining
-      );
+      const matchesBank = selectedBank === "All" || card.bank === selectedBank;
+      return matchesSearch && matchesBank;
     });
-  }, [filters, searchQuery]);
+  }, [searchQuery, selectedBank]);
 
   return (
     <div className="space-y-10 max-w-[1500px] mx-auto px-4 md:px-6 py-12 min-h-screen">
@@ -152,98 +115,40 @@ export default function CardVaultPage() {
           />
         </div>
 
-        <Button onClick={() => setShowFilterSheet(true)} className="h-11 px-6">
+        <Button
+          onClick={() => setShowFilters(!showFilters)}
+          className="h-11 px-6"
+        >
           <Filter className="w-4 h-4 mr-2" />
-          Filters
+          {selectedBank}
         </Button>
       </div>
 
       {/* Bank Filters */}
       <AnimatePresence>
-        {showFilterSheet && (
+        {showFilters && (
           <motion.div
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "100%" }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed inset-x-0 bottom-0 z-50 bg-zinc-900 rounded-t-2xl p-5 shadow-xl max-h-[80vh] overflow-y-auto border-t border-white/10"
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="flex flex-wrap gap-2 p-4 bg-zinc-900 rounded-xl border border-white/10"
           >
-            {/* Header */}
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-bold text-white">Filters</h2>
-              <Button variant="ghost" onClick={() => setShowFilterSheet(false)}>
-                <X className="w-5 h-5 text-zinc-400" />
-              </Button>
-            </div>
-
-            {/* Bank selection */}
-            <div className="mb-4">
-              <p className="text-xs text-zinc-400 mb-1">Bank</p>
-              <div className="flex flex-wrap gap-2">
-                {banks.map((bank) => (
-                  <button
-                    key={bank}
-                    onClick={() => setFilters((f) => ({ ...f, bank }))}
-                    className={`px-3 py-1.5 rounded-full text-xs font-semibold transition ${
-                      filters.bank === bank
-                        ? "bg-gold text-black"
-                        : "bg-white/5 text-zinc-400 hover:bg-white/10"
-                    }`}
-                  >
-                    {bank}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Sliders */}
-            <FilterSlider
-              label="Lounge Access"
-              min={0}
-              max={10}
-              value={filters.loungeAccess}
-              onChange={(val) =>
-                setFilters((f) => ({ ...f, loungeAccess: val }))
-              }
-            />
-
-            <FilterSlider
-              label="Fuel Discount %"
-              min={0}
-              max={20}
-              value={filters.fuelDiscount}
-              onChange={(val) =>
-                setFilters((f) => ({ ...f, fuelDiscount: val }))
-              }
-            />
-
-            <FilterSlider
-              label="Movie Rewards / Month"
-              min={0}
-              max={10}
-              value={filters.movieRewards}
-              onChange={(val) =>
-                setFilters((f) => ({ ...f, movieRewards: val }))
-              }
-            />
-
-            <FilterSlider
-              label="Dining Discount %"
-              min={0}
-              max={20}
-              value={filters.diningDiscount}
-              onChange={(val) =>
-                setFilters((f) => ({ ...f, diningDiscount: val }))
-              }
-            />
-
-            {/* Apply Button */}
-            <Button
-              className="w-full mt-4"
-              onClick={() => setShowFilterSheet(false)}
-            >
-              Apply Filters
-            </Button>
+            {banks.map((bank) => (
+              <button
+                key={bank}
+                onClick={() => {
+                  setSelectedBank(bank);
+                  setShowFilters(false);
+                }}
+                className={`px-4 py-1.5 rounded-full text-xs font-semibold transition ${
+                  selectedBank === bank
+                    ? "bg-gold text-black"
+                    : "bg-white/5 text-zinc-400 hover:bg-white/10"
+                }`}
+              >
+                {bank}
+              </button>
+            ))}
           </motion.div>
         )}
       </AnimatePresence>
@@ -358,17 +263,15 @@ function CardTile({ card, index, annualSpend, onClick }: any) {
                 +{audit.yield}%
               </p>
             </div> */}
-            <div className="flex flex-wrap gap-2 mt-2 min-h-[120px]">
-              {card.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs px-2 py-1 rounded-lg bg-white/10 text-white border border-white/20 backdrop-blur whitespace-nowrap overflow-hidden text-ellipsis"
-                  style={{ lineHeight: "1.2rem", height: "2rem" }}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+            {card.tags.map((tag: string) => (
+              <span
+                key={tag}
+                className="text-xs px-2 py-1 rounded-lg bg-white/10 text-white border border-white/20 backdrop-blur whitespace-nowrap overflow-hidden text-ellipsis"
+                style={{ lineHeight: "1.2rem", height: "2rem" }}
+              >
+                {tag}
+              </span>
+            ))}
 
             <div className="text-right">
               <p className="text-[10px] text-zinc-500 uppercase">Net Profit</p>
@@ -386,37 +289,6 @@ function CardTile({ card, index, annualSpend, onClick }: any) {
         </div>
       </div>
     </motion.button>
-  );
-}
-
-function FilterSlider({
-  label,
-  min,
-  max,
-  value,
-  onChange,
-}: {
-  label: string;
-  min: number;
-  max: number;
-  value: number;
-  onChange: (val: number) => void;
-}) {
-  return (
-    <div className="mb-4">
-      <div className="flex justify-between mb-1 text-xs text-zinc-400">
-        <span>{label}</span>
-        <span>{value}</span>
-      </div>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full h-1 bg-white/10 rounded-lg accent-gold"
-      />
-    </div>
   );
 }
 
