@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
@@ -30,6 +30,7 @@ import {
   Briefcase,
   ChevronRight,
 } from "lucide-react";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -44,7 +45,21 @@ export default function CardVaultPage() {
   const [selectedBank, setSelectedBank] = useState<string>("All");
   const [showFilters, setShowFilters] = useState(false);
   const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
-  const [annualSpend, setAnnualSpend] = useState(600000);
+  const [annualSpend] = useState(600000);
+  const [showFilterSheet, setShowFilterSheet] = useState(false);
+
+  const [filters, setFilters] = useState({
+    bank: "All",
+    minAnnualFee: 0,
+    maxAnnualFee: 20000,
+    minIncome: 0,
+    maxIncome: 2000000,
+    loungeAccess: 0, // number of lounges
+    fuelDiscount: 0, // in %
+    movieRewards: 0, // count per month
+    diningDiscount: 0, // in %
+    travelRewards: 0, // points or ₹
+  });
 
   const banks = useMemo(() => {
     return ["All", ...Array.from(new Set(creditCards.map((c) => c.bank)))];
@@ -52,121 +67,199 @@ export default function CardVaultPage() {
 
   const filteredCards = useMemo(() => {
     return creditCards.filter((card) => {
+      // Search filter
       const matchesSearch =
         card.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         card.bank.toLowerCase().includes(searchQuery.toLowerCase()) ||
         card.searchTags.toLowerCase().includes(searchQuery.toLowerCase());
 
-      const matchesBank = selectedBank === "All" || card.bank === selectedBank;
-      return matchesSearch && matchesBank;
+      // Bank filter
+      const matchesBank = filters.bank === "All" || card.bank === filters.bank;
+
+      // Numeric filters (only if filter > 0)
+      const matchesLounge =
+        filters.loungeAccess === 0 || card.loungeAccess >= filters.loungeAccess;
+      const matchesFuel =
+        filters.fuelDiscount === 0 ||
+        card.fuelRewardRate >= filters.fuelDiscount;
+      const matchesMovies =
+        filters.movieRewards === 0 ||
+        card.movieRewardRate >= filters.movieRewards;
+      const matchesDining =
+        filters.diningDiscount === 0 ||
+        card.diningRewardRate >= filters.diningDiscount;
+
+      return (
+        matchesSearch &&
+        matchesBank &&
+        matchesLounge &&
+        matchesFuel &&
+        matchesMovies &&
+        matchesDining
+      );
     });
-  }, [searchQuery, selectedBank]);
+  }, [filters, searchQuery]);
 
   return (
-    <div className="space-y-8 sm:space-y-10 md:space-y-12 max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-8 sm:py-10 md:py-16 min-h-screen">
-      {/* Dynamic Header */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 sm:gap-6 md:gap-8">
-        <div className="space-y-3 md:space-y-4">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-3"
-          >
-            <div className="p-3 rounded-2xl bg-gold/10 border border-gold/20 shadow-[0_0_30px_rgba(212,175,55,0.15)]">
-              <Compass className="w-7 h-7 md:w-8 md:h-8 text-gold" />
+    <div className="space-y-10 max-w-[1500px] mx-auto px-4 md:px-6 py-12 min-h-screen">
+      {/* Header */}
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-gold/10 border border-gold/20">
+              <Compass className="w-6 h-6 text-gold" />
             </div>
-            <h1 className="font-serif text-2xl xs:text-3xl sm:text-4xl md:text-6xl font-bold break-anywhere">
+
+            <h1 className="font-serif text-3xl md:text-5xl font-bold">
               Card Vault
             </h1>
-          </motion.div>
-          <p className="text-zinc-400 text-base sm:text-lg md:text-xl max-w-2xl font-light">
+          </div>
+
+          <p className="text-zinc-400 text-base max-w-2xl font-light">
             Real-time audit of{" "}
-            <span className="text-gold font-semibold underline decoration-gold/30 underline-offset-8">
+            <span className="text-gold font-semibold">
               {creditCards.length}
             </span>{" "}
             instruments against 2026 policies.
           </p>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="glass-gold p-[1px] rounded-[2.5rem] bg-gradient-to-b from-gold/20 to-transparent"
-        >
-          <div className="bg-black/60 backdrop-blur-3xl px-8 py-6 rounded-[2.5rem] flex items-center gap-6">
-            <div className="text-right">
-              <p className="text-[10px] uppercase tracking-[0.3em] text-gold font-black mb-1">
-                Analysis Baseline
-              </p>
-              <p className="text-3xl font-serif font-bold text-white">
-                ₹{(annualSpend / 100000).toFixed(1)}L{" "}
-                <span className="text-sm text-zinc-500 font-sans">/ yr</span>
-              </p>
-            </div>
-            <div className="h-12 w-[1px] bg-white/10" />
-            <div className="p-3 bg-green-500/10 rounded-2xl border border-green-500/20">
-              <TrendingUp className="w-6 h-6 text-green-400" />
-            </div>
+        <div className="bg-black/60 backdrop-blur-xl px-6 py-5 rounded-2xl flex items-center gap-6 border border-white/10">
+          <div className="text-right">
+            <p className="text-[10px] uppercase tracking-wider text-gold font-bold">
+              Analysis Baseline
+            </p>
+
+            <p className="text-2xl font-serif font-bold text-white">
+              ₹{(annualSpend / 100000).toFixed(1)}L
+            </p>
           </div>
-        </motion.div>
+
+          <TrendingUp className="w-6 h-6 text-green-400" />
+        </div>
       </div>
 
-      {/* Search & Bank Filter */}
-      <div className="flex flex-col gap-4 md:gap-6 sticky top-4 md:top-6 z-30">
-        <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
-          <div className="relative flex-1 group">
-            <Search className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500 group-focus-within:text-gold transition-colors" />
-            <Input
-              placeholder="Search by bank, card or benefit"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-11 md:pl-14 h-10 sm:h-11 md:h-14 text-sm sm:text-base"
-            />
-          </div>
-          <Button
-            onClick={() => setShowFilters(!showFilters)}
-            className={`h-11 md:h-14 px-6 md:px-8 rounded-2xl md:rounded-[2rem] border text-xs font-bold uppercase tracking-[0.2em] transition-all duration-300 ${
-              showFilters
-                ? "bg-gold text-black border-gold shadow-[0_0_15px_rgba(212,175,55,0.25)]"
-                : "bg-white/5 text-white border-white/10 hover:border-gold/40"
-            }`}
-          >
-            <Filter className="w-4 h-4 md:w-5 md:h-5 mr-2 md:mr-3" />
-            {selectedBank === "All" ? "Filter Bank" : selectedBank}
-          </Button>
+      {/* Search */}
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="relative flex-1">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+
+          <Input
+            placeholder="Search bank, card or benefit"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10 h-11"
+          />
         </div>
 
-        <AnimatePresence>
-          {showFilters && (
-            <motion.div
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              className="flex flex-wrap gap-2 p-4 md:p-6 bg-zinc-900/90 backdrop-blur-xl rounded-3xl md:rounded-[2.5rem] border border-white/10"
-            >
-              {banks.map((bank) => (
-                <button
-                  key={bank}
-                  onClick={() => {
-                    setSelectedBank(bank);
-                    setShowFilters(false);
-                  }}
-                  className={`px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[10px] md:text-[11px] font-black uppercase tracking-wider transition-all ${
-                    selectedBank === bank
-                      ? "bg-gold text-black"
-                      : "bg-white/5 text-zinc-400 hover:bg-white/10 hover:text-white"
-                  }`}
-                >
-                  {bank}
-                </button>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <Button onClick={() => setShowFilterSheet(true)} className="h-11 px-6">
+          <Filter className="w-4 h-4 mr-2" />
+          Filters
+        </Button>
       </div>
 
-      {/* Grid of Cards */}
-      <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6 md:gap-8 lg:gap-10">
+      {/* Bank Filters */}
+      <AnimatePresence>
+        {showFilterSheet && (
+          <motion.div
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="fixed inset-x-0 bottom-0 z-50 bg-zinc-900 rounded-t-2xl p-5 shadow-xl max-h-[80vh] overflow-y-auto border-t border-white/10"
+          >
+            {/* Header */}
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-bold text-white">Filters</h2>
+              <Button variant="ghost" onClick={() => setShowFilterSheet(false)}>
+                <X className="w-5 h-5 text-zinc-400" />
+              </Button>
+            </div>
+
+            {/* Bank selection */}
+            <div className="mb-4">
+              <p className="text-xs text-zinc-400 mb-1">Bank</p>
+              <div className="flex flex-wrap gap-2">
+                {banks.map((bank) => (
+                  <button
+                    key={bank}
+                    onClick={() => setFilters((f) => ({ ...f, bank }))}
+                    className={`px-3 py-1.5 rounded-full text-xs font-semibold transition ${
+                      filters.bank === bank
+                        ? "bg-gold text-black"
+                        : "bg-white/5 text-zinc-400 hover:bg-white/10"
+                    }`}
+                  >
+                    {bank}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Sliders */}
+            <FilterSlider
+              label="Lounge Access"
+              min={0}
+              max={10}
+              value={filters.loungeAccess}
+              onChange={(val) =>
+                setFilters((f) => ({ ...f, loungeAccess: val }))
+              }
+            />
+
+            <FilterSlider
+              label="Fuel Discount %"
+              min={0}
+              max={20}
+              value={filters.fuelDiscount}
+              onChange={(val) =>
+                setFilters((f) => ({ ...f, fuelDiscount: val }))
+              }
+            />
+
+            <FilterSlider
+              label="Movie Rewards / Month"
+              min={0}
+              max={10}
+              value={filters.movieRewards}
+              onChange={(val) =>
+                setFilters((f) => ({ ...f, movieRewards: val }))
+              }
+            />
+
+            <FilterSlider
+              label="Dining Discount %"
+              min={0}
+              max={20}
+              value={filters.diningDiscount}
+              onChange={(val) =>
+                setFilters((f) => ({ ...f, diningDiscount: val }))
+              }
+            />
+
+            {/* Apply Button */}
+            <Button
+              className="w-full mt-4"
+              onClick={() => setShowFilterSheet(false)}
+            >
+              Apply Filters
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Cards Grid */}
+      <div
+        className="
+        grid
+        grid-cols-1
+        sm:grid-cols-2
+        lg:grid-cols-3
+        xl:grid-cols-4
+        2xl:grid-cols-5
+        gap-4 sm:gap-5 lg:gap-6
+        "
+      >
         {filteredCards.map((card, idx) => (
           <CardTile
             key={card.id}
@@ -191,92 +284,143 @@ export default function CardVaultPage() {
   );
 }
 
+/* CARD TILE */
+
 function CardTile({ card, index, annualSpend, onClick }: any) {
   const audit = calculateInDepthSavings(card, annualSpend);
 
   return (
     <motion.button
       type="button"
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.04 }}
-      whileHover={{ y: -6, scale: 1.01 }}
-      whileTap={{ scale: 0.99 }}
+      transition={{ delay: index * 0.03 }}
+      whileHover={{ y: -4 }}
+      whileTap={{ scale: 0.98 }}
       onClick={onClick}
-      className="cursor-pointer group relative h-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/70 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 rounded-[2.7rem]"
+      className="cursor-pointer group relative text-left rounded-xl focus:outline-none"
     >
-      <div className="absolute inset-0 bg-gold/10 blur-[55px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-gold/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-      <div className="relative h-full glass-gold rounded-[2.5rem] overflow-hidden border border-white/5 group-hover:border-gold/40 transition-all duration-300 shadow-xl bg-zinc-900/50 flex flex-col">
+      <div className="relative rounded-2xl overflow-hidden border border-white/5 group-hover:border-gold/40 transition bg-zinc-900/60">
+        {/* Card Header */}
         <div
-          className={`h-44 md:h-48 bg-gradient-to-br ${card.imageGradient} p-6 md:p-8 flex flex-col justify-between relative overflow-hidden shrink-0`}
+          className={`h-32 md:h-36 bg-gradient-to-br ${card.imageGradient} p-4 md:p-5 flex flex-col justify-between`}
         >
-          <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:rotate-12 group-hover:scale-110 transition-all duration-700">
-            <CreditCard className="w-28 h-28 md:w-32 md:h-32 text-white" />
-          </div>
-
-          <div className="relative z-10 flex justify-between items-start">
-            <div className="space-y-1">
-              <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">
+          <div className="flex justify-between items-start">
+            <div>
+              <p className="text-white/60 text-[10px] font-bold uppercase tracking-wider">
                 {card.bank}
               </p>
-              <h3 className="text-white font-serif font-bold text-lg md:text-xl leading-tight max-w-[160px]">
+
+              <h3 className="text-white font-serif font-semibold text-base md:text-lg leading-tight max-w-[160px]">
                 {card.name}
               </h3>
             </div>
-            <div className="flex flex-col items-end gap-2">
-              <span className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-[9px] text-white font-black uppercase tracking-widest border border-white/10">
-                {card.network}
-              </span>
-              {card.devaluation2026 && (
-                <div className="p-1.5 bg-orange-500 rounded-full shadow-[0_0_15px_rgba(249,115,22,0.5)]">
-                  <AlertTriangle className="w-3.5 h-3.5 text-white" />
-                </div>
-              )}
-            </div>
-          </div>
 
-          <div className="flex items-center gap-4 text-white/80">
-            <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider">
-              <Zap className="w-3.5 h-3.5 text-gold" /> {card.baseRewardRate}%
+            {card.devaluation2026 && (
+              <AlertTriangle className="w-4 h-4 text-orange-400" />
+            )}
+          </div>
+          {/* <div className="flex flex-wrap gap-2 mt-2">
+            {card.tags.map((tag) => (
+              <span
+                key={tag}
+                className="text-xs px-2 py-1 rounded-full bg-white/10 text-white border border-white/20 backdrop-blur"
+              >
+                {tag}
+              </span>
+            ))}
+          </div> */}
+
+          <div className="flex items-center gap-4 text-white/80 text-xs">
+            <div className="flex items-center gap-1">
+              <Zap className="w-3 h-3 text-gold" />
+              {card.baseRewardRate}%
             </div>
-            <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider">
-              <Globe className="w-3.5 h-3.5 text-gold" /> {card.forexMarkup}%
+
+            <div className="flex items-center gap-1">
+              <Globe className="w-3 h-3 text-gold" />
+              {card.forexMarkup}%
             </div>
           </div>
         </div>
 
-        <div className="p-6 md:p-8 space-y-6 flex-1 flex flex-col justify-between">
-          <div className="flex justify-between items-end">
-            <div className="space-y-1">
-              <p className="text-[10px] font-black text-gold/60 uppercase tracking-widest">
+        {/* Card Body */}
+        <div className="p-4 md:p-5 space-y-4">
+          <div className="flex justify-between items-center">
+            {/* <div>
+              <p className="text-[10px] text-zinc-500 uppercase">
                 Audited Yield
               </p>
-              <p className="text-3xl font-serif font-bold text-green-400">
+
+              <p className="text-2xl font-serif font-bold text-green-400">
                 +{audit.yield}%
               </p>
+            </div> */}
+            <div className="flex flex-wrap gap-2 mt-2 min-h-[120px]">
+              {card.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs px-2 py-1 rounded-lg bg-white/10 text-white border border-white/20 backdrop-blur whitespace-nowrap overflow-hidden text-ellipsis"
+                  style={{ lineHeight: "1.2rem", height: "2rem" }}
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
-            <div className="text-right space-y-1">
-              <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
-                Net Profit
-              </p>
-              <p className="text-xl font-bold text-white">
+
+            <div className="text-right">
+              <p className="text-[10px] text-zinc-500 uppercase">Net Profit</p>
+
+              <p className="text-sm font-semibold text-white">
                 ₹{audit.netValue.toLocaleString()}
               </p>
             </div>
           </div>
 
-          <div className="pt-6 border-t border-white/5 flex items-center justify-between text-zinc-500 group-hover:text-gold transition-colors">
-            <span className="text-[10px] font-black uppercase tracking-[0.2em]">
-              View Full Audit
-            </span>
-            <ArrowRight className="w-4 h-4 translate-x-0 group-hover:translate-x-2 transition-transform" />
+          <div className="pt-3 border-t border-white/10 flex justify-between text-xs text-zinc-400 group-hover:text-gold">
+            View Details
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
           </div>
         </div>
       </div>
     </motion.button>
   );
 }
+
+function FilterSlider({
+  label,
+  min,
+  max,
+  value,
+  onChange,
+}: {
+  label: string;
+  min: number;
+  max: number;
+  value: number;
+  onChange: (val: number) => void;
+}) {
+  return (
+    <div className="mb-4">
+      <div className="flex justify-between mb-1 text-xs text-zinc-400">
+        <span>{label}</span>
+        <span>{value}</span>
+      </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="w-full h-1 bg-white/10 rounded-lg accent-gold"
+      />
+    </div>
+  );
+}
+
+/* KEEP YOUR ORIGINAL MODAL EXACTLY AS IT WAS */
 
 function CardDetailModal({ card, annualSpend, onClose }: any) {
   const audit = calculateInDepthSavings(card, annualSpend);

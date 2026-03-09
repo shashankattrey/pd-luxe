@@ -12,6 +12,7 @@ export interface CreditCard {
   cardTier?: string; // optional
   category?: string; // optional
   network: "Visa" | "Mastercard" | "Amex" | "RuPay" | "Diners";
+  tags: string[]; // ⭐ NEW TAG SYSTEM
 
   // Reward Metrics
   baseRewardRate: number;
@@ -65,7 +66,57 @@ export interface CreditCard {
  * Data Transformation & Mapping
  * Cleans raw CSV strings into usable logic numbers
  */
+function generateTags(c: any): string[] {
+  const tags: string[] = [];
+
+  const annualFee = parseFloat(String(c.annual_fee || "0")) || 0;
+  const tier = (c.card_tier || "").toLowerCase();
+  const isLtf = String(c.is_ltf).toLowerCase() === "true";
+  const searchTags = (c.search_tags || "").toLowerCase();
+
+  // Lifetime Free
+  if (isLtf || annualFee === 0) {
+    tags.push("Lifetime Free");
+  }
+
+  // Entry Cards
+  if (annualFee > 0 && annualFee <= 1000) {
+    tags.push("Entry");
+  }
+
+  // Premium
+  if (annualFee > 1000 && annualFee < 10000) {
+    tags.push("Premium");
+  }
+
+  // Super Premium
+  if (annualFee >= 10000 || tier === "ultra" || tier === "luxury") {
+    tags.push("Super Premium");
+  }
+
+  // Travel
+  if (searchTags.includes("travel") || searchTags.includes("miles")) {
+    tags.push("Travel");
+  }
+
+  // Cashback
+  if (searchTags.includes("cashback")) {
+    tags.push("Cashback");
+  }
+
+  // Lounge
+  if (
+    c.domestic_lounge === "Unlimited" ||
+    parseInt(c.domestic_lounge) > 0 ||
+    c.international_lounge === "Unlimited"
+  ) {
+    tags.push("Lounge");
+  }
+
+  return [...new Set(tags)];
+}
 export const creditCards: CreditCard[] = (rawCards as any[]).map((c, index) => {
+  const cardTags = generateTags(c);
   const cleanNumber = (val: any) => {
     if (typeof val === "number") return val;
     if (
@@ -119,6 +170,7 @@ export const creditCards: CreditCard[] = (rawCards as any[]).map((c, index) => {
     bank: c.issuer,
     tier: c.card_tier || "Premium",
     network,
+    tags: cardTags.length ? cardTags : ["Standard"], // ✅ use the declared variable
 
     // optional fields: no '?' needed here
     cardTier: c.cardTier || undefined,
