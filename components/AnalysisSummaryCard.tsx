@@ -1,5 +1,24 @@
 // components/AnalysisSummaryCard.tsx
-const AnalysisSummaryCard = ({ analysis, onReset }) => {
+import React from "react";
+
+interface AnalysisCategories {
+  [category: string]: number;
+}
+
+interface AnalysisData {
+  total: number;
+  categories: AnalysisCategories;
+}
+
+interface AnalysisSummaryCardProps {
+  analysis: AnalysisData;
+  onReset: () => void;
+}
+
+const AnalysisSummaryCard: React.FC<AnalysisSummaryCardProps> = ({
+  analysis,
+  onReset,
+}) => {
   return (
     <div className="glass p-8 rounded-[2rem] border-gold/30 bg-gold/5 flex flex-col md:flex-row items-center justify-between animate-in fade-in zoom-in duration-500">
       <div className="flex flex-col gap-1">
@@ -35,3 +54,5 @@ const AnalysisSummaryCard = ({ analysis, onReset }) => {
     </div>
   );
 };
+
+export default AnalysisSummaryCard;

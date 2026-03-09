@@ -26,6 +26,12 @@ import { cn } from "@/lib/utils";
 
 type Step = "setup" | "assets" | "risk" | "results";
 
+interface PortfolioItem extends Asset {
+  weight: number; // raw weight before normalization
+  finalWeight: number; // normalized % weight
+  monthlyAmount: number; // allocated SIP
+}
+
 interface Asset {
   id: string;
   label: string;
@@ -103,7 +109,7 @@ export default function WealthAdvisorPage() {
     riskAppetite: "balanced",
   });
 
-  const [portfolio, setPortfolio] = useState<any[]>([]);
+  const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
 
   const runSmartAllocation = async (risk: string) => {
     setIsAnalyzing(true);
@@ -333,7 +339,7 @@ function WealthDashboard({ portfolio, profile, isAnalyzing, onReset }: any) {
     );
 
   const totalInvested = profile.monthlySip * 12 * profile.horizon;
-  const projectedValue = portfolio.reduce((acc, a) => {
+  const projectedValue = portfolio.reduce((acc: number, a: PortfolioItem) => {
     const r = a.annualReturn / 12;
     const n = profile.horizon * 12;
     return acc + a.monthlyAmount * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
@@ -352,7 +358,7 @@ function WealthDashboard({ portfolio, profile, isAnalyzing, onReset }: any) {
             Strategic Allocation
           </h3>
           <div className="space-y-6">
-            {portfolio.map((item, idx) => (
+            {portfolio.map((item: PortfolioItem, idx: number) => (
               <div
                 key={idx}
                 className="flex items-center justify-between p-6 bg-white/5 rounded-2xl border border-white/5 group hover:bg-white/10 transition-colors"
@@ -408,7 +414,7 @@ function WealthDashboard({ portfolio, profile, isAnalyzing, onReset }: any) {
                 </span>
               </div>
             </div>
-            {portfolio.some((p) => p.id === "crypto") && (
+            {portfolio.some((p: PortfolioItem) => p.id === "crypto") && (
               <div className="mt-8 p-4 rounded-xl bg-orange-500/10 border border-orange-500/20 flex gap-3 items-start">
                 <AlertTriangle className="w-5 h-5 text-orange-500 shrink-0 mt-0.5" />
                 <p className="text-[10px] text-orange-200 leading-relaxed">

@@ -197,7 +197,7 @@ export default function AdvancedRiskProfiler() {
                     <p className="text-lg font-bold text-white group-hover:text-gold transition-colors">
                       {opt.label}
                     </p>
-                    {opt.desc && (
+                    {"desc" in opt && (
                       <p className="text-sm text-white/30">{opt.desc}</p>
                     )}
                   </div>

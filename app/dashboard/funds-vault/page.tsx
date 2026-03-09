@@ -296,24 +296,42 @@ export default function FundVaultPage() {
   const [selectedFund, setSelectedFund] = useState<any | null>(null);
 
   useEffect(() => {
+    interface Fund {
+      code: number;
+      name: string;
+      category: string;
+      [key: string]: any; // extra properties if any
+    }
+
+    interface FundDetailEntry {
+      date: string;
+      nav: string;
+      [key: string]: any;
+    }
+
+    interface FundDetail {
+      data: FundDetailEntry[];
+      [key: string]: any;
+    }
+
     async function initializeVault() {
       try {
         const res = await fetch("/api/funds");
-        const allFunds = await res.json();
+        const allFunds: Fund[] = await res.json();
         const categories = ["Small Cap", "Mid Cap", "Flexi Cap", "Large Cap"];
-        const curatedShelves: any = {};
+        const curatedShelves: Record<string, any[]> = {};
 
         for (const cat of categories) {
-          const topFive = getTopFiveDirectGrowth(allFunds, cat);
+          const topFive = getTopFiveDirectGrowth(allFunds, cat); // type Fund[]
           curatedShelves[cat] = await Promise.all(
-            topFive.map(async (fund) => {
+            topFive.map(async (fund: Fund) => {
               const detailRes = await fetch(
                 `https://api.mfapi.in/mf/${fund.code}`,
               );
-              const detail = await detailRes.json();
+              const detail: FundDetail = await detailRes.json();
 
               // 1. Current Data
-              const currentEntry = detail.data[0];
+              const currentEntry: FundDetailEntry = detail.data[0];
               const currentNav = parseFloat(currentEntry.nav);
               const currentDate = new Date(
                 currentEntry.date.split("-").reverse().join("-"),
@@ -324,8 +342,8 @@ export default function FundVaultPage() {
               targetDate.setFullYear(currentDate.getFullYear() - 3);
 
               // 3. Find the closest historical entry to that specific date
-              const pastEntry =
-                detail.data.find((entry) => {
+              const pastEntry: FundDetailEntry =
+                detail.data.find((entry: FundDetailEntry) => {
                   const d = new Date(entry.date.split("-").reverse().join("-"));
                   return d <= targetDate;
                 }) || detail.data[detail.data.length - 1];
@@ -358,6 +376,7 @@ export default function FundVaultPage() {
             }),
           );
         }
+
         setShelves(curatedShelves);
       } catch (err) {
         console.error("Vault Initialization Error:", err);
@@ -365,6 +384,7 @@ export default function FundVaultPage() {
         setLoading(false);
       }
     }
+
     initializeVault();
   }, []);
 

@@ -9,6 +9,8 @@ export interface CreditCard {
   name: string;
   bank: string;
   tier: string;
+  cardTier?: string; // optional
+  category?: string; // optional
   network: "Visa" | "Mastercard" | "Amex" | "RuPay" | "Diners";
 
   // Reward Metrics
@@ -30,6 +32,7 @@ export interface CreditCard {
   domesticLounge: string;
   internationalLounge: number;
   loungeCapDetails: string;
+  loungeCap?: number; // optional
   airIndiaTransferRatio: number;
 
   // Perks & Constraints
@@ -48,7 +51,7 @@ export interface CreditCard {
   transactionRange: string;
   fuelStationScope: string;
   directBookingRate: string;
-  instantDiscountEligible: string;
+  instantDiscountEligible: boolean; // ✅ boolean now
   diningRate: string;
   groceryRate: string;
   movieRate: string;
@@ -117,6 +120,10 @@ export const creditCards: CreditCard[] = (rawCards as any[]).map((c, index) => {
     tier: c.card_tier || "Premium",
     network,
 
+    // optional fields: no '?' needed here
+    cardTier: c.cardTier || undefined,
+    category: c.category || undefined,
+
     // Reward Metrics
     baseRewardRate: cleanNumber(c.base_reward_rate),
     pointValue: cleanNumber(c.point_value),
@@ -136,6 +143,7 @@ export const creditCards: CreditCard[] = (rawCards as any[]).map((c, index) => {
     domesticLounge: c.domestic_lounge || "0",
     internationalLounge: cleanNumber(c.international_lounge),
     loungeCapDetails: c.lounge_cap_details || "Standard T&C",
+    loungeCap: c.lounge_cap ? cleanNumber(c.lounge_cap) : undefined,
     airIndiaTransferRatio: cleanNumber(c.air_india_transfer_ratio),
 
     // Perks & Constraints
@@ -175,56 +183,66 @@ export const creditCards: CreditCard[] = (rawCards as any[]).map((c, index) => {
  * THE BUTLER ENGINE: Final Calculation Breakdown
  * Monetizes perks and audits net value for 2026
  */
+export interface CardAudit {
+  netValue: number;
+  yield: number; // now number
+  feeWaived: boolean;
+  convenienceSavings: number;
+  grossRewards: number;
+  outflow: number;
+
+  effectiveFee?: number; // optional if needed
+  redemptionCosts?: number; // optional if needed
+
+  breakdown: {
+    label: string;
+    value: number;
+    plus: boolean;
+  }[];
+}
 export function calculateInDepthSavings(
   card: CreditCard,
   annualSpend: number,
   monthlyLoungeVisits: number = 0.5,
-) {
-  // 1. Fee Waiver Audit
+): CardAudit {
   const isFeeWaived =
     card.retentionSpendReq > 0 && annualSpend >= card.retentionSpendReq;
   const baseFee = isFeeWaived ? 0 : card.annualFee;
   const taxOutflow = baseFee * 0.18;
   const totalOutflow = baseFee + taxOutflow;
 
-  // 2. Base Rewards (at face value)
   const grossPoints = (annualSpend * card.baseRewardRate) / 100;
   const rewardsValue = grossPoints * card.pointValue;
 
-  // 3. Monetized Perks (Lounge & Fuel)
-  // Assume a domestic lounge visit is worth ₹800 in the real market
   const loungeVisits =
     card.domesticLounge === "Unlimited"
-      ? 8
+      ? 12
       : parseInt(card.domesticLounge) || 0;
   const loungeMonetized =
     Math.min(loungeVisits, monthlyLoungeVisits * 12) * 800;
 
-  // Fuel savings (capped)
   const fuelSavings =
     card.fuelRewardRate > 0
       ? Math.min(annualSpend * 0.05 * (card.fuelRewardRate / 100), 3000)
       : 0;
 
-  // 4. Net Valuation
   const netValue = rewardsValue + loungeMonetized + fuelSavings - totalOutflow;
-  const yieldPercent = ((netValue / annualSpend) * 100).toFixed(2);
+  const yieldPercent = Number(((netValue / annualSpend) * 100).toFixed(2));
 
   return {
-    netValue: Math.round(netValue),
+    netValue,
     yield: yieldPercent,
     feeWaived: isFeeWaived,
-    convenienceSavings: Math.round(loungeMonetized + fuelSavings),
-    grossRewards: Math.round(rewardsValue),
-    outflow: Math.round(totalOutflow),
+    convenienceSavings: loungeMonetized + fuelSavings,
+    grossRewards: rewardsValue,
+    outflow: totalOutflow,
+    effectiveFee: totalOutflow,
+    redemptionCosts: 0, // optional
     breakdown: [
-      { label: "Annual Reward Value", value: rewardsValue, plus: true },
-      {
-        label: "Lounge & Fuel Utility",
-        value: loungeMonetized + fuelSavings,
-        plus: true,
-      },
-      { label: "Fee + 18% GST Outflow", value: totalOutflow, plus: false },
+      { label: "Rewards", value: rewardsValue, plus: true },
+      { label: "Lounge", value: loungeMonetized, plus: true },
+      { label: "Fuel Savings", value: fuelSavings, plus: true },
+      { label: "Fee Outflow", value: totalOutflow, plus: false },
     ],
   };
 }

@@ -91,9 +91,13 @@ export default function AIAdvisorPage() {
       score += audit.netValue / 500;
 
       // 2. Priority Alignment
-      if (priorities.includes("rewards")) score += audit.yield * 10;
+      if (priorities.includes("rewards")) score += Number(audit.yield) * 10;
       if (priorities.includes("lounge")) {
-        score += card.loungeCap === -1 ? 80 : card.loungeCap * 8;
+        score += card.loungeCap
+          ? card.loungeCap === -1
+            ? 80
+            : card.loungeCap * 8
+          : 0;
       }
       if (priorities.includes("forex")) {
         // High score boost for low markup cards (e.g., 0% or 1%)
@@ -318,7 +322,7 @@ function ResultsStep({ recommendations, profile, isAnalyzing, onReset }: any) {
                   <MiniMetric
                     icon={<IndianRupee className="w-4 h-4" />}
                     label="Total Cost"
-                    value={`₹${(audit.effectiveFee + audit.redemptionCosts).toLocaleString()}`}
+                    value={`₹${((audit.effectiveFee ?? 0) + (audit.redemptionCosts ?? 0)).toLocaleString()}`}
                   />
                   <MiniMetric
                     icon={<Plane className="w-4 h-4" />}

@@ -172,7 +172,8 @@ export default function ComparisonPage() {
                   icon={IndianRupee}
                   values={selectedCards.map((card) => {
                     const audit = calculateInDepthSavings(card, annualSpend);
-                    const cost = audit.effectiveFee + audit.redemptionCosts;
+                    const cost =
+                      (audit.effectiveFee ?? 0) + (audit.redemptionCosts ?? 0);
                     return {
                       display: `₹${cost.toLocaleString()}`,
                       value: cost,
