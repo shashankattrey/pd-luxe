@@ -473,7 +473,7 @@ export default function LandingPage() {
             <ComplianceBox title="Data Residency" value="INDIA" />
             <ComplianceBox title="Audit Standard" value="SOC2" />
             <ComplianceBox title="Encryption" value="AES-256" />
-            <ComplianceBox title="Regulation" value="SEBI" />
+            <ComplianceBox title="Regulation" value="ISO 27001" />
           </div>
         </div>
       </section>
@@ -491,9 +491,7 @@ export default function LandingPage() {
               </div>
               <p className="text-slate-500 text-xs font-bold uppercase tracking-[0.2em] leading-loose max-w-sm">
                 A Private Wealth Network for the Top 1%. <br />
-                Managed by PaisaDekho Intelligence India Pvt Ltd. <br />
-                SEBI Registered RIA (Pending) • INA0000XXXXX <br />
-                Headquarters: Bengaluru, KA.
+                Managed by PD Finserve Pvt Ltd. <br />
               </p>
             </div>
             <div>
@@ -502,7 +500,7 @@ export default function LandingPage() {
               </h5>
               <FooterLink>Mutual Funds Alpha</FooterLink>
               <FooterLink>Corporate Bonds</FooterLink>
-              <FooterLink>US Equities</FooterLink>
+              <FooterLink>Indian Equities</FooterLink>
               <FooterLink>Real Estate REITs</FooterLink>
             </div>
             <div>
