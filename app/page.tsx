@@ -51,8 +51,12 @@ export default function LandingPage() {
       <nav className="fixed top-0 left-0 right-0 z-[100] border-b border-white/5 bg-black/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-amber-600 flex items-center justify-center shadow-lg">
-              <Wallet className="w-6 h-6 text-black" />
+            <div className="w-10 h-10 rounded-xl  flex items-center justify-center shadow-lg">
+              <img
+                src="/favicon.ico"
+                alt="Logo"
+                className="w-10 h-10 rounded-lg"
+              />
             </div>
             <div className="flex flex-col">
               <span className="font-serif text-xl font-bold text-white leading-none tracking-tight">
