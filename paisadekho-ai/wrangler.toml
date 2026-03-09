@@ -1,0 +1,6 @@
+name = "paisadekho-ai"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+[vars]
+# We will add GROQ_API_KEY via the dashboard later
