@@ -149,7 +149,18 @@ export default function ComparisonPage() {
                   label="Net Annual Profit"
                   icon={Zap}
                   values={selectedCards.map((card) => {
-                    const audit = calculateInDepthSavings(card, annualSpend);
+                    const spendProfile = {
+                      dining: annualSpend * 0.25,
+                      travel: annualSpend * 0.25,
+                      shopping: annualSpend * 0.25,
+                      fuel: annualSpend * 0.15,
+                      other: annualSpend * 0.1,
+                    };
+
+                    const audit = calculateInDepthSavings(
+                      card,
+                      spendProfile as any,
+                    );
                     return {
                       display: `₹${audit.netValue.toLocaleString()}`,
                       value: audit.netValue,
@@ -162,7 +173,18 @@ export default function ComparisonPage() {
                   label="Realized Yield"
                   icon={TrendingUp}
                   values={selectedCards.map((card) => {
-                    const audit = calculateInDepthSavings(card, annualSpend);
+                    const spendProfile = {
+                      dining: annualSpend * 0.25,
+                      travel: annualSpend * 0.25,
+                      shopping: annualSpend * 0.25,
+                      fuel: annualSpend * 0.15,
+                      other: annualSpend * 0.1,
+                    };
+
+                    const audit = calculateInDepthSavings(
+                      card,
+                      spendProfile as any,
+                    );
                     return { display: `${audit.yield}%`, value: audit.yield };
                   })}
                   highlightBest="highest"
@@ -171,9 +193,21 @@ export default function ComparisonPage() {
                   label="Maintenance Cost"
                   icon={IndianRupee}
                   values={selectedCards.map((card) => {
-                    const audit = calculateInDepthSavings(card, annualSpend);
+                    const spendProfile = {
+                      dining: annualSpend * 0.25,
+                      travel: annualSpend * 0.25,
+                      shopping: annualSpend * 0.25,
+                      fuel: annualSpend * 0.15,
+                      other: annualSpend * 0.1,
+                    };
+
+                    const audit = calculateInDepthSavings(
+                      card,
+                      spendProfile as any,
+                    );
                     const cost =
-                      (audit.effectiveFee ?? 0) + (audit.redemptionCosts ?? 0);
+                      ((audit as any).effectiveFee ?? 0) +
+                      ((audit as any).redemptionCosts ?? 0);
                     return {
                       display: `₹${cost.toLocaleString()}`,
                       value: cost,

@@ -1,43 +1,40 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
   Filter,
-  CreditCard,
   AlertTriangle,
   X,
   Plane,
-  Percent,
-  IndianRupee,
   Globe,
   Fuel,
   Zap,
-  ShieldCheck,
   TrendingUp,
-  Wallet,
-  Calendar,
-  Star,
-  History,
-  Sparkles,
+  Compass,
   ArrowRight,
   Utensils,
-  Gift,
-  Info,
-  Clock,
-  Compass,
-  Briefcase,
-  ChevronRight,
+  Sparkles,
+  ShoppingCart,
+  Film,
+  Hotel,
+  Ticket,
+  Wallet,
+  CheckCircle2,
+  Building2,
 } from "lucide-react";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import CardPreview from "@/components/ui/card-preview";
 
 import {
   calculateInDepthSavings,
   creditCards,
   type CreditCard as CardType,
+  type SpendProfile,
 } from "@/lib/credit-cards-data";
 
 export default function CardVaultPage() {
@@ -45,142 +42,169 @@ export default function CardVaultPage() {
   const [selectedBank, setSelectedBank] = useState<string>("All");
   const [showFilters, setShowFilters] = useState(false);
   const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
-  const [annualSpend] = useState(600000);
+
+  // ALIGNED: Using the keys expected by calculateInDepthSavings
+  const [spend, setSpend] = useState<SpendProfile>({
+    food: 10000,
+    shopping: 20000, // Mapping for Amazon/Flipkart
+    travel: 15000, // Mapping for Flights/Hotels
+    utilities: 5000,
+    fuel: 4000,
+    rent: 20000,
+    other: 10000,
+  });
+
+  const totalMonthlySpend = useMemo(() => {
+    return Object.values(spend).reduce((a, b) => a + (Number(b) || 0), 0);
+  }, [spend]);
 
   const banks = useMemo(() => {
     return ["All", ...Array.from(new Set(creditCards.map((c) => c.bank)))];
   }, []);
 
   const filteredCards = useMemo(() => {
-    return creditCards.filter((card) => {
-      const matchesSearch =
-        card.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        card.bank.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        card.searchTags.toLowerCase().includes(searchQuery.toLowerCase());
-
-      const matchesBank = selectedBank === "All" || card.bank === selectedBank;
-      return matchesSearch && matchesBank;
-    });
-  }, [searchQuery, selectedBank]);
+    return creditCards
+      .filter((card) => {
+        const matchesSearch =
+          card.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          card.bank.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          card.searchTags.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesBank =
+          selectedBank === "All" || card.bank === selectedBank;
+        return matchesSearch && matchesBank;
+      })
+      .sort((a, b) => {
+        // High-level sort by yield to keep the "best" cards on top
+        const yieldA = calculateInDepthSavings(a, spend).netValue;
+        const yieldB = calculateInDepthSavings(b, spend).netValue;
+        return yieldB - yieldA;
+      });
+  }, [searchQuery, selectedBank, spend]);
 
   return (
-    <div className="space-y-10 max-w-[1500px] mx-auto px-4 md:px-6 py-12 min-h-screen">
-      {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-        <div className="space-y-3">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-gold/10 border border-gold/20">
-              <Compass className="w-6 h-6 text-gold" />
+    <div className="bg-zinc-950 text-white min-h-screen selection:bg-amber-500/30">
+      <div className="space-y-10 max-w-[1600px] mx-auto px-4 md:px-8 py-12">
+        {/* --- HEADER --- */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 border-b border-white/5 pb-10">
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 shadow-[0_0_20px_rgba(245,158,11,0.1)]">
+                <Compass className="w-8 h-8 text-amber-500" />
+              </div>
+              <div>
+                <h1 className="font-serif text-4xl md:text-6xl font-bold tracking-tight">
+                  Card Vault
+                </h1>
+                <p className="text-zinc-500 font-mono text-xs uppercase tracking-[0.3em] mt-1">
+                  Revision 2026.4.10
+                </p>
+              </div>
             </div>
-
-            <h1 className="font-serif text-3xl md:text-5xl font-bold">
-              Card Vault
-            </h1>
           </div>
 
-          <p className="text-zinc-400 text-base max-w-2xl font-light">
-            Real-time audit of{" "}
-            <span className="text-gold font-semibold">
-              {creditCards.length}
-            </span>{" "}
-            instruments against 2026 policies.
-          </p>
-        </div>
-
-        <div className="bg-black/60 backdrop-blur-xl px-6 py-5 rounded-2xl flex items-center gap-6 border border-white/10">
-          <div className="text-right">
-            <p className="text-[10px] uppercase tracking-wider text-gold font-bold">
-              Analysis Baseline
-            </p>
-
-            <p className="text-2xl font-serif font-bold text-white">
-              ₹{(annualSpend / 100000).toFixed(1)}L
-            </p>
+          <div className="bg-white/5 backdrop-blur-xl px-8 py-5 rounded-[2rem] flex items-center gap-6 border border-white/10 shadow-2xl">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.2em] text-amber-500 font-black mb-1">
+                Audit Benchmark
+              </p>
+              <p className="text-3xl font-mono font-bold text-white tracking-tighter">
+                ₹{((totalMonthlySpend * 12) / 100000).toFixed(1)}L{" "}
+                <span className="text-zinc-500 text-sm font-light uppercase">
+                  PA
+                </span>
+              </p>
+            </div>
+            <div className="h-12 w-px bg-white/10 mx-2" />
+            <TrendingUp className="w-8 h-8 text-green-400 opacity-80" />
           </div>
-
-          <TrendingUp className="w-6 h-6 text-green-400" />
         </div>
-      </div>
 
-      {/* Search */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        <div className="relative flex-1">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-
-          <Input
-            placeholder="Search bank, card or benefit"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 h-11"
+        {/* --- SPEND CONTROLS --- */}
+        <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-4 bg-white/5 p-6 rounded-3xl border border-white/10">
+          <SpendInput
+            label="Food"
+            icon={<Utensils />}
+            value={spend.food}
+            onChange={(v) => setSpend({ ...spend, food: v })}
+          />
+          <SpendInput
+            label="Shopping"
+            icon={<ShoppingCart />}
+            value={spend.shopping}
+            onChange={(v) => setSpend({ ...spend, shopping: v })}
+          />
+          <SpendInput
+            label="Travel"
+            icon={<Plane />}
+            value={spend.travel}
+            onChange={(v) => setSpend({ ...spend, travel: v })}
+          />
+          <SpendInput
+            label="Fuel"
+            icon={<Fuel />}
+            value={spend.fuel}
+            onChange={(v) => setSpend({ ...spend, fuel: v })}
+          />
+          <SpendInput
+            label="Rent"
+            icon={<Building2 />}
+            value={spend.rent}
+            onChange={(v) => setSpend({ ...spend, rent: v })}
+          />
+          <SpendInput
+            label="Utilities"
+            icon={<Zap />}
+            value={spend.utilities}
+            onChange={(v) => setSpend({ ...spend, utilities: v })}
+          />
+          <SpendInput
+            label="Other"
+            icon={<Wallet />}
+            value={spend.other}
+            onChange={(v) => setSpend({ ...spend, other: v })}
           />
         </div>
 
-        <Button
-          onClick={() => setShowFilters(!showFilters)}
-          className="h-11 px-6"
-        >
-          <Filter className="w-4 h-4 mr-2" />
-          {selectedBank}
-        </Button>
-      </div>
-
-      {/* Bank Filters */}
-      <AnimatePresence>
-        {showFilters && (
-          <motion.div
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="flex flex-wrap gap-2 p-4 bg-zinc-900 rounded-xl border border-white/10"
+        {/* --- SEARCH --- */}
+        <div className="flex flex-col md:flex-row gap-4 sticky top-6 z-40">
+          <div className="relative flex-1 group">
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500 group-focus-within:text-amber-500" />
+            <Input
+              placeholder="Search Amazon, Zomato, Air India, or 'LTF'..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-14 h-16 bg-zinc-900/80 backdrop-blur-md border-white/10 focus:border-amber-500/50 rounded-2xl text-lg shadow-2xl"
+            />
+          </div>
+          <Button
+            variant="outline"
+            onClick={() => setShowFilters(!showFilters)}
+            className="h-16 px-8 border-white/10 bg-zinc-900/80 hover:bg-white/5 rounded-2xl font-semibold"
           >
-            {banks.map((bank) => (
-              <button
-                key={bank}
-                onClick={() => {
-                  setSelectedBank(bank);
-                  setShowFilters(false);
-                }}
-                className={`px-4 py-1.5 rounded-full text-xs font-semibold transition ${
-                  selectedBank === bank
-                    ? "bg-gold text-black"
-                    : "bg-white/5 text-zinc-400 hover:bg-white/10"
-                }`}
-              >
-                {bank}
-              </button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <Filter className="w-5 h-5 mr-3" />
+            {selectedBank}
+          </Button>
+        </div>
 
-      {/* Cards Grid */}
-      <div
-        className="
-        grid
-        grid-cols-1
-        sm:grid-cols-2
-        lg:grid-cols-3
-        xl:grid-cols-4
-        2xl:grid-cols-5
-        gap-4 sm:gap-5 lg:gap-6
-        "
-      >
-        {filteredCards.map((card, idx) => (
-          <CardTile
-            key={card.id}
-            card={card}
-            index={idx}
-            annualSpend={annualSpend}
-            onClick={() => setSelectedCard(card)}
-          />
-        ))}
+        {/* --- GRID --- */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
+          {filteredCards.map((card, idx) => (
+            <CardTile
+              key={card.id}
+              card={card}
+              index={idx}
+              spend={spend}
+              onClick={() => setSelectedCard(card)}
+            />
+          ))}
+        </div>
       </div>
 
       <AnimatePresence>
         {selectedCard && (
           <CardDetailModal
             card={selectedCard}
-            annualSpend={annualSpend}
+            spend={spend}
             onClose={() => setSelectedCard(null)}
           />
         )}
@@ -189,433 +213,301 @@ export default function CardVaultPage() {
   );
 }
 
-/* CARD TILE */
-
-function CardTile({ card, index, annualSpend, onClick }: any) {
-  const audit = calculateInDepthSavings(card, annualSpend);
+function CardTile({
+  card,
+  index,
+  spend,
+  onClick,
+}: {
+  card: CardType;
+  index: number;
+  spend: SpendProfile;
+  onClick: () => void;
+}) {
+  const audit = calculateInDepthSavings(card, spend);
 
   return (
-    <motion.button
-      type="button"
-      initial={{ opacity: 0, y: 10 }}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.03 }}
-      whileHover={{ y: -4 }}
-      whileTap={{ scale: 0.98 }}
+      transition={{ delay: index * 0.02 }}
+      whileHover={{ y: -8 }}
       onClick={onClick}
-      className="cursor-pointer group relative text-left rounded-xl focus:outline-none"
+      className="group cursor-pointer h-full"
     >
-      <div className="absolute inset-0 bg-gold/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-      <div className="relative rounded-2xl overflow-hidden border border-white/5 group-hover:border-gold/40 transition bg-zinc-900/60">
-        {/* Card Header */}
+      <div className="relative h-full flex flex-col bg-zinc-900/40 border border-white/5 rounded-[2.5rem] overflow-hidden group-hover:border-amber-500/30 transition-all shadow-2xl">
         <div
-          className={`h-32 md:h-36 bg-gradient-to-br ${card.imageGradient} p-4 md:p-5 flex flex-col justify-between`}
+          className={`h-40 p-7 bg-gradient-to-br ${card.imageGradient} relative`}
         >
-          <div className="flex justify-between items-start">
-            <div>
-              <p className="text-white/60 text-[10px] font-bold uppercase tracking-wider">
-                {card.bank}
-              </p>
-
-              <h3 className="text-white font-serif font-semibold text-base md:text-lg leading-tight max-w-[160px]">
-                {card.name}
-              </h3>
-            </div>
-
-            {card.devaluation2026 && (
-              <AlertTriangle className="w-4 h-4 text-orange-400" />
-            )}
-          </div>
-          {/* <div className="flex flex-wrap gap-2 mt-2">
-            {card.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-xs px-2 py-1 rounded-full bg-white/10 text-white border border-white/20 backdrop-blur"
-              >
-                {tag}
-              </span>
-            ))}
-          </div> */}
-
-          <div className="flex items-center gap-4 text-white/80 text-xs">
-            <div className="flex items-center gap-1">
-              <Zap className="w-3 h-3 text-gold" />
-              {card.baseRewardRate}%
-            </div>
-
-            <div className="flex items-center gap-1">
-              <Globe className="w-3 h-3 text-gold" />
-              {card.forexMarkup}%
+          <div className="absolute top-0 right-0 p-6">
+            <div
+              className={`p-2 rounded-xl border shadow-lg ${card.devaluation2026 ? "bg-red-500/20 border-red-500/30" : "bg-green-500/20 border-green-500/30"}`}
+            >
+              {card.devaluation2026 ? (
+                <AlertTriangle className="w-5 h-5 text-red-400" />
+              ) : (
+                <CheckCircle2 className="w-5 h-5 text-green-400" />
+              )}
             </div>
           </div>
+          <p className="text-white/50 text-[10px] font-black uppercase tracking-[0.2em] mb-2">
+            {card.bank}
+          </p>
+          <h3 className="text-white font-serif font-bold text-xl leading-tight pr-10">
+            {card.name}
+          </h3>
         </div>
 
-        {/* Card Body */}
-        <div className="p-4 md:p-5 space-y-4">
-          <div className="flex justify-between items-center">
-            {/* <div>
-              <p className="text-[10px] text-zinc-500 uppercase">
-                Audited Yield
+        <div className="p-7 flex-1 flex flex-col justify-between">
+          <div className="flex justify-between items-end">
+            <div>
+              <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-1">
+                Audit Yield (Annual)
               </p>
-
-              <p className="text-2xl font-serif font-bold text-green-400">
-                +{audit.yield}%
+              <p
+                className={`text-3xl font-mono font-bold ${audit.netValue > 0 ? "text-green-400" : audit.netValue < 0 ? "text-red-400" : "text-zinc-500"}`}
+              >
+                {audit.netValue < 0 ? "-" : ""}₹
+                {Math.abs(Math.round(audit.netValue)).toLocaleString()}
               </p>
-            </div> */}
-            {card.tags.map((tag: string) => (
+            </div>
+            <div className="h-10 w-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-black transition-all">
+              <ArrowRight className="w-5 h-5" />
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2 pt-6 border-t border-white/5 mt-6">
+            {card.tags.slice(0, 2).map((tag) => (
               <span
                 key={tag}
-                className="text-xs px-2 py-1 rounded-lg bg-white/10 text-white border border-white/20 backdrop-blur whitespace-nowrap overflow-hidden text-ellipsis"
-                style={{ lineHeight: "1.2rem", height: "2rem" }}
+                className="text-[9px] px-3 py-1.5 rounded-lg bg-white/5 text-zinc-400 border border-white/5 uppercase font-black tracking-tighter"
               >
                 {tag}
               </span>
             ))}
-
-            <div className="text-right">
-              <p className="text-[10px] text-zinc-500 uppercase">Net Profit</p>
-
-              <p className="text-sm font-semibold text-white">
-                ₹{audit.netValue.toLocaleString()}
-              </p>
-            </div>
-          </div>
-
-          <div className="pt-3 border-t border-white/10 flex justify-between text-xs text-zinc-400 group-hover:text-gold">
-            View Details
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
           </div>
         </div>
       </div>
-    </motion.button>
+    </motion.div>
   );
 }
 
-/* KEEP YOUR ORIGINAL MODAL EXACTLY AS IT WAS */
-
-function CardDetailModal({ card, annualSpend, onClose }: any) {
-  const audit = calculateInDepthSavings(card, annualSpend);
+function CardDetailModal({
+  card,
+  spend,
+  onClose,
+}: {
+  card: CardType;
+  spend: SpendProfile;
+  onClose: () => void;
+}) {
+  const audit = calculateInDepthSavings(card, spend);
 
   return (
     <>
+      {/* Backdrop */}
       <motion.div
+        className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-xl"
       />
-      <motion.div
-        initial={{ opacity: 0, scale: 0.98, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.98, y: 20 }}
-        className="fixed inset-0 z-[70] md:inset-4 lg:inset-10 flex flex-col lg:flex-row bg-zinc-950 md:rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl"
-      >
-        {/* MOBILE HEADER - STICKY FOR ACCESSIBILITY */}
-        <div className="lg:hidden sticky top-0 z-50 flex justify-between items-center px-6 py-4 bg-zinc-950/80 backdrop-blur-md border-b border-white/5">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-gold animate-pulse" />
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">
-              Audit 2026
-            </span>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-2 -mr-2 text-zinc-400 hover:text-white active:scale-90 transition-transform"
-          >
-            <X className="w-6 h-6" />
-          </button>
-        </div>
 
-        {/* LEFT PANE: BRANDING (Header on Mobile, Sidebar on Desktop) */}
+      {/* Modal Container */}
+      <motion.div
+        className="fixed inset-0 md:inset-6 lg:inset-16 z-[110] bg-zinc-950 border border-white/10 rounded-none md:rounded-[3rem] overflow-y-auto flex flex-col lg:flex-row shadow-[0_0_100px_rgba(0,0,0,1)]"
+        initial={{ opacity: 0, scale: 0.9, y: 40 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 40 }}
+      >
+        {/* --- LEFT SIDEBAR: Branding & Key Identity --- */}
         <div
-          className={`shrink-0 w-full lg:w-[380px] xl:w-[420px] p-8 md:p-12 bg-gradient-to-br ${card.imageGradient} text-white flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/10`}
+          className={`lg:w-[450px] shrink-0 bg-gradient-to-br ${card.imageGradient} 
+  p-8 md:p-14 flex flex-col justify-between text-white relative 
+  min-h-[300px] md:min-h-[420px]`}
         >
-          <div className="space-y-6 md:space-y-12">
+          <div className="space-y-10">
             <button
               onClick={onClose}
-              className="hidden lg:flex items-center gap-2 text-white/60 hover:text-white transition-colors font-black text-[10px] uppercase tracking-[0.3em]"
+              className="p-4 bg-black/20 hover:bg-black/40 rounded-full transition-all border border-white/10"
             >
-              <ArrowRight className="w-4 h-4 rotate-180" /> Back to Vault
+              <X className="w-6 h-6" />
             </button>
 
-            <div className="space-y-3 md:space-y-4">
-              <span className="inline-block px-3 py-1 rounded-full bg-black/30 text-[8px] md:text-[9px] font-black uppercase tracking-[0.3em] border border-white/10">
-                {card.tier} Tier
-              </span>
-              <h2 className="text-3xl md:text-5xl font-serif font-bold leading-[1.1] tracking-tight">
+            <div className="space-y-6">
+              <div className="flex flex-wrap gap-2">
+                <span className="px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-[10px] font-black tracking-[0.3em] uppercase">
+                  {card.tier} Tier
+                </span>
+                {card.isLtf && (
+                  <span className="px-4 py-1.5 rounded-full bg-green-500/20 border border-green-500/30 text-[10px] font-black tracking-[0.3em] uppercase text-green-400">
+                    Life Time Free
+                  </span>
+                )}
+              </div>
+
+              <h2 className="text-3xl md:text-5xl lg:text-7xl font-serif font-bold leading-[1.1] tracking-tighter">
                 {card.name}
               </h2>
-              <p className="text-white/60 font-medium tracking-widest uppercase text-[10px] md:text-xs">
-                {card.bank}
-              </p>
-            </div>
+              <CardPreview card={card} />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
-              <div className="p-4 md:p-5 rounded-2xl bg-white/10 border border-white/10 backdrop-blur-md">
-                <p className="text-[9px] text-white/50 font-black uppercase mb-1 tracking-widest">
-                  Joining Privilege
-                </p>
-                <p className="text-base md:text-lg font-bold text-gold leading-tight">
-                  {card.joiningBenefit || "Institutional Welcome"}
-                </p>
-              </div>
-              <div className="p-4 md:p-5 rounded-2xl bg-black/30 border border-white/5">
-                <p className="text-[9px] text-white/50 font-black uppercase mb-1 tracking-widest">
-                  Annual Milestone
-                </p>
-                <p className="text-base md:text-lg font-bold text-white/90 leading-tight">
-                  {card.milestoneBenefit}
+              <div className="space-y-1">
+                <p className="text-2xl font-light opacity-80">{card.bank}</p>
+                <p className="text-sm font-mono uppercase tracking-[0.2em] opacity-50">
+                  {card.network} Network
                 </p>
               </div>
             </div>
           </div>
-          <p className="hidden lg:block text-[9px] font-black text-white/20 uppercase tracking-[0.5em] pt-8">
-            Reference: 2026.X.ALPHA
-          </p>
+
+          <div className="space-y-4">
+            <div className="p-8 rounded-[2.5rem] bg-black/30 backdrop-blur-2xl border border-white/10 shadow-2xl">
+              <p className="text-[10px] uppercase font-black tracking-widest opacity-50 mb-3 text-amber-500">
+                Welcome Benefit
+              </p>
+              <p className="text-lg font-medium italic leading-relaxed text-zinc-100">
+                "{card.joiningBenefit}"
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* RIGHT PANE: SCROLLABLE CONTENT */}
-        <div className="flex-1 overflow-y-auto custom-scrollbar bg-zinc-950">
-          <div className="p-6 md:p-10 lg:p-16 space-y-10 md:space-y-16 max-w-5xl mx-auto">
-            {/* 1. PRIMARY ECONOMICS */}
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              <section className="p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] bg-zinc-900/50 border border-white/5">
-                <div className="flex items-center gap-3 mb-6 md:mb-8">
-                  <TrendingUp className="w-5 h-5 text-green-400" />
-                  <h4 className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em]">
-                    Profitability Audit
-                  </h4>
-                </div>
-                <div className="space-y-4">
-                  {audit.breakdown.map((item: any, i: number) => (
-                    <div
-                      key={i}
-                      className="flex justify-between text-xs md:text-sm"
-                    >
-                      <span className="text-zinc-500">{item.label}</span>
-                      <span
-                        className={
-                          item.plus
-                            ? "text-green-400 font-bold"
-                            : "text-red-400 font-bold"
-                        }
-                      >
-                        {item.plus ? "+" : "-"} ₹
-                        {Math.abs(item.value).toLocaleString()}
-                      </span>
-                    </div>
-                  ))}
-                  <div className="pt-6 mt-4 border-t border-white/10 flex justify-between items-baseline">
-                    <span className="text-[10px] font-black uppercase text-gold">
-                      Net Yield
-                    </span>
-                    <span className="text-3xl md:text-5xl font-serif font-bold text-white">
-                      ₹{audit.netValue.toLocaleString()}
-                    </span>
-                  </div>
-                </div>
-              </section>
-
-              <section className="p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] bg-gold/5 border border-gold/10">
-                <div className="flex items-center gap-3 mb-6 md:mb-8">
-                  <Zap className="w-5 h-5 text-gold" />
-                  <h4 className="text-gold text-[10px] font-black uppercase tracking-[0.3em]">
-                    Yield Multipliers
-                  </h4>
-                </div>
-                <div className="space-y-3">
-                  <RewardRow
-                    label="Dining & Food"
-                    value={card.diningRate}
-                    icon={<Utensils className="w-4 h-4" />}
-                  />
-                  <RewardRow
-                    label="Travel Booking"
-                    value={card.directBookingRate}
-                    icon={<Plane className="w-4 h-4" />}
-                  />
-                  <RewardRow
-                    label="Preferred Channel"
-                    value={card.multiplierChannel}
-                    icon={<Sparkles className="w-4 h-4" />}
-                    highlight
-                  />
-                </div>
-              </section>
-            </div>
-
-            {/* 2. FINANCIALS & FUEL LOGISTICS */}
-            <div className="space-y-6">
-              <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-600 px-2">
-                Logistics & Compliance
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Fee Grid */}
-                <div className="grid grid-cols-2 gap-3 md:gap-4">
-                  <div className="p-5 md:p-6 rounded-2xl md:rounded-3xl bg-zinc-900 border border-white/5">
-                    <p className="text-[9px] text-zinc-500 font-black uppercase mb-1">
-                      Joining
-                    </p>
-                    <p className="text-lg md:text-xl font-bold">
-                      ₹{card.joiningFee?.toLocaleString() || "0"}
-                    </p>
-                  </div>
-                  <div className="p-5 md:p-6 rounded-2xl md:rounded-3xl bg-zinc-900 border border-white/5">
-                    <p className="text-[9px] text-zinc-500 font-black uppercase mb-1">
-                      Annual
-                    </p>
-                    <p className="text-lg md:text-xl font-bold">
-                      ₹{card.annualFee.toLocaleString()}
-                    </p>
-                  </div>
-                  <div className="col-span-2 p-5 md:p-6 rounded-2xl md:rounded-3xl bg-zinc-900 border border-white/5 flex justify-between items-center">
-                    <p className="text-[9px] text-zinc-500 font-black uppercase">
-                      Waiver Spend
-                    </p>
-                    <p className="text-lg md:text-xl font-bold text-gold">
-                      ₹{card.retentionSpendReq.toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Fuel Group */}
-                <div className="p-6 md:p-8 rounded-[2rem] bg-orange-500/5 border border-orange-500/10 space-y-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 text-orange-400">
-                      <Fuel className="w-5 h-5" />
-                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em]">
-                        Fuel Logistics
-                      </h4>
-                    </div>
-                    <span className="px-2 py-1 rounded bg-orange-500/10 text-orange-400 text-[8px] font-black uppercase border border-orange-500/20">
-                      {card.surchargeWaiver || "1%"} Waiver
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-[9px] text-zinc-500 font-black uppercase mb-1">
-                        Monthly Cap
-                      </p>
-                      <p className="text-lg font-bold text-white">
-                        {card.fuelCap || "No Cap"}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-[9px] text-zinc-500 font-black uppercase mb-1">
-                        Eligible Range
-                      </p>
-                      <p className="text-sm font-bold text-white">
-                        {card.transactionRange || "₹400-4K"}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+        {/* --- RIGHT CONTENT: The Deep Audit --- */}
+        <div className="flex-1 p-6 md:p-14 lg:p-20 bg-zinc-950">
+          <div className="max-w-5xl mx-auto space-y-20">
+            {/* 1. Platform Performance Grid */}
+            <section className="space-y-8">
+              <h4 className="flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.4em] text-zinc-500">
+                <Sparkles className="w-5 h-5 text-amber-500" />
+                Platform Accelerators
+              </h4>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <AcceleratorBox
+                  icon={<ShoppingCart />}
+                  label="Amazon/FK"
+                  val={`${card.amazonRate}%`}
+                  active={card.amazonRate > card.baseRewardRate}
+                />
+                <AcceleratorBox
+                  icon={<Utensils />}
+                  label="Swiggy/Zom"
+                  val={`${card.swiggyRate}%`}
+                  active={card.swiggyRate > card.baseRewardRate}
+                />
+                <AcceleratorBox
+                  icon={<Plane />}
+                  label="Flights"
+                  val={`${card.flightRate}%`}
+                  active={card.flightRate > card.baseRewardRate}
+                />
+                <AcceleratorBox
+                  icon={<Hotel />}
+                  label="Hotels"
+                  val={`${card.hotelRate}%`}
+                  active={card.hotelRate > card.baseRewardRate}
+                />
+                <AcceleratorBox
+                  icon={<Film />}
+                  label="Movies"
+                  val={card.movieDealType}
+                  active={card.movieEffectiveRate > 0}
+                />
+                <AcceleratorBox
+                  icon={<Zap />}
+                  label="Utilities"
+                  val={`${card.utilityRate}%`}
+                  active={card.utilityRate > 0}
+                />
+                <AcceleratorBox
+                  icon={<Building2 />}
+                  label="Rent/Govt"
+                  val={`${card.rentRate}%`}
+                  active={false}
+                  isRisk={card.rentRate === 0}
+                />
+                <AcceleratorBox
+                  icon={<Ticket />}
+                  label="Base Rate"
+                  val={`${card.baseRewardRate}%`}
+                  active={false}
+                />
               </div>
-            </div>
+            </section>
 
-            {/* 3. TRAVEL & PARTNERS */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
-              <div className="lg:col-span-2 p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] bg-gradient-to-br from-blue-500/5 to-transparent border border-white/5 space-y-8">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-blue-500/10 rounded-xl border border-blue-500/20">
-                    <Globe className="w-5 h-5 text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold text-lg leading-tight">
-                      Travel Intelligence
-                    </h4>
-                    <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mt-1">
-                      Forex Markup: {card.forexMarkup}%
-                    </p>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-6 md:gap-8">
-                  <div className="p-4 rounded-2xl bg-black/20 border border-white/5">
-                    <p className="text-[9px] text-zinc-500 font-black uppercase mb-1">
-                      Domestic Lounge
-                    </p>
-                    <p className="text-2xl font-serif font-bold text-white">
-                      {card.domesticLounge || "0"}
-                    </p>
-                  </div>
-                  <div className="p-4 rounded-2xl bg-black/20 border border-white/5">
-                    <p className="text-[9px] text-zinc-500 font-black uppercase mb-1">
-                      International
-                    </p>
-                    <p className="text-2xl font-serif font-bold text-white">
-                      {card.internationalLounge || "0"}
-                    </p>
-                  </div>
-                </div>
-                <div className="p-4 rounded-2xl bg-blue-500/5 border border-blue-500/10 text-[10px] md:text-[11px] text-zinc-400 italic">
-                  <span className="text-blue-400 font-black uppercase not-italic mr-2">
-                    Condition:
-                  </span>{" "}
-                  {card.loungeSpendReq || "Complimentary via Tier Status."}
-                </div>
-              </div>
-
-              <div className="p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] bg-zinc-900/30 border border-white/5">
-                <h4 className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em] mb-6">
-                  Partner Transfer
+            {/* 2. Economic Audit & Accrual Trace */}
+            <section className="grid grid-cols-1 xl:grid-cols-2 gap-16 border-t border-white/5 pt-16">
+              {/* Left Column: Net Economic Value */}
+              <div className="space-y-8">
+                <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-zinc-500">
+                  Economic Audit
                 </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2">
-                  {Object.entries(card.airlineTransferJson || {}).map(
-                    ([partner, ratio]: any) => (
-                      <div
-                        key={partner}
-                        className="flex justify-between items-center p-3 rounded-xl bg-zinc-900 border border-white/5"
-                      >
-                        <span className="text-[11px] font-medium text-zinc-400">
-                          {partner}
-                        </span>
-                        <span className="text-[10px] font-black text-blue-400">
-                          {ratio}
-                        </span>
-                      </div>
-                    ),
-                  )}
+
+                {/* NEW: Audit Trace Component replaces the old list */}
+                <RewardChart audit={audit} />
+
+                <div className="p-10 bg-gradient-to-br from-zinc-900 to-black rounded-[3rem] border border-white/10 shadow-2xl">
+                  <p
+                    className={`text-4xl md:text-6xl lg:text-7xl font-mono font-bold tracking-tighter ${audit.netValue >= 0 ? "text-amber-500" : "text-red-500"}`}
+                  >
+                    ₹{Math.round(audit.netValue).toLocaleString()}
+                  </p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <TrendingUp className="w-4 h-4 text-zinc-500" />
+                    <p className="text-xs text-zinc-500 uppercase font-black tracking-widest">
+                      Projected Annual Net Profit
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* 4. RISK AUDIT & NOTES */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <section className="p-6 md:p-8 rounded-[2rem] bg-red-950/10 border border-red-500/20">
-                <div className="flex items-center gap-2 mb-6">
-                  <AlertTriangle className="w-4 h-4 text-red-400" />
-                  <p className="text-[10px] text-red-400 font-black uppercase tracking-widest">
-                    Earning Exclusions
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-2 sm:gap-3 overflow-x-auto pb-2">
-                  {Object.entries(card.detailedRewardsJson || {})
-                    .filter(([_, v]) => v === "Excluded")
-                    .map(([k]) => (
-                      <span
-                        key={k}
-                        className="px-3 py-1.5 rounded-xl bg-red-500/5 text-red-400 text-[9px] font-black uppercase border border-red-500/10"
-                      >
-                        {k}
-                      </span>
-                    ))}
-                </div>
-              </section>
+              {/* Right Column: Reward Calculation Breakdown */}
+              <div className="space-y-8">
+                <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-zinc-500">
+                  Points Accrual Trace
+                </h4>
+                <PlatformBreakdown card={card} spend={spend} audit={audit} />
 
-              <section className="p-6 md:p-8 rounded-[2rem] bg-zinc-900 border border-white/5 flex flex-col justify-center">
-                <p className="text-[10px] text-zinc-500 font-black uppercase tracking-[0.4em] mb-4">
-                  Strategic Narrative
-                </p>
-                <p className="text-sm md:text-base text-zinc-300 leading-relaxed font-light italic">
-                  "
-                  {card.notesTnc ||
-                    "Instrument performance is stable. No high-priority risk factors identified for the 2026 cycle."}
-                  "
-                </p>
-              </section>
-            </div>
+                <div className="space-y-6 pt-4">
+                  <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-zinc-500">
+                    Logistics & Limits
+                  </h4>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="bg-zinc-900 p-8 rounded-[2rem] border border-white/5">
+                      <p className="text-[10px] text-zinc-500 uppercase font-black mb-2">
+                        Domestic Lounge
+                      </p>
+                      <p className="text-3xl font-bold font-mono">
+                        {card.domesticLounge}
+                      </p>
+                    </div>
+                    <div className="bg-zinc-900 p-8 rounded-[2rem] border border-white/5">
+                      <p className="text-[10px] text-zinc-500 uppercase font-black mb-2">
+                        Forex Markup
+                      </p>
+                      <p className="text-3xl font-bold font-mono text-amber-500">
+                        {card.forexMarkup}%
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 3. Policy & Exclusion Alerts */}
+            <section className="p-10 rounded-[3rem] bg-red-950/10 border border-red-500/20">
+              <div className="flex items-center gap-4 text-red-500 mb-6">
+                <AlertTriangle className="w-6 h-6" />
+                <h5 className="text-xs font-black uppercase tracking-[0.2em]">
+                  2026 Exclusion & Policy Audit
+                </h5>
+              </div>
+              <p className="text-zinc-400 text-base leading-relaxed italic">
+                "
+                {card.notesTnc ||
+                  "No critical devaluations or high-risk policy changes detected for this instrument in the current 2026 cycle."}
+                "
+              </p>
+            </section>
           </div>
         </div>
       </motion.div>
@@ -623,22 +515,262 @@ function CardDetailModal({ card, annualSpend, onClose }: any) {
   );
 }
 
-function RewardRow({ label, value, icon, highlight }: any) {
+/**
+ * Detailed Trace of Category Rewards
+ */
+function PlatformBreakdown({
+  card,
+  spend,
+  audit,
+}: {
+  card: CardType;
+  spend: SpendProfile;
+  audit: any;
+}) {
+  // 1. Safety Guard: If audit is missing or still loading, show a placeholder
+  if (!audit || !audit.breakdown) {
+    return (
+      <div className="p-8 text-zinc-500 animate-pulse text-center">
+        Finalizing Audit Trace...
+      </div>
+    );
+  }
+
+  const categories = [
+    {
+      label: "Dining & Food",
+      monthly: spend.food,
+      rate: Math.max(card.swiggyRate, card.baseRewardRate),
+      icon: <Utensils className="w-3 h-3" />,
+      searchKey: "Dining", // Internal key used by your engine
+    },
+    {
+      label: "Online Shopping",
+      monthly: spend.shopping,
+      rate: Math.max(card.amazonRate, card.baseRewardRate),
+      icon: <ShoppingCart className="w-3 h-3" />,
+      searchKey: "Shopping",
+    },
+    {
+      label: "Travel & Stays",
+      monthly: spend.travel,
+      rate: Math.max(card.flightRate, card.hotelRate, card.baseRewardRate),
+      icon: <Plane className="w-3 h-3" />,
+      searchKey: "Travel",
+    },
+    {
+      label: "Other Spends",
+      monthly: spend.utilities + spend.fuel + spend.other,
+      rate: card.baseRewardRate,
+      icon: <Wallet className="w-3 h-3" />,
+      searchKey: "Other",
+    },
+  ];
+
+  return (
+    <div className="space-y-4 bg-zinc-900/40 p-8 rounded-[2.5rem] border border-white/5">
+      {categories.map((cat, i) => {
+        // 2. Logic: Look for the value in audit.breakdown using a partial match
+        const auditItem = audit.breakdown.find(
+          (b: any) =>
+            // Ensure the label matches but EXCLUDE the line that contains "Perks"
+            (b.label.includes(cat.searchKey) || cat.label.includes(b.label)) &&
+            !b.label.toLowerCase().includes("perks"),
+        );
+
+        // 3. Fallback: If the engine hasn't calculated this line, calculate gross yield
+        const annualGross = (cat.monthly * 12 * cat.rate) / 100;
+        const realizedValue = auditItem ? auditItem.value : annualGross;
+
+        // 4. Cap Detection: If the realized value is less than gross, it's capped
+        const isCapped =
+          Math.round(realizedValue) < Math.round(annualGross) &&
+          realizedValue !== 0;
+
+        return (
+          <div
+            key={i}
+            className="flex justify-between items-center border-b border-white/5 pb-4 last:border-0 last:pb-0"
+          >
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-zinc-500">{cat.icon}</span>
+                <p className="text-sm font-semibold text-zinc-200">
+                  {cat.label}
+                </p>
+              </div>
+              <p className="text-[10px] text-zinc-500 font-mono uppercase tracking-tighter">
+                ₹{(cat.monthly * 12).toLocaleString()} @ {cat.rate}% Yield
+              </p>
+            </div>
+            <div className="text-right">
+              <p
+                className={`text-sm font-bold ${isCapped ? "text-amber-500" : "text-white"}`}
+              >
+                ₹{Math.round(realizedValue).toLocaleString()}
+                {isCapped && (
+                  <span className="text-[8px] ml-1 font-black opacity-80 underline decoration-amber-500/30">
+                    CAPPED
+                  </span>
+                )}
+              </p>
+              <p className="text-[9px] text-zinc-600 font-mono">
+                Realized Value
+              </p>
+            </div>
+          </div>
+        );
+      })}
+
+      {/* 5. Logic: Only show cap alert if the card actually has limits */}
+      {card.monthlyRewardCap !== "No Cap" && (
+        <div className="mt-4 p-4 bg-amber-500/5 border border-amber-500/10 rounded-2xl flex items-start gap-3">
+          <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+          <p className="text-[10px] text-amber-200/60 leading-normal font-medium">
+            Cap Alert: This card limits monthly rewards. The audit trace above
+            has been adjusted for these limits.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AcceleratorBox({
+  icon,
+  label,
+  val,
+  active,
+  isRisk,
+}: {
+  icon: any;
+  label: string;
+  val: string;
+  active: boolean;
+  isRisk?: boolean;
+}) {
   return (
     <div
-      className={`flex justify-between items-center p-4 rounded-2xl transition-all ${highlight ? "bg-gold/10 border border-gold/20 shadow-[0_0_15px_rgba(212,175,55,0.1)]" : "bg-white/5 border border-transparent"}`}
+      className={`p-6 rounded-3xl border transition-all ${active ? "bg-amber-500/10 border-amber-500/30 shadow-xl" : isRisk ? "bg-red-500/5 border-red-500/10 opacity-60" : "bg-zinc-900/50 border-white/5"}`}
     >
-      <div className="flex items-center gap-4">
-        <span className={highlight ? "text-gold" : "text-zinc-500"}>
-          {icon}
-        </span>
-        <span className="text-sm font-medium text-zinc-300">{label}</span>
-      </div>
-      <span
-        className={`text-sm font-black ${highlight ? "text-white" : "text-zinc-400"}`}
+      <div
+        className={`mb-4 ${active ? "text-amber-500 scale-110" : isRisk ? "text-red-400" : "text-zinc-500"}`}
       >
-        {value}
-      </span>
+        {icon}
+      </div>
+      <p className="text-[9px] uppercase font-black text-zinc-500 mb-1 tracking-widest">
+        {label}
+      </p>
+      <p
+        className={`text-base font-bold font-mono ${active ? "text-amber-500" : isRisk ? "text-red-400" : "text-white"}`}
+      >
+        {val || "N/A"}
+      </p>
+    </div>
+  );
+}
+
+function SpendInput({
+  label,
+  icon,
+  value,
+  onChange,
+}: {
+  label: string;
+  icon: any;
+  value: number;
+  onChange: (v: number) => void;
+}) {
+  return (
+    <div className="bg-zinc-900/60 border border-white/5 p-4 rounded-2xl space-y-2">
+      <div className="flex items-center gap-2 text-zinc-400 text-[10px] font-black uppercase tracking-widest">
+        {icon}
+        {label}
+      </div>
+      <Input
+        type="number"
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value) || 0)}
+        className="bg-transparent border-white/10 text-white font-mono"
+      />
+    </div>
+  );
+}
+// Place this at the end of your file with other sub-components
+function CardAuditTrace({ audit }: { audit: any }) {
+  if (!audit) return null;
+
+  return (
+    <div className="space-y-4 p-8 bg-zinc-900/60 rounded-[2.5rem] border border-white/5 backdrop-blur-md">
+      <div className="flex justify-between items-center mb-2">
+        <h4 className="text-[10px] uppercase tracking-[0.4em] text-zinc-500 font-black">
+          2026 Audit Trace
+        </h4>
+        <div className="flex items-center gap-1.5">
+          <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+          <span className="text-[9px] text-zinc-600 font-mono uppercase font-bold">
+            Standardized Yield
+          </span>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        {audit.breakdown.map((item: any, idx: number) => (
+          <div
+            key={idx}
+            className="flex justify-between items-center border-b border-white/[0.03] pb-3 last:border-0"
+          >
+            <span className="text-sm text-zinc-400 font-medium">
+              {item.label}
+            </span>
+            <span
+              className={
+                item.plus
+                  ? "text-emerald-400 font-mono font-bold"
+                  : "text-rose-400 font-mono font-bold"
+              }
+            >
+              {item.plus ? "+" : "-"} ₹{Math.abs(item.value).toLocaleString()}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex flex-wrap gap-2 pt-2">
+        {audit.feeWaived && (
+          <div className="py-1.5 px-3 bg-emerald-500/10 text-emerald-500 text-[9px] font-black rounded-xl border border-emerald-500/20 uppercase tracking-tight">
+            ✓ Fee Waiver Unlocked
+          </div>
+        )}
+        {audit.netValue > 0 && (
+          <div className="py-1.5 px-3 bg-amber-500/10 text-amber-500 text-[9px] font-black rounded-xl border border-amber-500/20 uppercase tracking-tight">
+            ✓ Positive ROI
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+function RewardChart({ audit }: { audit: any }) {
+  const data = audit.breakdown
+    .filter((i: any) => i.plus)
+    .map((i: any) => ({
+      name: i.label,
+      value: i.value,
+    }));
+
+  return (
+    <div className="h-64">
+      <ResponsiveContainer>
+        <PieChart>
+          <Pie data={data} dataKey="value" outerRadius={100} innerRadius={50}>
+            {data.map((_: any, i: number) => (
+              <Cell key={i} />
+            ))}
+          </Pie>
+          <Tooltip />
+        </PieChart>
+      </ResponsiveContainer>
     </div>
   );
 }

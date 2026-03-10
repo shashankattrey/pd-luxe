@@ -6,7 +6,6 @@ import {
   Bot,
   Sparkles,
   ArrowRight,
-  CreditCard,
   Plane,
   ShoppingBag,
   Utensils,
@@ -18,8 +17,10 @@ import {
   Globe,
   IndianRupee,
 } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
 import {
   creditCards,
   calculateInDepthSavings,
@@ -51,161 +52,163 @@ const priorityOptions = [
 
 export default function AIAdvisorPage() {
   const [step, setStep] = useState<Step>("income");
+
   const [profile, setProfile] = useState<UserProfile>({
     income: 0,
     monthlySpend: 0,
     categories: [],
     priorities: [],
   });
+
   const [recommendations, setRecommendations] = useState<CardType[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+  /* -----------------------------
+     STEP 1
+  ------------------------------ */
 
   const handleIncomeSubmit = (income: number) => {
     setProfile((prev) => ({ ...prev, income }));
     setStep("spending");
   };
 
+  /* -----------------------------
+     STEP 2
+  ------------------------------ */
+
   const handleSpendingSubmit = (monthlySpend: number, categories: string[]) => {
     setProfile((prev) => ({ ...prev, monthlySpend, categories }));
     setStep("priorities");
   };
 
+  /* -----------------------------
+     STEP 3 (AI ENGINE)
+  ------------------------------ */
+
   const handlePrioritiesSubmit = async (priorities: string[]) => {
-    setProfile((prev) => ({ ...prev, priorities }));
+    const updatedProfile = { ...profile, priorities };
+    setProfile(updatedProfile);
     setIsAnalyzing(true);
 
-    // Simulate Deep Market Scan for 2026 variables
-    await new Promise((resolve) => setTimeout(resolve, 2200));
+    try {
+      const response = await fetch("https://advisor.paisadekho.com/api", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedProfile),
+      });
 
-    const annualSpend = profile.monthlySpend * 12;
+      if (!response.ok) throw new Error("Network response was not ok");
 
-    const scoredCards = creditCards.map((card) => {
-      let score = 0;
-      const isTravelHeavy = profile.categories.includes("travel");
+      // READ ONCE ONLY
+      const data = await response.json();
+      const aiCards = data?.reply?.cards || [];
 
-      // Use the deep auditor engine
-      const audit = calculateInDepthSavings(card, annualSpend);
+      // Improved matching: Check if AI name is inside local card name
+      const matchedCards = creditCards.filter((localCard) =>
+        aiCards.some(
+          (ai: any) =>
+            localCard.name.toLowerCase().includes(ai.name.toLowerCase()) ||
+            ai.name.toLowerCase().includes(localCard.name.toLowerCase()),
+        ),
+      );
 
-      // 1. Profitability (Primary Weight)
-      // 1 point per ₹500 of net profit after GST/Redemption fees
-      score += audit.netValue / 500;
-
-      // 2. Priority Alignment
-      if (priorities.includes("rewards")) score += Number(audit.yield) * 10;
-      if (priorities.includes("lounge")) {
-        score += card.loungeCap
-          ? card.loungeCap === -1
-            ? 80
-            : card.loungeCap * 8
-          : 0;
-      }
-      if (priorities.includes("forex")) {
-        // High score boost for low markup cards (e.g., 0% or 1%)
-        score += (4 - card.forexMarkup) * 25;
-      }
-      if (priorities.includes("no-fee")) {
-        if (card.isLtf) score += 100;
-        else if (annualSpend >= card.retentionSpendReq) score += 60;
-      }
-
-      // 3. Category & Tier Optimization
-      if (isTravelHeavy && card.category === "Travel") score += 50;
-      if (profile.income >= 3000000 && card.cardTier === "Ultra") score += 60;
-      if (profile.income < 1000000 && card.cardTier === "Ultra") score -= 200; // Income eligibility filter
-
-      // 4. 2026 Policy Shield (The "PaisaDekho" Logic)
-      // Heavily penalize cards with confirmed 2026 devaluations
-      if (card.devaluation2026) score -= 50;
-
-      return { card, score };
-    });
-
-    const topCards = scoredCards
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 3)
-      .map(({ card }) => card);
-
-    setRecommendations(topCards);
-    setIsAnalyzing(false);
-    setStep("results");
+      setRecommendations(matchedCards);
+    } catch (err) {
+      console.error("AI advisor error:", err);
+      setRecommendations([]); // Fallback to empty
+    } finally {
+      setIsAnalyzing(false);
+      setStep("results");
+    }
   };
 
   const resetAdvisor = () => {
     setStep("income");
-    setProfile({ income: 0, monthlySpend: 0, categories: [], priorities: [] });
+    setProfile({
+      income: 0,
+      monthlySpend: 0,
+      categories: [],
+      priorities: [],
+    });
     setRecommendations([]);
   };
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12 min-h-screen">
+      {/* HEADER */}
+
       <div className="text-center mb-12">
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          className="w-20 h-20 rounded-[2rem] bg-gold/10 border border-gold/20 flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(212,175,55,0.1)]"
+          className="w-20 h-20 rounded-[2rem] bg-gold/10 border border-gold/20 flex items-center justify-center mx-auto mb-6"
         >
           <Bot className="w-10 h-10 text-gold" />
         </motion.div>
-        <h1 className="font-serif text-4xl font-bold text-foreground mb-3">
-          AI Card Advisor
-        </h1>
-        <p className="text-muted-foreground max-w-xl mx-auto text-lg leading-relaxed">
-          The engine audits fee structures, GST, and 2026 policy shifts to
+
+        <h1 className="font-serif text-4xl font-bold mb-3">AI Card Advisor</h1>
+
+        <p className="text-muted-foreground">
+          The PaisaDekho engine audits rewards, GST and card policies to
           optimize your wallet.
         </p>
       </div>
 
-      {/* Stepper UI */}
+      {/* STEPPER */}
+
       <div className="flex items-center justify-center gap-3 mb-16">
         {(["income", "spending", "priorities", "results"] as Step[]).map(
           (s, i) => (
             <div key={s} className="flex items-center gap-3">
               <div
-                className={`w-12 h-12 rounded-2xl flex items-center justify-center text-sm font-bold transition-all duration-500 ${
+                className={`w-12 h-12 rounded-2xl flex items-center justify-center text-sm font-bold
+                ${
                   step === s
-                    ? "bg-gold text-black scale-110 shadow-lg shadow-gold/20"
+                    ? "bg-gold text-black"
                     : ["income", "spending", "priorities", "results"].indexOf(
                           step,
                         ) > i
                       ? "bg-gold/20 text-gold"
-                      : "bg-muted/50 text-muted-foreground"
+                      : "bg-muted/50"
                 }`}
               >
                 {["income", "spending", "priorities", "results"].indexOf(step) >
                 i ? (
-                  <CheckCircle2 className="w-6 h-6" />
+                  <CheckCircle2 className="w-5 h-5" />
                 ) : (
                   i + 1
                 )}
               </div>
-              {i < 3 && (
-                <div
-                  className={`w-12 h-[2px] rounded-full ${["income", "spending", "priorities", "results"].indexOf(step) > i ? "bg-gold/40" : "bg-muted"}`}
-                />
-              )}
+
+              {i < 3 && <div className="w-12 h-[2px] bg-muted rounded-full" />}
             </div>
           ),
         )}
       </div>
 
+      {/* STEP CONTENT */}
+
       <AnimatePresence mode="wait">
         {step === "income" && <IncomeStep onSubmit={handleIncomeSubmit} />}
+
         {step === "spending" && (
           <SpendingStep
             onSubmit={handleSpendingSubmit}
             onBack={() => setStep("income")}
           />
         )}
+
         {step === "priorities" && (
           <PrioritiesStep
             onSubmit={handlePrioritiesSubmit}
             onBack={() => setStep("spending")}
           />
         )}
+
         {step === "results" && (
           <ResultsStep
-            recommendations={recommendations}
             profile={profile}
+            recommendations={recommendations}
             isAnalyzing={isAnalyzing}
             onReset={resetAdvisor}
           />
@@ -215,287 +218,254 @@ export default function AIAdvisorPage() {
   );
 }
 
-// Result View with Deep Analytics
+/* -----------------------------
+   RESULTS STEP
+------------------------------ */
+
 function ResultsStep({ recommendations, profile, isAnalyzing, onReset }: any) {
   const annualSpend = profile.monthlySpend * 12;
 
   if (isAnalyzing) {
     return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="glass-gold rounded-[2.5rem] p-20 text-center border-gold/10"
-      >
+      <div className="text-center py-20">
         <motion.div
           animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          className="w-24 h-24 rounded-full border-[3px] border-gold/5 border-t-gold mx-auto mb-10"
+          transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+          className="w-20 h-20 border-4 border-gold border-t-transparent rounded-full mx-auto mb-6"
         />
-        <h2 className="font-serif text-3xl font-bold text-foreground mb-4">
-          Analyzing 2026 Market Data
-        </h2>
-        <p className="text-muted-foreground max-w-xs mx-auto text-sm italic">
-          Simulating net profit after 18% GST and redemption leakage...
-        </p>
-      </motion.div>
+
+        <h2 className="text-2xl font-bold">Running Deep Market Simulation</h2>
+      </div>
     );
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="space-y-10"
-    >
+    <div className="space-y-10">
       <div className="text-center">
-        <h2 className="font-serif text-3xl font-bold text-foreground">
-          Top Card Pairings
-        </h2>
-        <p className="text-muted-foreground mt-2">
-          Recommended Strategy for your Profile
-        </p>
+        <h2 className="text-3xl font-bold">Your Optimized Wallet Strategy</h2>
       </div>
 
       {recommendations.map((card: CardType, index: number) => {
-        const audit = calculateInDepthSavings(card, annualSpend);
+        const annualSpend = profile.monthlySpend * 12;
+
+        const spendProfile = {
+          dining: profile.categories.includes("dining")
+            ? annualSpend * 0.25
+            : 0,
+          travel: profile.categories.includes("travel")
+            ? annualSpend * 0.25
+            : 0,
+          shopping: profile.categories.includes("shopping")
+            ? annualSpend * 0.25
+            : 0,
+          fuel: profile.categories.includes("fuel") ? annualSpend * 0.15 : 0,
+          other: annualSpend * 0.1,
+        };
+
+        const audit = calculateInDepthSavings(card, spendProfile as any);
+
         return (
-          <motion.div
-            key={card.id}
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.2 }}
-            className="glass-gold rounded-[2rem] overflow-hidden border-gold/10 hover:border-gold/30 transition-all duration-500"
-          >
-            <div className="flex flex-col lg:flex-row">
-              <div
-                className={`relative lg:w-80 h-56 bg-gradient-to-br ${card.imageGradient} p-10 flex flex-col justify-between`}
-              >
-                <div className="flex justify-between items-start">
-                  <div className="w-14 h-14 rounded-2xl bg-black/20 backdrop-blur-md flex items-center justify-center border border-white/10 text-white font-serif text-3xl font-bold">
-                    #{index + 1}
-                  </div>
-                  {card.devaluation2026 && (
-                    <div className="px-3 py-1 bg-orange-500/20 border border-orange-500/40 rounded-full text-[10px] font-bold text-orange-400 uppercase">
-                      Risk Alert
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em] mb-1">
-                    {card.bank}
-                  </p>
-                  <p className="text-white font-serif text-2xl font-bold leading-tight">
-                    {card.name}
-                  </p>
-                </div>
+          <div key={card.id} className="border rounded-3xl p-8 bg-black/40">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <p className="text-sm text-muted-foreground">{card.bank}</p>
+
+                <h3 className="text-2xl font-bold">{card.name}</h3>
               </div>
 
-              <div className="flex-1 p-10 flex flex-col justify-between bg-black/40">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-10">
-                  <div className="max-w-sm">
-                    <h4 className="text-[10px] uppercase tracking-[0.2em] font-black text-gold mb-2">
-                      Market Verdict
-                    </h4>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      Yielding {audit.yield}% net profit on your spend.
-                      Optimized for {card.multiplierChannel} channels.
-                    </p>
-                  </div>
-                  <div className="glass-gold px-8 py-5 rounded-3xl border-gold/20 text-center">
-                    <p className="text-[10px] uppercase font-bold text-gold/60 mb-1">
-                      Net Annual Profit
-                    </p>
-                    <p
-                      className={`text-3xl font-serif font-bold ${audit.netValue >= 0 ? "text-green-400" : "text-orange-500"}`}
-                    >
-                      ₹{audit.netValue.toLocaleString()}
-                    </p>
-                  </div>
-                </div>
+              <div className="text-right">
+                <p className="text-xs text-muted-foreground">
+                  Net Annual Profit
+                </p>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 border-t border-white/5">
-                  <MiniMetric
-                    icon={<Zap className="w-4 h-4" />}
-                    label="Rewards"
-                    value={`₹${audit.grossRewards.toLocaleString()}`}
-                  />
-                  <MiniMetric
-                    icon={<IndianRupee className="w-4 h-4" />}
-                    label="Total Cost"
-                    value={`₹${((audit.effectiveFee ?? 0) + (audit.redemptionCosts ?? 0)).toLocaleString()}`}
-                  />
-                  <MiniMetric
-                    icon={<Plane className="w-4 h-4" />}
-                    label="Lounge"
-                    value={
-                      card.loungeCap === -1
-                        ? "Unlimited"
-                        : `${card.loungeCap}/yr`
-                    }
-                  />
-                  <MiniMetric
-                    icon={<Globe className="w-4 h-4" />}
-                    label="FX Markup"
-                    value={`${card.forexMarkup}%`}
-                  />
-                </div>
+                <p className="text-2xl font-bold text-green-400">
+                  ₹{audit.netValue.toLocaleString()}
+                </p>
               </div>
             </div>
-          </motion.div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <MiniMetric
+                icon={<Zap size={16} />}
+                label="Rewards"
+                value={`₹${audit.grossRewards.toLocaleString()}`}
+              />
+
+              <MiniMetric
+                icon={<IndianRupee size={16} />}
+                label="Fee Cost"
+                value={`₹${audit.outflow.toLocaleString()}`}
+              />
+
+              <MiniMetric
+                icon={<Plane size={16} />}
+                label="Lounge"
+                value={
+                  card.loungeCap === -1 ? "Unlimited" : `${card.loungeCap}/yr`
+                }
+              />
+
+              <MiniMetric
+                icon={<Globe size={16} />}
+                label="Forex"
+                value={`${card.forexMarkup}%`}
+              />
+            </div>
+          </div>
         );
       })}
 
-      <div className="flex flex-col items-center gap-4 pt-10">
-        <Button
-          onClick={onReset}
-          variant="outline"
-          className="rounded-full px-10 py-7 border-gold/20 text-gold hover:bg-gold/10 text-lg"
-        >
-          <RotateCcw className="w-5 h-5 mr-3" /> Start New Audit
+      <div className="text-center pt-10">
+        <Button onClick={onReset} variant="outline">
+          <RotateCcw className="mr-2 w-4 h-4" />
+          Start New Audit
         </Button>
       </div>
-    </motion.div>
-  );
-}
-
-// Logic components for previous steps remain as drafted in your snippet
-function MiniMetric({ icon, label, value }: any) {
-  return (
-    <div className="space-y-1">
-      <div className="flex items-center gap-2 text-gold/50">
-        {icon}
-        <span className="text-[10px] uppercase font-black tracking-widest">
-          {label}
-        </span>
-      </div>
-      <p className="text-sm font-bold text-foreground">{value}</p>
     </div>
   );
 }
 
-function IncomeStep({ onSubmit }: any) {
-  const [val, setVal] = useState("");
+/* -----------------------------
+   MINI METRIC
+------------------------------ */
+
+function MiniMetric({ icon, label, value }: any) {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="glass-gold p-12 rounded-[2.5rem] border-gold/10"
-    >
-      <h2 className="text-2xl font-serif font-bold mb-8">
-        What is your annual income?
-      </h2>
-      <Input
-        type="number"
-        value={val}
-        onChange={(e) => setVal(e.target.value)}
-        className="h-16 text-2xl bg-black/40 border-gold/20 mb-6"
-        placeholder="e.g. 2500000"
-      />
-      <Button
-        disabled={!val}
-        onClick={() => onSubmit(Number(val))}
-        className="w-full h-16 bg-gold text-black font-bold text-lg rounded-2xl"
-      >
-        Evaluate Eligibility <ArrowRight className="ml-2" />
-      </Button>
-    </motion.div>
+    <div>
+      <div className="flex items-center gap-2 text-muted-foreground text-xs">
+        {icon}
+        {label}
+      </div>
+
+      <p className="font-bold">{value}</p>
+    </div>
   );
 }
 
-function SpendingStep({ onSubmit, onBack }: any) {
-  const [val, setVal] = useState("");
-  const [cats, setCats] = useState<string[]>([]);
+/* -----------------------------
+   INCOME STEP
+------------------------------ */
+
+function IncomeStep({ onSubmit }: any) {
+  const [value, setValue] = useState("");
+
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="glass-gold p-12 rounded-[2.5rem] border-gold/10"
-    >
-      <h2 className="text-2xl font-serif font-bold mb-6">
-        Monthly Card Spending
-      </h2>
+    <div className="p-10 border rounded-3xl">
+      <h2 className="text-2xl font-bold mb-6">What is your annual income?</h2>
+
       <Input
         type="number"
-        value={val}
-        onChange={(e) => setVal(e.target.value)}
-        className="h-14 bg-black/20 border-gold/20 mb-8"
-        placeholder="e.g. 75000"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="2500000"
+        className="mb-6"
       />
-      <h3 className="text-sm font-bold uppercase tracking-widest text-gold mb-4">
-        Spend Focus
-      </h3>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+
+      <Button disabled={!value} onClick={() => onSubmit(Number(value))}>
+        Continue <ArrowRight className="ml-2" />
+      </Button>
+    </div>
+  );
+}
+
+/* -----------------------------
+   SPENDING STEP
+------------------------------ */
+
+function SpendingStep({ onSubmit, onBack }: any) {
+  const [value, setValue] = useState("");
+  const [categories, setCategories] = useState<string[]>([]);
+
+  return (
+    <div className="p-10 border rounded-3xl">
+      <h2 className="text-2xl font-bold mb-6">Monthly Spending</h2>
+
+      <Input
+        type="number"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="75000"
+        className="mb-8"
+      />
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {spendCategories.map((c) => (
           <button
             key={c.id}
             onClick={() =>
-              setCats((p) =>
-                p.includes(c.id) ? p.filter((x) => x !== c.id) : [...p, c.id],
+              setCategories((prev) =>
+                prev.includes(c.id)
+                  ? prev.filter((x) => x !== c.id)
+                  : [...prev, c.id],
               )
             }
-            className={`p-6 rounded-2xl flex flex-col items-center gap-3 border-2 transition-all ${cats.includes(c.id) ? "bg-gold/20 border-gold text-gold" : "bg-muted/30 border-transparent text-muted-foreground"}`}
+            className={`p-4 border rounded-xl ${
+              categories.includes(c.id) ? "border-gold bg-gold/10" : ""
+            }`}
           >
-            <c.icon className="w-6 h-6" />
-            <span className="text-[10px] font-bold">{c.label}</span>
+            <c.icon className="mx-auto mb-2" size={20} />
+            {c.label}
           </button>
         ))}
       </div>
+
       <div className="flex gap-4">
-        <Button variant="ghost" onClick={onBack} className="flex-1 h-14">
+        <Button variant="ghost" onClick={onBack}>
           Back
         </Button>
+
         <Button
-          disabled={!val}
-          onClick={() => onSubmit(Number(val), cats)}
-          className="flex-[2] h-14 bg-gold text-black font-bold"
+          disabled={!value}
+          onClick={() => onSubmit(Number(value), categories)}
         >
-          Next
+          Continue
         </Button>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
+/* -----------------------------
+   PRIORITIES STEP
+------------------------------ */
+
 function PrioritiesStep({ onSubmit, onBack }: any) {
-  const [pri, setPri] = useState<string[]>([]);
+  const [priorities, setPriorities] = useState<string[]>([]);
+
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="glass-gold p-12 rounded-[2.5rem] border-gold/10"
-    >
-      <h2 className="text-2xl font-serif font-bold mb-8 text-center">
-        Your Rewards Priority
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+    <div className="p-10 border rounded-3xl">
+      <h2 className="text-2xl font-bold mb-8">Select your priorities</h2>
+
+      <div className="grid md:grid-cols-2 gap-4 mb-8">
         {priorityOptions.map((p) => (
           <button
             key={p.id}
             onClick={() =>
-              setPri((x) =>
-                x.includes(p.id) ? x.filter((y) => y !== p.id) : [...x, p.id],
+              setPriorities((prev) =>
+                prev.includes(p.id)
+                  ? prev.filter((x) => x !== p.id)
+                  : [...prev, p.id],
               )
             }
-            className={`p-6 rounded-2xl flex items-center justify-between border-2 transition-all ${pri.includes(p.id) ? "bg-gold/20 border-gold text-gold" : "bg-muted/30 border-transparent text-muted-foreground"}`}
+            className={`p-5 border rounded-xl flex items-center gap-3 ${
+              priorities.includes(p.id) ? "border-gold bg-gold/10" : ""
+            }`}
           >
-            <div className="flex items-center gap-4">
-              <p.icon className="w-5 h-5" />
-              <span className="font-bold text-sm">{p.label}</span>
-            </div>
+            <p.icon size={18} />
+            {p.label}
           </button>
         ))}
       </div>
+
       <div className="flex gap-4">
-        <Button variant="ghost" onClick={onBack} className="flex-1 h-14">
+        <Button variant="ghost" onClick={onBack}>
           Back
         </Button>
-        <Button
-          onClick={() => onSubmit(pri)}
-          className="flex-[2] h-14 bg-gold text-black font-bold"
-        >
-          Run Simulation <Sparkles className="ml-2 w-4 h-4" />
+
+        <Button onClick={() => onSubmit(priorities)}>
+          Run Simulation <Sparkles className="ml-2" />
         </Button>
       </div>
-    </motion.div>
+    </div>
   );
 }
