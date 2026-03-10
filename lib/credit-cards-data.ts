@@ -25,7 +25,20 @@ export interface CreditCard {
   rewardUnit: string;
   travelMultiplier: number;
   renewalWaiverLimit?: number;
+  relianceRate: number;
+  meeshoRate: number;
+  ajioRate: number;
+  cromaRate: number;
+  groceryRate: number;
+  diningRate: number;
+  flipkartMethod: string; // Added for completeness
+  relianceMethod: string; // Added for completeness
+  pointsRedemptionValueTravel: number; // Value in INR (e.g. 1.0 or 0.25)
 
+  // 2026 Specific Yields
+  emiratesSuitability: number;
+  atlasFlightPct: number;
+  sbiCashbackFlightPct: number;
   // Fees & Retention
   joiningFee: number;
   annualFee: number;
@@ -314,7 +327,12 @@ export const creditCards: CreditCard[] = (rawCards as any[]).map((c, index) => {
     pointValue: cleanNumber(c.point_value) || 1,
     rewardUnit: c.reward_unit || "Points",
     travelMultiplier: cleanNumber(c.travel_multiplier),
+    flipkartMethod: c.flipkart_method || "Direct",
+    relianceMethod: c.reliance_method || "Direct",
 
+    emiratesSuitability: cleanNumber(c.emirates_suitability),
+    atlasFlightPct: cleanNumber(c.atlas_flight_pct),
+    sbiCashbackFlightPct: cleanNumber(c.sbi_cashback_flight_pct),
     // 🚀 NEW: Platform Accelerators (The "Infinia" special)
     swiggyRate: cleanNumber(c.swiggy_rate) || 0,
     zomatoRate: cleanNumber(c.zomato_rate) || 0,
@@ -323,6 +341,21 @@ export const creditCards: CreditCard[] = (rawCards as any[]).map((c, index) => {
     hotelRate: cleanNumber(c.hotel_rate) || 0,
     flightRate: cleanNumber(c.flight_rate) || 0,
     utilityRate: cleanNumber(c.utility_rate) || 0,
+    renewalWaiverLimit: parseLakhs(c.retention_spend_req), // <-- add this
+    relianceRate: cleanNumber(c.reliance_digital_benefit_pct),
+    meeshoRate: cleanNumber(c.meesho_benefit_pct),
+    ajioRate: cleanNumber(c.ajio_benefit_pct) || 0, // Fallback to 0 if missing
+    cromaRate: cleanNumber(c.croma_benefit_pct),
+    groceryRate: cleanNumber(c.grocery_rate),
+    diningRate: cleanNumber(c.dining_rate),
+
+    // Airline Transfer String Parsing
+    airlineTransferJson:
+      typeof c.airline_transfer_json === "string"
+        ? JSON.parse(c.airline_transfer_json)
+        : c.airline_transfer_json || {},
+
+    pointsRedemptionValueTravel: cleanNumber(c.points_redemption_value_travel),
 
     // Fees & Joining
     joiningFee: cleanNumber(c.joining_fee),
@@ -356,7 +389,6 @@ export const creditCards: CreditCard[] = (rawCards as any[]).map((c, index) => {
     imageGradient: bankGradients[c.issuer] || "from-zinc-800 to-zinc-950",
 
     // JSON Data
-    airlineTransferJson: c.airline_transfer_json || {},
     hotelTransferJson: c.hotel_transfer_json || {},
     detailedRewardsJson: c.detailed_rewards_json || {},
     rentRate: cleanNumber(c.rent_rate),

@@ -23,6 +23,7 @@ import {
   Wallet,
   CheckCircle2,
   Building2,
+  IndianRupee,
 } from "lucide-react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
@@ -83,7 +84,7 @@ export default function CardVaultPage() {
 
   return (
     <div className="bg-zinc-950 text-white min-h-screen selection:bg-amber-500/30">
-      <div className="space-y-10 max-w-[1600px] mx-auto px-4 md:px-8 py-12">
+      <div className="space-y-10 max-w-7xl mx-auto px-4 md:px-8 py-12">
         {/* --- HEADER --- */}
         <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-8 border-b border-white/5 pb-10">
           <div className="space-y-4">
@@ -120,12 +121,7 @@ export default function CardVaultPage() {
         </div>
 
         {/* --- SPEND CONTROLS --- */}
-        <div
-          className="grid grid-cols-2
-sm:grid-cols-3
-lg:grid-cols-4
-xl:grid-cols-7 gap-4 bg-white/5 p-6 rounded-3xl border border-white/10"
-        >
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 bg-zinc-900/40 p-5 rounded-2xl border border-white/10">
           <SpendInput
             label="Food"
             icon={<Utensils />}
@@ -172,7 +168,7 @@ xl:grid-cols-7 gap-4 bg-white/5 p-6 rounded-3xl border border-white/10"
 
         {/* --- SEARCH --- */}
         <div className="flex flex-col md:flex-row gap-4 sticky top-6 z-40">
-          <div className="relative flex-1 group">
+          <div className="relative flex-1 max-w-xl group">
             <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500 group-focus-within:text-amber-500" />
             <Input
               placeholder="Search Amazon, Zomato, Air India, or 'LTF'..."
@@ -192,7 +188,7 @@ xl:grid-cols-7 gap-4 bg-white/5 p-6 rounded-3xl border border-white/10"
         </div>
 
         {/* --- GRID --- */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {filteredCards.map((card, idx) => (
             <CardTile
               key={card.id}
@@ -242,7 +238,7 @@ function CardTile({
     >
       <div className="relative h-full flex flex-col bg-zinc-900/40 border border-white/5 rounded-[2.5rem] overflow-hidden group-hover:border-amber-500/30 transition-all shadow-2xl">
         <div
-          className={`h-40 p-7 bg-gradient-to-br ${card.imageGradient} relative`}
+          className={`h-32 p-5 bg-gradient-to-br ${card.imageGradient} relative`}
         >
           <div className="absolute top-0 right-0 p-6">
             <div
@@ -306,6 +302,7 @@ function CardDetailModal({
   onClose: () => void;
 }) {
   const audit = calculateInDepthSavings(card, spend);
+  console.log("Card:", card.name, "Fee Waiver Limit:", card.renewalWaiverLimit);
 
   return (
     <>
@@ -322,16 +319,14 @@ function CardDetailModal({
       <motion.div
         className="
         fixed inset-0 
-        md:inset-4 
-        xl:inset-12 
+        lg:inset-6
+        2xl:inset-10
         z-[110]
         bg-zinc-950
         border border-white/10
-        rounded-none md:rounded-[2rem] xl:rounded-[3rem]
+        rounded-none lg:rounded-3xl
         overflow-y-auto
-        flex flex-col xl:flex-row
-        shadow-[0_0_100px_rgba(0,0,0,1)]
-        overscroll-contain
+        flex flex-col lg:flex-row
         "
         initial={{ opacity: 0, scale: 0.9, y: 40 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -340,8 +335,7 @@ function CardDetailModal({
         {/* --- LEFT SIDEBAR: Branding & Key Identity --- */}
         <div
           className={`w-full
-xl:w-[420px]
-2xl:w-[460px] shrink-0 bg-gradient-to-br ${card.imageGradient} 
+lg:w-[360px] shrink-0 bg-zinc-950
   p-8 md:p-14 flex flex-col justify-between text-white relative 
   min-h-[300px] md:min-h-[420px]`}
         >
@@ -388,6 +382,55 @@ xl:w-[420px]
               </p>
             </div>
           </div>
+          <div className="space-y-8">
+            <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-zinc-500">
+              Aviation & Transfer Hub
+            </h4>
+            <div className="bg-zinc-900/40 p-8 rounded-[2.5rem] border border-white/5 space-y-6">
+              <div className="flex justify-between items-end">
+                <div>
+                  <p className="text-[10px] text-zinc-500 font-black uppercase tracking-widest mb-1">
+                    Travel Redemption
+                  </p>
+                  <p className="text-3xl font-bold font-mono text-emerald-400">
+                    ₹{card.pointsRedemptionValueTravel || card.pointValue}
+                  </p>
+                  <p className="text-[9px] text-zinc-600 font-bold uppercase mt-1">
+                    Value per Point on Flights
+                  </p>
+                </div>
+                <div className="text-right">
+                  <Plane className="w-8 h-8 text-zinc-800 mb-2 ml-auto" />
+                  <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-bold border border-emerald-500/20">
+                    Top Partner Ratio
+                  </span>
+                </div>
+              </div>
+
+              <div className="h-px bg-white/5 w-full" />
+
+              <div className="space-y-4">
+                {Object.entries(card.airlineTransferJson)
+                  .slice(0, 3)
+                  .map(([partner, ratio]) => (
+                    <div
+                      key={partner}
+                      className="flex justify-between items-center"
+                    >
+                      <span className="text-sm text-zinc-400">{partner}</span>
+                      <span className="font-mono font-bold text-zinc-100">
+                        {ratio}
+                      </span>
+                    </div>
+                  ))}
+                {Object.keys(card.airlineTransferJson).length === 0 && (
+                  <p className="text-xs text-zinc-600 italic">
+                    No direct airline transfer partners detected.
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
 
           {/* 3. Detailed Logistics (NEW SECTION) */}
           <section className="space-y-8 border-t border-white/5 pt-16">
@@ -396,7 +439,7 @@ xl:w-[420px]
             </h4>
 
             <div className="p-8 bg-zinc-900/40 border border-white/5 rounded-[2rem] flex flex-col lg:flex-row justify-between items-center">
-              <p className="text-[10px] uppercase font-black text-amber-500 mb-4 lg:mb-0 tracking-widest">
+              <p className="text-[14px] uppercase font-black text-amber-500 mb-4 lg:mb-0 tracking-widest">
                 Fee Structure
               </p>
               <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center">
@@ -407,40 +450,30 @@ xl:w-[420px]
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-xs text-zinc-500">Annual</span>
+                  <span className="text-base text-zinc-500">Annual</span>
                   <span className="font-mono font-bold">₹{card.annualFee}</span>
                 </div>
-                {card.renewalWaiverLimit && (
-                  <div className="flex flex-col">
-                    <span className="text-xs text-zinc-500">
-                      Spend for Waiver
-                    </span>
-                    <span className="font-mono font-bold text-emerald-400">
-                      ₹{(card.renewalWaiverLimit / 100000).toFixed(1)}L
-                    </span>
-                  </div>
-                )}
               </div>
             </div>
             <div className="p-8 bg-zinc-900/40 border border-white/5 rounded-[2rem] flex flex-col lg:flex-row justify-between items-start lg:items-center">
-              <p className="text-[10px] uppercase font-black text-amber-500 mb-4 lg:mb-0 tracking-widest">
+              <p className="text-[14px] uppercase font-black text-amber-500 mb-4 lg:mb-0 tracking-widest">
                 Perks Audit
               </p>
               <div className="flex flex-col lg:flex-row gap-6">
                 <div className="flex flex-col">
-                  <span className="text-[9px] text-zinc-500 uppercase font-bold">
+                  <span className="text-[12px] text-zinc-500 uppercase font-bold">
                     Joining Benefit
                   </span>
-                  <span className="text-xs font-medium text-zinc-200 mt-1">
+                  <span className="text-base font-medium text-zinc-200 mt-1">
                     {card.joiningBenefit || "N/A"}
                   </span>
                 </div>
                 {card.milestoneBenefit && (
                   <div className="flex flex-col">
-                    <span className="text-[9px] text-zinc-500 uppercase font-bold">
+                    <span className="text-[12px] text-zinc-500 uppercase font-bold">
                       Milestones
                     </span>
-                    <span className="text-xs font-medium text-amber-500 mt-1">
+                    <span className="text-base font-medium text-amber-500 mt-1">
                       {card.milestoneBenefit}
                     </span>
                   </div>
@@ -452,15 +485,15 @@ xl:w-[420px]
 
         {/* --- RIGHT CONTENT: The Deep Audit --- */}
 
-        <div className="flex-1 p-6 md:p-10 xl:p-16 bg-zinc-950">
-          <div className="max-w-5xl mx-auto space-y-20">
+        <div className="flex-1 p-6 md:p-10 xl:p-12 bg-zinc-950">
+          <div className="max-w-4xl mx-auto space-y-12">
             {/* 1. Platform Performance Grid */}
             <section className="space-y-8">
               <h4 className="flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.4em] text-zinc-500">
                 <Sparkles className="w-5 h-5 text-amber-500" />
                 Platform Accelerators
               </h4>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                 <AcceleratorBox
                   icon={<ShoppingCart />}
                   label="Amazon/FK"
@@ -536,6 +569,20 @@ xl:w-[420px]
                       Projected Annual Net Profit
                     </p>
                   </div>
+
+                  {/* --- Quick Audit Status --- */}
+                </div>
+                <div className="flex items-center gap-4 mt-6">
+                  {card.renewalWaiverLimit && (
+                    <div className="flex items-center gap-2 bg-green-500/20 text-green-400 px-3 py-1.5 rounded-full font-bold text-sm border border-green-400/30">
+                      ✓ Fee Waiver Unlocked
+                    </div>
+                  )}
+                  {audit.netValue > 0 && (
+                    <div className="flex items-center gap-2 bg-amber-500/20 text-amber-500 px-3 py-1.5 rounded-full font-bold text-sm border border-amber-500/30">
+                      ✓ Positive ROI
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -545,12 +592,28 @@ xl:w-[420px]
                   Points Accrual Trace
                 </h4>
                 <PlatformBreakdown card={card} spend={spend} audit={audit} />
+                {audit.travelValue > 0 && (
+                  <div className="flex justify-between items-center border-b border-white/[0.03] pb-3">
+                    <div className="flex flex-col">
+                      <span className="text-sm text-zinc-300 font-medium">
+                        Travel Perks & Forex
+                      </span>
+                      <span className="text-[9px] text-emerald-500 font-bold uppercase">
+                        Zero Markup Savings
+                      </span>
+                    </div>
+                    <span className="text-emerald-400 font-mono font-bold text-lg">
+                      + ₹{audit.travelValue.toLocaleString()}
+                    </span>
+                  </div>
+                )}
 
                 <div className="space-y-6 pt-4">
                   <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-zinc-500">
                     Logistics & Limits
                   </h4>
-                  <div className="grid grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {/* Domestic Lounge */}
                     <div className="bg-zinc-900 p-8 rounded-[2rem] border border-white/5">
                       <p className="text-[10px] text-zinc-500 uppercase font-black mb-2">
                         Domestic Lounge
@@ -559,6 +622,8 @@ xl:w-[420px]
                         {card.domesticLounge}
                       </p>
                     </div>
+
+                    {/* Forex Markup */}
                     <div className="bg-zinc-900 p-8 rounded-[2rem] border border-white/5">
                       <p className="text-[10px] text-zinc-500 uppercase font-black mb-2">
                         Forex Markup
@@ -567,8 +632,83 @@ xl:w-[420px]
                         {card.forexMarkup}%
                       </p>
                     </div>
+
+                    {/* Fuel Surcharge Waiver - UI ONLY */}
+                  </div>
+                  <div className="bg-zinc-900/50 p-6 rounded-[2rem] border border-white/5 mt-6 mb-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                          <IndianRupee className="w-5 h-5 text-emerald-500" />
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-zinc-500 uppercase font-black tracking-widest">
+                            Exchange Rate
+                          </p>
+                          <p className="text-xs text-zinc-400">
+                            1 {card.rewardUnit} = ₹{card.pointValue}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="text-right">
+                        <p className="text-3xl font-bold font-mono text-emerald-400">
+                          ₹{(card.pointValue * 1000).toLocaleString("en-IN")}
+                        </p>
+                        <p className="text-[9px] text-zinc-600 font-black uppercase">
+                          Value per 1,000 Pts
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-zinc-900 p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group">
+                    {/* Icon with subtle glow */}
+                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity">
+                      <Fuel className="w-10 h-10 text-orange-500" />
+                    </div>
+
+                    <p className="text-[10px] text-zinc-500 uppercase font-black mb-3 tracking-widest">
+                      Fuel Benefits
+                    </p>
+
+                    <div className="space-y-4">
+                      {/* Part A: The Waiver (Savings) */}
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="px-1.5 py-0.5 rounded-md bg-orange-500/10 border border-orange-500/20 text-[8px] font-black text-orange-500 uppercase">
+                            FUEL REWARDS
+                          </span>
+                        </div>
+                        <p className="text-2xl font-bold font-mono text-zinc-200">
+                          {card.fuelRewardRate || "0"}
+                          {"% "}
+                          <span className="text-xs text-zinc-500 font-sans uppercase">
+                            Rewards
+                          </span>
+                        </p>
+                        {/* <p className="text-[9px] text-zinc-600 font-bold uppercase mt-1">
+                          Effective: ₹{card.rewardValue || "0.50"} per point
+                        </p> */}
+                      </div>
+
+                      <div className="h-px bg-white/5 w-full" />
+                      <div>
+                        <p className="text-3xl font-bold font-mono text-emerald-400">
+                          {card.surchargeWaiver || "1%"}{" "}
+                          <span className="text-xs text-emerald-600 font-sans uppercase">
+                            Waiver
+                          </span>
+                        </p>
+                        <p className="text-[9px] text-zinc-600 font-bold uppercase mt-1">
+                          Cap: ₹{card.fuelCap || "250"}/mo
+                        </p>
+                      </div>
+
+                      {/* Part B: The Rewards (Earnings) */}
+                    </div>
                   </div>
                 </div>
+                {/* Add this inside your Trace mapping logic */}
               </div>
             </section>
 
@@ -737,7 +877,7 @@ function AcceleratorBox({
 }) {
   return (
     <div
-      className={`p-6 rounded-3xl border transition-all ${active ? "bg-amber-500/10 border-amber-500/30 shadow-xl" : isRisk ? "bg-red-500/5 border-red-500/10 opacity-60" : "bg-zinc-900/50 border-white/5"}`}
+      className={`p-4 rounded-xl border transition-all ${active ? "bg-amber-500/10 border-amber-500/30 shadow-xl" : isRisk ? "bg-red-500/5 border-red-500/10 opacity-60" : "bg-zinc-900/50 border-white/5"}`}
     >
       <div
         className={`mb-4 ${active ? "text-amber-500 scale-110" : isRisk ? "text-red-400" : "text-zinc-500"}`}

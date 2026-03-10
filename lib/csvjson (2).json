@@ -1104,7 +1104,7 @@
     "forex_effective": "3.89%",
     "emirates_suitability": "0.0",
     "notes_tnc": "Metal card; concierge focus; no spend criteria.",
-    "fuel_reward_rate": "0.0",
+    "fuel_reward_rate": "0",
     "fuel_cap": "0",
     "surcharge_waiver": "Convenience Fee",
     "Transaction Range (min – max)": "Under ₹5000",
