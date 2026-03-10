@@ -979,6 +979,8 @@ function CardAuditTrace({ audit }: { audit: any }) {
   );
 }
 function RewardChart({ audit }: { audit: any }) {
+  // Define a color palette to sync the chart and the labels
+
   const data = audit.breakdown
     .filter((i: any) => i.plus)
     .map((i: any) => ({
@@ -987,17 +989,39 @@ function RewardChart({ audit }: { audit: any }) {
     }));
 
   return (
-    <div className="h-52 md:h-64">
-      <ResponsiveContainer>
-        <PieChart>
-          <Pie data={data} dataKey="value" outerRadius={100} innerRadius={50}>
-            {data.map((_: any, i: number) => (
-              <Cell key={i} />
-            ))}
-          </Pie>
-          <Tooltip />
-        </PieChart>
-      </ResponsiveContainer>
+    <div className="flex flex-col items-center">
+      {/* Chart Container */}
+      <div className="h-52 md:h-64 w-full">
+        <ResponsiveContainer>
+          <PieChart>
+            <Pie
+              data={data}
+              dataKey="value"
+              outerRadius={80}
+              innerRadius={50}
+              paddingAngle={5}
+            >
+              {data.map((_: any, i: number) => (
+                <Cell key={i} />
+              ))}
+            </Pie>
+            <Tooltip />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Custom Legend/Labels below */}
+      <div className="mt-4 grid grid-cols-2 gap-4 w-full px-4">
+        {data.map((item: any, i: number) => (
+          <div key={i} className="flex items-center justify-between text-sm">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full" />
+              <span className="text-gray-600">{item.name}</span>
+            </div>
+            <span className="font-bold">{item.value}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
