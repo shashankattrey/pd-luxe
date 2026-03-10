@@ -555,7 +555,7 @@ xl:w-[420px]
                       <p className="text-[10px] text-zinc-500 uppercase font-black mb-2">
                         Domestic Lounge
                       </p>
-                      <p className="text-3xl font-bold font-mono">
+                      <p className="text-2xl font-bold font-mono">
                         {card.domesticLounge}
                       </p>
                     </div>
