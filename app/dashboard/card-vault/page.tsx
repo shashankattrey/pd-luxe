@@ -85,7 +85,7 @@ export default function CardVaultPage() {
     <div className="bg-zinc-950 text-white min-h-screen selection:bg-amber-500/30">
       <div className="space-y-10 max-w-[1600px] mx-auto px-4 md:px-8 py-12">
         {/* --- HEADER --- */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 border-b border-white/5 pb-10">
+        <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-8 border-b border-white/5 pb-10">
           <div className="space-y-4">
             <div className="flex items-center gap-4">
               <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 shadow-[0_0_20px_rgba(245,158,11,0.1)]">
@@ -120,7 +120,12 @@ export default function CardVaultPage() {
         </div>
 
         {/* --- SPEND CONTROLS --- */}
-        <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-4 bg-white/5 p-6 rounded-3xl border border-white/10">
+        <div
+          className="grid grid-cols-2
+sm:grid-cols-3
+lg:grid-cols-4
+xl:grid-cols-7 gap-4 bg-white/5 p-6 rounded-3xl border border-white/10"
+        >
           <SpendInput
             label="Food"
             icon={<Utensils />}
@@ -315,14 +320,28 @@ function CardDetailModal({
 
       {/* Modal Container */}
       <motion.div
-        className="fixed inset-0 md:inset-6 lg:inset-16 z-[110] bg-zinc-950 border border-white/10 rounded-none md:rounded-[3rem] overflow-y-auto flex flex-col lg:flex-row shadow-[0_0_100px_rgba(0,0,0,1)]"
+        className="
+        fixed inset-0 
+        md:inset-4 
+        xl:inset-12 
+        z-[110]
+        bg-zinc-950
+        border border-white/10
+        rounded-none md:rounded-[2rem] xl:rounded-[3rem]
+        overflow-y-auto
+        flex flex-col xl:flex-row
+        shadow-[0_0_100px_rgba(0,0,0,1)]
+        overscroll-contain
+        "
         initial={{ opacity: 0, scale: 0.9, y: 40 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 40 }}
       >
         {/* --- LEFT SIDEBAR: Branding & Key Identity --- */}
         <div
-          className={`lg:w-[450px] shrink-0 bg-gradient-to-br ${card.imageGradient} 
+          className={`w-full
+xl:w-[420px]
+2xl:w-[460px] shrink-0 bg-gradient-to-br ${card.imageGradient} 
   p-8 md:p-14 flex flex-col justify-between text-white relative 
   min-h-[300px] md:min-h-[420px]`}
         >
@@ -352,14 +371,13 @@ function CardDetailModal({
               <CardPreview card={card} />
 
               <div className="space-y-1">
-                <p className="text-2xl font-light opacity-80">{card.bank}</p>
+                {/* <p className="text-2xl font-light opacity-80">{card.bank}</p>
                 <p className="text-sm font-mono uppercase tracking-[0.2em] opacity-50">
                   {card.network} Network
-                </p>
+                </p> */}
               </div>
             </div>
           </div>
-
           <div className="space-y-4">
             <div className="p-8 rounded-[2.5rem] bg-black/30 backdrop-blur-2xl border border-white/10 shadow-2xl">
               <p className="text-[10px] uppercase font-black tracking-widest opacity-50 mb-3 text-amber-500">
@@ -370,10 +388,71 @@ function CardDetailModal({
               </p>
             </div>
           </div>
+
+          {/* 3. Detailed Logistics (NEW SECTION) */}
+          <section className="space-y-8 border-t border-white/5 pt-16">
+            <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-zinc-500">
+              Financial & Access Logistics
+            </h4>
+
+            <div className="p-8 bg-zinc-900/40 border border-white/5 rounded-[2rem] flex flex-col lg:flex-row justify-between items-center">
+              <p className="text-[10px] uppercase font-black text-amber-500 mb-4 lg:mb-0 tracking-widest">
+                Fee Structure
+              </p>
+              <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center">
+                <div className="flex flex-col">
+                  <span className="text-xs text-zinc-500">Joining</span>
+                  <span className="font-mono font-bold">
+                    ₹{card.joiningFee}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs text-zinc-500">Annual</span>
+                  <span className="font-mono font-bold">₹{card.annualFee}</span>
+                </div>
+                {card.renewalWaiverLimit && (
+                  <div className="flex flex-col">
+                    <span className="text-xs text-zinc-500">
+                      Spend for Waiver
+                    </span>
+                    <span className="font-mono font-bold text-emerald-400">
+                      ₹{(card.renewalWaiverLimit / 100000).toFixed(1)}L
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="p-8 bg-zinc-900/40 border border-white/5 rounded-[2rem] flex flex-col lg:flex-row justify-between items-start lg:items-center">
+              <p className="text-[10px] uppercase font-black text-amber-500 mb-4 lg:mb-0 tracking-widest">
+                Perks Audit
+              </p>
+              <div className="flex flex-col lg:flex-row gap-6">
+                <div className="flex flex-col">
+                  <span className="text-[9px] text-zinc-500 uppercase font-bold">
+                    Joining Benefit
+                  </span>
+                  <span className="text-xs font-medium text-zinc-200 mt-1">
+                    {card.joiningBenefit || "N/A"}
+                  </span>
+                </div>
+                {card.milestoneBenefit && (
+                  <div className="flex flex-col">
+                    <span className="text-[9px] text-zinc-500 uppercase font-bold">
+                      Milestones
+                    </span>
+                    <span className="text-xs font-medium text-amber-500 mt-1">
+                      {card.milestoneBenefit}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
         </div>
 
         {/* --- RIGHT CONTENT: The Deep Audit --- */}
-        <div className="flex-1 p-6 md:p-14 lg:p-20 bg-zinc-950">
+
+        <div className="flex-1 p-6 md:p-10 xl:p-16 bg-zinc-950">
           <div className="max-w-5xl mx-auto space-y-20">
             {/* 1. Platform Performance Grid */}
             <section className="space-y-8">
@@ -435,7 +514,7 @@ function CardDetailModal({
             </section>
 
             {/* 2. Economic Audit & Accrual Trace */}
-            <section className="grid grid-cols-1 xl:grid-cols-2 gap-16 border-t border-white/5 pt-16">
+            <section className="grid grid-cols-1 lg:grid-cols-2 gap-16 border-t border-white/5 pt-16">
               {/* Left Column: Net Economic Value */}
               <div className="space-y-8">
                 <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-zinc-500">
@@ -494,14 +573,14 @@ function CardDetailModal({
             </section>
 
             {/* 3. Policy & Exclusion Alerts */}
-            <section className="p-10 rounded-[3rem] bg-red-950/10 border border-red-500/20">
-              <div className="flex items-center gap-4 text-red-500 mb-6">
+            <section className="p-10 rounded-[3rem] bg-red-950/10 border border-red-500/20 mx-auto w-full max-w-3xl mt-16">
+              <div className="flex items-center gap-4 text-red-500 mb-6 justify-center">
                 <AlertTriangle className="w-6 h-6" />
                 <h5 className="text-xs font-black uppercase tracking-[0.2em]">
                   2026 Exclusion & Policy Audit
                 </h5>
               </div>
-              <p className="text-zinc-400 text-base leading-relaxed italic">
+              <p className="text-zinc-400 text-base leading-relaxed italic text-center">
                 "
                 {card.notesTnc ||
                   "No critical devaluations or high-risk policy changes detected for this instrument in the current 2026 cycle."}
@@ -511,6 +590,13 @@ function CardDetailModal({
           </div>
         </div>
       </motion.div>
+
+      {/* --- Grid Section --- */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-16 border-t border-white/5 pt-16">
+        {/* Left and Right Columns */}
+      </section>
+
+      {/* --- Notes Section (Horizontally Centered) --- */}
     </>
   );
 }
@@ -688,7 +774,8 @@ function SpendInput({
         {label}
       </div>
       <Input
-        type="number"
+        type="tel"
+        inputMode="numeric"
         value={value}
         onChange={(e) => onChange(Number(e.target.value) || 0)}
         className="bg-transparent border-white/10 text-white font-mono"
@@ -760,7 +847,7 @@ function RewardChart({ audit }: { audit: any }) {
     }));
 
   return (
-    <div className="h-64">
+    <div className="h-52 md:h-64">
       <ResponsiveContainer>
         <PieChart>
           <Pie data={data} dataKey="value" outerRadius={100} innerRadius={50}>
