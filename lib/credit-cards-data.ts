@@ -24,6 +24,7 @@ export interface CreditCard {
   pointValue: number;
   rewardUnit: string;
   travelMultiplier: number;
+  renewalWaiverLimit?: number;
 
   // Fees & Retention
   joiningFee: number;
