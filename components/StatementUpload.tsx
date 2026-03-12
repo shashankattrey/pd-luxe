@@ -42,7 +42,7 @@ export const StatementUpload = ({
 
       <div className="flex flex-col items-center text-center space-y-4">
         <div className="p-4 bg-white/5 rounded-full group-hover:scale-110 transition-transform">
-          <Upload className="w-8 h-8 text-gold" />
+          <Upload className="w-8 h-8 text-amber-400" />
         </div>
         <div>
           <h3 className="text-xl font-serif font-bold">Upload Statement</h3>

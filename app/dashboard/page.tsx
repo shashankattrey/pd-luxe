@@ -52,7 +52,7 @@ export default function DashboardHome() {
       {/* 1. WELCOME SECTION */}
       <motion.div variants={fadeInUp}>
         <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-2">
-          Welcome back, <span className="text-gold">Elite Member</span>
+          Welcome back, <span className="text-amber-400">Elite Member</span>
         </h1>
         <p className="text-muted-foreground">
           Your unified wealth and credit intelligence for 2026
@@ -96,7 +96,7 @@ export default function DashboardHome() {
 
       {/* 3. CARD QUICK ACTIONS (Original) */}
       <div className="space-y-4">
-        <h3 className="text-xs uppercase tracking-[0.2em] text-gold/60 font-bold ml-1">
+        <h3 className="text-xs uppercase tracking-[0.2em] text-amber-400/60 font-bold ml-1">
           Card Services
         </h3>
         <motion.div
@@ -192,7 +192,7 @@ export default function DashboardHome() {
 
 // --- SUB-COMPONENTS ---
 
-function SectionHeader({ title, href, color = "text-gold" }: any) {
+function SectionHeader({ title, href, color = "text-amber-400" }: any) {
   return (
     <div className="flex items-center justify-between mb-6">
       <h2 className={`font-serif text-2xl font-semibold ${color}`}>{title}</h2>
@@ -207,7 +207,7 @@ function SectionHeader({ title, href, color = "text-gold" }: any) {
 
 function StatCard({ icon: Icon, label, value, subtext, color }: any) {
   const colorClasses = {
-    gold: "bg-gold/20 text-gold",
+    gold: "bg-gold/20 text-amber-400",
     orange: "bg-[#FF8C00]/20 text-[#FF8C00]",
   };
   return (
@@ -243,7 +243,7 @@ function QuickActionCard({
         className={`glass-gold rounded-2xl p-6 hover-shine h-full group cursor-pointer transition-all border border-gold/10 ${isEmerald ? "hover:border-emerald-500/40" : "hover:border-gold/40"}`}
       >
         <div
-          className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors ${isEmerald ? "bg-emerald-500/20 text-emerald-500" : "bg-gold/20 text-gold"}`}
+          className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors ${isEmerald ? "bg-emerald-500/20 text-emerald-500" : "bg-gold/20 text-amber-400"}`}
         >
           <Icon className="w-6 h-6" />
         </div>
@@ -254,7 +254,7 @@ function QuickActionCard({
           {description}
         </p>
         <span
-          className={`inline-flex items-center text-sm font-medium ${isEmerald ? "text-emerald-500" : "text-gold"}`}
+          className={`inline-flex items-center text-sm font-medium ${isEmerald ? "text-emerald-500" : "text-amber-400"}`}
         >
           {cta}{" "}
           <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
@@ -273,7 +273,7 @@ function FeaturedCardTile({ card, index }: any) {
       className="glass-gold rounded-2xl overflow-hidden hover-shine border border-gold/10"
     >
       <div className="h-32 bg-gradient-to-br from-neutral-900 to-neutral-800 p-4 relative">
-        <p className="text-gold text-[10px] uppercase tracking-widest">
+        <p className="text-amber-400 text-[10px] uppercase tracking-widest">
           {card.issuer}
         </p>
         <p className="text-white font-serif font-bold text-sm">

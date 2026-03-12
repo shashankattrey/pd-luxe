@@ -30,10 +30,10 @@ export function ButlerCard({
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gold/10 border border-gold/20">
-              <ShieldCheck className="h-4 w-4 text-gold" />
+              <ShieldCheck className="h-4 w-4 text-amber-400" />
             </div>
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gold/60">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-amber-400/60">
                 {issuer || "Unknown Issuer"}
               </p>
               <h4 className="font-serif text-lg font-bold text-white">
@@ -64,7 +64,7 @@ export function ButlerCard({
             </div>
             <button
               onClick={() => setShowAudit(!showAudit)}
-              className="text-[10px] flex items-center gap-1 text-zinc-500 hover:text-gold transition-colors"
+              className="text-[10px] flex items-center gap-1 text-zinc-500 hover:text-amber-400 transition-colors"
             >
               <Calculator className="h-3 w-3" />{" "}
               {showAudit ? "Hide Audit" : "See Math"}
@@ -99,7 +99,7 @@ export function ButlerCard({
                 <span className="text-zinc-300 uppercase tracking-tighter">
                   Net Realized Gain
                 </span>
-                <span className="text-gold">
+                <span className="text-amber-400">
                   ₹{audit.netValue.toLocaleString()}
                 </span>
               </div>

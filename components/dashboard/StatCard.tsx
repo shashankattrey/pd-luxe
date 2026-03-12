@@ -17,7 +17,7 @@ export function StatCard({
   color = "gold",
 }: StatProps) {
   const colorMap = {
-    gold: "bg-gold/20 text-gold",
+    gold: "bg-gold/20 text-amber-400",
     orange: "bg-orange-500/20 text-orange-500",
     emerald: "bg-emerald-500/20 text-emerald-500",
   };

@@ -12,12 +12,12 @@ import {
   AlertTriangle,
   Plane,
   Globe,
-  IndianRupee,
-  TrendingUp,
   Zap,
 } from "lucide-react";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+
 import {
   creditCards,
   type CreditCard as CardType,
@@ -54,46 +54,47 @@ export default function ComparisonPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    // "overflow-x-hidden" on the main container is key
+    <div className="w-full max-w-full overflow-x-hidden px-4 py-6 space-y-8">
+      {/* HEADER: Stack on mobile, side-by-side on desktop */}
+      <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between max-w-screen-xl mx-auto">
         <div>
-          <h1 className="font-serif text-3xl font-bold text-foreground mb-2">
+          <h1 className="font-serif text-2xl md:text-4xl font-bold text-foreground">
             Comparison Lab
           </h1>
-          <p className="text-muted-foreground">
-            Side-by-side audit for up to {MAX_CARDS} instruments
+          <p className="text-sm text-muted-foreground mt-1">
+            Side-by-side audit
           </p>
         </div>
 
-        <div className="flex items-center gap-3 glass-gold p-2 rounded-xl border border-gold/10">
-          <span className="text-xs font-bold uppercase tracking-wider text-gold px-2">
-            Simulated Spend:
+        <div className="flex items-center gap-3 glass-gold p-2 rounded-2xl border border-gold/20 w-full md:w-auto">
+          <span className="text-[10px] font-black uppercase tracking-tighter text-amber-400 pl-2">
+            Annual Spend
           </span>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gold/60 text-sm">
+          <div className="relative flex-1">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-400/50 text-xs">
               ₹
             </span>
             <Input
               type="number"
               value={annualSpend}
               onChange={(e) => setAnnualSpend(parseInt(e.target.value) || 0)}
-              className="w-40 pl-8 bg-black/20 border-gold/20 focus:border-gold text-foreground font-bold"
+              className="pl-7 h-9 bg-black/40 border-gold/10 text-sm font-bold focus-visible:ring-gold/30"
             />
           </div>
         </div>
       </div>
 
-      {/* Card Selection Slots */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* CARD GRID: 2 columns on mobile, 4 on desktop */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 max-w-screen-xl mx-auto">
         <AnimatePresence mode="popLayout">
           {selectedCards.map((card) => (
             <motion.div
               key={card.id}
               layout
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9 }}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
             >
               <SelectedCardSlot
                 card={card}
@@ -106,195 +107,113 @@ export default function ComparisonPage() {
         {selectedCards.length < MAX_CARDS && (
           <button
             onClick={() => setShowSelector(true)}
-            className="h-48 rounded-2xl border-2 border-dashed border-gold/20 hover:border-gold/50 flex flex-col items-center justify-center gap-3 transition-all group hover:bg-gold/5"
+            className="h-32 md:h-44 rounded-2xl border-2 border-dashed border-gold/20 flex flex-col items-center justify-center gap-2 hover:bg-gold/5 transition-colors group"
           >
-            <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Plus className="w-6 h-6 text-gold" />
-            </div>
-            <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground group-hover:text-gold">
+            <Plus className="w-5 h-5 text-amber-400/50 group-hover:text-amber-400 transition-colors" />
+            <span className="text-[10px] uppercase font-bold text-muted-foreground">
               Add Card
             </span>
           </button>
         )}
       </div>
 
-      {/* Comparison Table */}
+      {/* COMPARISON TABLE: The heavy lifting for responsiveness */}
       {selectedCards.length >= 2 ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="glass-gold rounded-3xl overflow-hidden border border-gold/10"
-        >
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-gold/10 bg-black/20">
-                  <th className="p-6 text-[10px] uppercase tracking-[0.2em] text-gold font-black w-48">
-                    Feature Audit
-                  </th>
-                  {selectedCards.map((card) => (
-                    <th key={card.id} className="p-6 text-center min-w-[200px]">
-                      <p className="text-sm font-serif font-bold text-foreground">
-                        {card.name}
-                      </p>
-                      <p className="text-[10px] text-muted-foreground uppercase">
-                        {card.bank}
-                      </p>
+        <div className="max-w-screen-xl mx-auto">
+          <div className="glass-gold rounded-3xl border border-gold/100 overflow-hidden shadow-2xl">
+            {/* The scrollable wrapper */}
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse min-w-[280px] md:min-w-[640px]">
+                <thead>
+                  <tr className="bg-black/60">
+                    <th className="w-[120px] md:w-[180px] p-4 text-left text-[10px] uppercase font-black text-amber-400/60 border-b border-gold/10">
+                      Features
                     </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gold/5">
-                <ComparisonRow
-                  label="Net Annual Profit"
-                  icon={Zap}
-                  values={selectedCards.map((card) => {
-                    const spendProfile = {
-                      dining: annualSpend * 0.25,
-                      travel: annualSpend * 0.25,
-                      shopping: annualSpend * 0.25,
-                      fuel: annualSpend * 0.15,
-                      other: annualSpend * 0.1,
-                    };
-
-                    const audit = calculateInDepthSavings(
-                      card,
-                      spendProfile as any,
-                    );
-                    return {
-                      display: `₹${audit.netValue.toLocaleString()}`,
-                      value: audit.netValue,
-                      isPositive: audit.netValue > 0,
-                    };
-                  })}
-                  highlightBest="highest"
-                />
-                <ComparisonRow
-                  label="Realized Yield"
-                  icon={TrendingUp}
-                  values={selectedCards.map((card) => {
-                    const spendProfile = {
-                      dining: annualSpend * 0.25,
-                      travel: annualSpend * 0.25,
-                      shopping: annualSpend * 0.25,
-                      fuel: annualSpend * 0.15,
-                      other: annualSpend * 0.1,
-                    };
-
-                    const audit = calculateInDepthSavings(
-                      card,
-                      spendProfile as any,
-                    );
-                    return { display: `${audit.yield}%`, value: audit.yield };
-                  })}
-                  highlightBest="highest"
-                />
-                <ComparisonRow
-                  label="Maintenance Cost"
-                  icon={IndianRupee}
-                  values={selectedCards.map((card) => {
-                    const spendProfile = {
-                      dining: annualSpend * 0.25,
-                      travel: annualSpend * 0.25,
-                      shopping: annualSpend * 0.25,
-                      fuel: annualSpend * 0.15,
-                      other: annualSpend * 0.1,
-                    };
-
-                    const audit = calculateInDepthSavings(
-                      card,
-                      spendProfile as any,
-                    );
-                    const cost =
-                      ((audit as any).effectiveFee ?? 0) +
-                      ((audit as any).redemptionCosts ?? 0);
-                    return {
-                      display: `₹${cost.toLocaleString()}`,
-                      value: cost,
-                      isPositive: false,
-                    };
-                  })}
-                  highlightBest="lowest"
-                />
-                <ComparisonRow
-                  label="Forex Markup"
-                  icon={Globe}
-                  values={selectedCards.map((card) => ({
-                    display: `${card.forexMarkup}%`,
-                    value: card.forexMarkup,
-                  }))}
-                  highlightBest="lowest"
-                />
-                <ComparisonRow
-                  label="Lounge Access"
-                  icon={Plane}
-                  values={selectedCards.map((card) => ({
-                    display:
-                      card.loungeCap === -1
-                        ? "Unlimited"
-                        : `${card.loungeCap}/yr`,
-                    value: card.loungeCap === -1 ? 99 : card.loungeCap,
-                  }))}
-                  highlightBest="highest"
-                />
-
-                {/* 2026 Alert Row */}
-                <tr>
-                  <td className="p-6 flex items-center gap-2 text-xs text-muted-foreground italic">
-                    <AlertTriangle className="w-3 h-3" /> 2026 Devaluation
-                  </td>
-                  {selectedCards.map((card) => (
-                    <td key={card.id} className="p-6 text-center">
-                      {card.devaluation2026 ? (
-                        <span className="text-[10px] font-bold text-orange-400 bg-orange-400/10 px-2 py-1 rounded">
-                          HIGH RISK
-                        </span>
-                      ) : (
-                        <span className="text-[10px] font-bold text-green-400 bg-green-400/10 px-2 py-1 rounded">
-                          STABLE
-                        </span>
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              </tbody>
-            </table>
+                    {selectedCards.map((card) => (
+                      <th
+                        key={card.id}
+                        className="p-4 text-center border-gold/10"
+                      >
+                        <p className="text-xs font-serif font-bold truncate">
+                          {card.name}
+                        </p>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gold/5">
+                  <ComparisonRow
+                    label="Net Profit"
+                    icon={Zap}
+                    values={selectedCards.map((card) => {
+                      const audit = calculateInDepthSavings(card, {
+                        dining: annualSpend * 0.3,
+                        travel: annualSpend * 0.3,
+                        shopping: annualSpend * 0.2,
+                        fuel: annualSpend * 0.1,
+                        other: annualSpend * 0.1,
+                      } as any);
+                      return {
+                        display: `₹${audit.netValue.toLocaleString()}`,
+                        value: audit.netValue,
+                      };
+                    })}
+                    highlight="highest"
+                  />
+                  <ComparisonRow
+                    label="Forex Fee"
+                    icon={Globe}
+                    values={selectedCards.map((card) => ({
+                      display: `${card.forexMarkup}%`,
+                      value: card.forexMarkup,
+                    }))}
+                    highlight="lowest"
+                  />
+                  <ComparisonRow
+                    label="Lounge"
+                    icon={Plane}
+                    values={selectedCards.map((card) => ({
+                      display:
+                        card.loungeCap === -1
+                          ? "Unlimited"
+                          : `${card.loungeCap}/yr`,
+                      value: card.loungeCap,
+                    }))}
+                    highlight="highest"
+                  />
+                </tbody>
+              </table>
+            </div>
           </div>
-        </motion.div>
+        </div>
       ) : (
-        <div className="glass-gold rounded-3xl p-20 text-center border border-gold/10">
-          <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CreditCard className="w-8 h-8 text-gold/40" />
-          </div>
-          <h3 className="text-xl font-serif font-bold mb-2">
-            Add cards to begin comparison
-          </h3>
-          <p className="text-muted-foreground text-sm max-w-xs mx-auto">
-            Select at least two cards from the vault to see side-by-side
-            financial metrics.
+        <div className="text-center py-12 glass-gold rounded-3xl border border-gold/10 max-w-md mx-auto">
+          <CreditCard className="w-8 h-8 text-amber-400/20 mx-auto mb-3" />
+          <p className="text-sm font-serif text-muted-foreground">
+            Add at least two cards to compare
           </p>
         </div>
       )}
 
-      {/* Selector Modal */}
+      {/* SELECTOR MODAL */}
       <AnimatePresence>
         {showSelector && (
           <>
             <motion.div
+              className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowSelector(false)}
-              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
             />
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-xl glass-gold rounded-3xl overflow-hidden shadow-2xl"
+              className="fixed left-4 right-4 top-[10%] bottom-[10%] md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-xl z-[101] glass-gold rounded-3xl overflow-hidden flex flex-col"
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 50, opacity: 0 }}
             >
-              <div className="p-6 border-b border-gold/10 flex justify-between items-center bg-black/40">
-                <h3 className="font-serif font-bold">Select Card</h3>
+              <div className="p-4 border-b border-gold/10 flex justify-between items-center">
+                <h2 className="font-serif font-bold">Choose a Card</h2>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -303,35 +222,34 @@ export default function ComparisonPage() {
                   <X />
                 </Button>
               </div>
-              <div className="p-4 bg-black/20">
+              <div className="p-4 bg-white/5">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold/40" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-400/40" />
                   <Input
-                    placeholder="Search bank or card name..."
+                    placeholder="Search bank..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 bg-white/5 border-gold/10"
-                    autoFocus
+                    className="pl-10 h-10 bg-black/20 border-gold/10"
                   />
                 </div>
               </div>
-              <div className="max-h-[400px] overflow-y-auto p-2 space-y-1">
+              <div className="flex-1 overflow-y-auto p-2">
                 {filteredCards.map((card) => (
                   <button
                     key={card.id}
                     onClick={() => addCard(card)}
-                    className="w-full p-4 flex items-center gap-4 hover:bg-gold/10 rounded-2xl transition-all group text-left"
+                    className="w-full flex items-center gap-4 p-3 hover:bg-gold/5 rounded-xl transition-colors text-left group"
                   >
                     <div
-                      className={`w-12 h-8 rounded-md bg-gradient-to-br ${card.imageGradient}`}
+                      className={`w-12 h-8 rounded bg-gradient-to-br ${card.imageGradient}`}
                     />
-                    <div className="flex-1">
-                      <p className="text-sm font-bold">{card.name}</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold truncate">{card.name}</p>
                       <p className="text-[10px] text-muted-foreground uppercase">
                         {card.bank}
                       </p>
                     </div>
-                    <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 text-gold" />
+                    <ArrowRight className="w-4 h-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </button>
                 ))}
               </div>
@@ -351,24 +269,29 @@ function SelectedCardSlot({
   onRemove: () => void;
 }) {
   return (
-    <div
-      className={`relative h-48 rounded-2xl overflow-hidden group shadow-lg shadow-black/40`}
-    >
+    <div className="relative h-32 md:h-44 rounded-2xl overflow-hidden shadow-xl border border-amber-400">
       <div
         className={`absolute inset-0 bg-gradient-to-br ${card.imageGradient}`}
       />
-      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
+      <div className="absolute inset-0 bg-black/20" />
+      <div className="absolute top-4 left-4 w-8 h-6 rounded-sm bg-gradient-to-br from-yellow-300 via-yellow-500 to-yellow-700 shadow-inner">
+        <div className="grid grid-cols-3 grid-rows-3 w-full h-full opacity-60"></div>
+      </div>
       <button
         onClick={onRemove}
-        className="absolute top-3 right-3 z-10 p-1.5 rounded-full bg-black/40 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute top-2 right-2 p-1 bg-black/50 rounded-full text-white z-10"
       >
-        <X className="w-4 h-4" />
+        <X className="w-3 h-3" />
       </button>
-      <div className="absolute bottom-4 left-4 text-white">
-        <p className="text-[10px] uppercase font-black tracking-widest opacity-60">
+      {/* Card Network */}
+      <div className="absolute top-4 right-10 text-[9px] font-bold text-white/80 bg-background px-2 rounded-lg">
+        {card.network}
+      </div>
+      <div className="absolute bottom-3 left-3 right-3 text-white">
+        <p className="text-[8px] font-black uppercase tracking-widest opacity-70 mb-0.5">
           {card.bank}
         </p>
-        <p className="font-serif font-bold text-sm leading-tight">
+        <p className="text-[11px] md:text-sm font-serif font-bold leading-tight line-clamp-2">
           {card.name}
         </p>
       </div>
@@ -376,36 +299,37 @@ function SelectedCardSlot({
   );
 }
 
-function ComparisonRow({ label, icon: Icon, values, highlightBest }: any) {
+function ComparisonRow({ label, icon: Icon, values, highlight }: any) {
   const numericValues = values.map((v: any) => v.value);
-  const targetValue =
-    highlightBest === "highest"
+  const bestValue =
+    highlight === "highest"
       ? Math.max(...numericValues)
       : Math.min(...numericValues);
 
   return (
-    <tr className="group hover:bg-gold/5 transition-colors">
-      <td className="p-6">
-        <div className="flex items-center gap-3 text-muted-foreground group-hover:text-gold transition-colors">
-          <Icon className="w-4 h-4" />
-          <span className="text-xs font-medium">{label}</span>
+    <tr className="hover:bg-gold/[0.02] transition-colors">
+      <td className="p-4 bg-black/20 md:bg-transparent">
+        <div className="flex items-center gap-2">
+          <Icon className="w-3.5 h-3.5 text-amber-400/40" />
+          <span className="text-[11px] font-medium text-muted-foreground">
+            {label}
+          </span>
         </div>
       </td>
-      {values.map((val: any, i: number) => {
-        const isBest = val.value === targetValue;
-        return (
-          <td key={i} className="p-6 text-center">
-            <div className="flex flex-col items-center gap-1">
-              <span
-                className={`text-sm font-bold ${val.isPositive === false ? "text-orange-400" : isBest ? "text-gold" : "text-foreground"}`}
-              >
-                {val.display}
-              </span>
-              {isBest && <Check className="w-3 h-3 text-gold" />}
-            </div>
-          </td>
-        );
-      })}
+      {values.map((v: any, i: number) => (
+        <td key={i} className="p-4 text-center">
+          <div className="flex flex-col items-center">
+            <span
+              className={`text-xs font-bold ${v.value === bestValue ? "text-amber-400" : "text-foreground"}`}
+            >
+              {v.display}
+            </span>
+            {v.value === bestValue && (
+              <Check className="w-2.5 h-2.5 text-amber-400 mt-1" />
+            )}
+          </div>
+        </td>
+      ))}
     </tr>
   );
 }

@@ -104,8 +104,8 @@ function WealthEngine({ annualRate }: { annualRate: number }) {
       <div className="p-8 rounded-[2.5rem] bg-white/5 border border-white/5 space-y-8 relative overflow-hidden">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <Calculator className="w-4 h-4 text-gold" />
-            <h3 className="text-[10px] uppercase font-black tracking-widest text-gold">
+            <Calculator className="w-4 h-4 text-amber-400" />
+            <h3 className="text-[10px] uppercase font-black tracking-widest text-amber-400">
               Advanced Wealth Engine
             </h3>
           </div>
@@ -195,8 +195,8 @@ function WealthEngine({ annualRate }: { annualRate: number }) {
       {/* NEW: Goal Comparison Matrix */}
       <div className="p-8 rounded-[2.5rem] bg-gold/[0.03] border border-gold/10">
         <div className="flex items-center gap-2 mb-8">
-          <TrendingUp className="w-4 h-4 text-gold" />
-          <h3 className="text-[10px] uppercase font-black tracking-widest text-gold">
+          <TrendingUp className="w-4 h-4 text-amber-400" />
+          <h3 className="text-[10px] uppercase font-black tracking-widest text-amber-400">
             Goal Feasibility (2026 Outlook)
           </h3>
         </div>
@@ -267,7 +267,7 @@ function ToggleButton({ active, onClick, label }: any) {
       className={cn(
         "px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest border transition-all",
         active
-          ? "bg-gold/10 border-gold/40 text-gold"
+          ? "bg-gold/10 border-gold/40 text-amber-400"
           : "bg-white/5 border-white/10 text-white/40",
       )}
     >
@@ -408,8 +408,8 @@ export default function FundVaultPage() {
   if (loading) {
     return (
       <div className="h-screen flex flex-col items-center justify-center space-y-4 bg-zinc-950">
-        <Activity className="w-12 h-12 text-gold animate-spin" />
-        <p className="text-gold font-black uppercase tracking-widest text-[10px]">
+        <Activity className="w-12 h-12 text-amber-400 animate-spin" />
+        <p className="text-amber-400 font-black uppercase tracking-widest text-[10px]">
           Syncing 2026 Institutional Feed...
         </p>
       </div>
@@ -431,7 +431,7 @@ export default function FundVaultPage() {
           </div>
           <p className="text-white/40 text-lg">
             Institutional-grade{" "}
-            <span className="text-gold font-medium">Direct Growth</span>{" "}
+            <span className="text-amber-400 font-medium">Direct Growth</span>{" "}
             instruments.
           </p>
         </div>
@@ -439,7 +439,7 @@ export default function FundVaultPage() {
 
       {/* Search Bar */}
       <div className="relative sticky top-4 z-30">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gold/50" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-400/50" />
         <Input
           placeholder="Search Vault..."
           value={searchQuery}
@@ -452,7 +452,7 @@ export default function FundVaultPage() {
       {Object.entries(filteredShelves).map(([category, funds]) => (
         <section key={category} className="space-y-8">
           <div className="flex items-center gap-3">
-            <TrendingUp className="w-5 h-5 text-gold" />
+            <TrendingUp className="w-5 h-5 text-amber-400" />
             <h2 className="text-2xl font-serif font-bold text-white uppercase tracking-tighter">
               {category}
             </h2>
@@ -501,10 +501,10 @@ function FundTile({
       <div className="p-8 space-y-6">
         <div className="flex justify-between items-start">
           <div className="space-y-1">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-gold/60 font-black">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-amber-400/60 font-black">
               Direct • {code}
             </p>
-            <h3 className="text-xl font-serif font-bold text-foreground leading-tight group-hover:text-gold transition-colors">
+            <h3 className="text-xl font-serif font-bold text-foreground leading-tight group-hover:text-amber-400 transition-colors">
               {name}
             </h3>
           </div>
@@ -594,7 +594,7 @@ function FundDetailModal({
       >
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 z-30 p-2 bg-white/5 rounded-full hover:text-gold transition-all"
+          className="absolute top-6 right-6 z-30 p-2 bg-white/5 rounded-full hover:text-amber-400 transition-all"
         >
           <X className="w-5 h-5" />
         </button>
@@ -605,7 +605,7 @@ function FundDetailModal({
           <div className="lg:col-span-4 p-8 bg-zinc-950 flex flex-col border-r border-white/5 overflow-y-auto custom-scrollbar h-full">
             {/* 1. Header */}
             <div className="mb-6">
-              <Badge className="bg-gold/10 text-gold border-gold/20 mb-3 text-[9px] uppercase tracking-widest">
+              <Badge className="bg-gold/10 text-amber-400 border-gold/20 mb-3 text-[9px] uppercase tracking-widest">
                 {fund.category}
               </Badge>
               <h2 className="text-2xl font-serif font-bold text-white leading-tight">
@@ -619,7 +619,7 @@ function FundDetailModal({
             {/* 2. Graph */}
             <div className="bg-black/40 rounded-2xl border border-white/5 p-4 mb-6">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-[9px] uppercase font-black text-gold/60 tracking-widest">
+                <span className="text-[9px] uppercase font-black text-amber-400/60 tracking-widest">
                   30D NAV Trend
                 </span>
                 <TrendingUp className="w-3 h-3 text-emerald-400" />
@@ -736,7 +736,7 @@ function DetailCard({ label, value, color = "text-white" }: any) {
 function MetricBox({ icon, label, value, sub }: any) {
   return (
     <div className="p-5 rounded-2xl bg-white/5 border border-white/5">
-      <div className="flex items-center gap-2 mb-2 text-gold/60">
+      <div className="flex items-center gap-2 mb-2 text-amber-400/60">
         {icon}
         <span className="text-[10px] uppercase font-bold tracking-widest">
           {label}

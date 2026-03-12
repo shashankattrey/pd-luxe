@@ -30,7 +30,7 @@ export function FeatureTile({
         <div className="flex justify-between items-start">
           <div>
             <p
-              className={`text-[10px] uppercase tracking-widest ${isFund ? "text-emerald-400" : "text-gold"}`}
+              className={`text-[10px] uppercase tracking-widest ${isFund ? "text-emerald-400" : "text-amber-400"}`}
             >
               {subtitle}
             </p>
@@ -52,7 +52,7 @@ export function FeatureTile({
               {item.label}
             </p>
             <p
-              className={`font-mono font-bold text-xs ${item.highlight ? "text-gold" : "text-foreground"}`}
+              className={`font-mono font-bold text-xs ${item.highlight ? "text-amber-400" : "text-foreground"}`}
             >
               {item.value}
             </p>

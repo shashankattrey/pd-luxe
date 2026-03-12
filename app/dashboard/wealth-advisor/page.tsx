@@ -219,7 +219,7 @@ function SetupStep({ onNext }: any) {
             Monthly Commitment
           </label>
           <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gold font-bold">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400 font-bold">
               ₹
             </span>
             <Input
@@ -235,7 +235,7 @@ function SetupStep({ onNext }: any) {
             <label className="text-sm uppercase tracking-widest text-muted-foreground">
               Time Horizon
             </label>
-            <span className="text-gold font-bold">{horizon} Years</span>
+            <span className="text-amber-400 font-bold">{horizon} Years</span>
           </div>
           <Slider
             defaultValue={[5]}
@@ -284,7 +284,7 @@ function AssetPicker({ selected, onToggle, onNext }: any) {
             <h4 className="font-bold text-xl">{asset.label}</h4>
             <p className="text-sm text-muted-foreground">{asset.desc}</p>
             {selected.includes(asset.id) && (
-              <CheckCircle2 className="absolute top-6 right-6 text-gold w-6 h-6" />
+              <CheckCircle2 className="absolute top-6 right-6 text-amber-400 w-6 h-6" />
             )}
           </button>
         ))}
@@ -307,7 +307,7 @@ function RiskSelector({ onSelect }: any) {
       animate={{ opacity: 1 }}
       className="text-center space-y-12"
     >
-      <Scale className="w-20 h-20 text-gold mx-auto" />
+      <Scale className="w-20 h-20 text-amber-400 mx-auto" />
       <h2 className="text-4xl font-serif font-bold">
         Determine Your Risk Appetite
       </h2>
@@ -332,7 +332,7 @@ function WealthDashboard({ portfolio, profile, isAnalyzing, onReset }: any) {
     return (
       <div className="flex flex-col items-center justify-center py-40 space-y-6">
         <div className="w-20 h-20 border-4 border-gold/20 border-t-gold rounded-full animate-spin" />
-        <p className="text-xl font-serif italic text-gold">
+        <p className="text-xl font-serif italic text-amber-400">
           Running Monte Carlo Simulations...
         </p>
       </div>
@@ -380,7 +380,7 @@ function WealthDashboard({ portfolio, profile, isAnalyzing, onReset }: any) {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-2xl font-mono font-bold text-gold">
+                  <p className="text-2xl font-mono font-bold text-amber-400">
                     ₹{item.monthlyAmount.toLocaleString()}
                   </p>
                   <p className="text-[10px] text-muted-foreground">per month</p>
@@ -427,7 +427,7 @@ function WealthDashboard({ portfolio, profile, isAnalyzing, onReset }: any) {
           <Button
             onClick={onReset}
             variant="ghost"
-            className="w-full h-16 border border-gold/10 text-gold rounded-2xl hover:bg-gold/5"
+            className="w-full h-16 border border-gold/10 text-amber-400 rounded-2xl hover:bg-gold/5"
           >
             <RotateCcw className="mr-3 w-5 h-5" /> Re-construct Portfolio
           </Button>

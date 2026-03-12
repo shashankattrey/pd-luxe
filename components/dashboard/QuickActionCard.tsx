@@ -22,7 +22,7 @@ export function QuickActionCard({
       <div className="glass-gold rounded-2xl p-6 hover-shine h-full group cursor-pointer transition-all border border-gold/10 hover:border-gold/40 flex flex-col justify-between">
         <div>
           <div className="w-12 h-12 rounded-xl bg-gold/20 flex items-center justify-center mb-4 group-hover:bg-gold/30 transition-colors">
-            <Icon className="w-6 h-6 text-gold" />
+            <Icon className="w-6 h-6 text-amber-400" />
           </div>
           <h3 className="font-serif text-lg font-semibold text-foreground mb-2">
             {title}
@@ -31,7 +31,7 @@ export function QuickActionCard({
             {description}
           </p>
         </div>
-        <span className="inline-flex items-center text-gold text-sm font-medium mt-auto">
+        <span className="inline-flex items-center text-amber-400 text-sm font-medium mt-auto">
           {cta}
           <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
         </span>

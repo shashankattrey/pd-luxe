@@ -46,7 +46,7 @@ export default function LandingPage() {
   const [activeTab, setActiveTab] = useState("travel");
 
   return (
-    <div className="min-h-screen bg-[#020202] text-slate-200 selection:bg-gold/30 selection:text-white overflow-x-hidden font-sans">
+    <div className="min-h-screen bg-[#020202] text-slate-200 selection:bg-yellow-400 selection:text-white overflow-x-hidden font-sans">
       {/* 1. NAVIGATION (Master Version) */}
       <nav className="fixed top-0 left-0 right-0 z-[100] border-b border-white/5 bg-black/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -62,7 +62,7 @@ export default function LandingPage() {
               <span className="font-serif text-xl font-bold text-white leading-none tracking-tight">
                 PaisaDekho
               </span>
-              <span className="text-[10px] text-gold font-bold uppercase tracking-[0.3em] mt-1">
+              <span className="text-[10px] text-yellow-400 font-bold uppercase tracking-[0.3em] mt-1">
                 Luxe Intelligence
               </span>
             </div>
@@ -75,7 +75,7 @@ export default function LandingPage() {
             <NavLink href="#security">Privacy</NavLink>
           </div>
           <Link href="/auth?mode=signup">
-            <Button className="bg-gold text-black font-extrabold hover:scale-105 transition-all rounded-full px-8 shadow-lg shadow-gold/20 h-12">
+            <Button className="bg-yellow-400 text-black font-extrabold hover:scale-105 transition-all rounded-full px-8 shadow-lg shadow-gold/20 h-12">
               Apply for Access
             </Button>
           </Link>
@@ -90,13 +90,13 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="mb-8 inline-flex items-center gap-2 px-5 py-2 rounded-full border border-gold/20 bg-gold/5 text-gold text-[10px] font-bold uppercase tracking-[0.2em]">
+            <div className="mb-8 inline-flex items-center gap-2 px-5 py-2 rounded-full border border-gold/20 bg-gold/5 text-yellow-400 text-[10px] font-bold uppercase tracking-[0.2em]">
               <Sparkles className="w-4 h-4" /> 2026 Sovereign Wealth
               Intelligence
             </div>
             <h1 className="font-serif text-7xl md:text-9xl font-extrabold text-white mb-8 tracking-tighter leading-[0.9]">
               Your Money, <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold via-amber-200 to-amber-500 italic">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-100 via-yellow-200 to-yellow-500 italic">
                 Self-Driving.
               </span>
             </h1>
@@ -121,7 +121,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="font-serif text-4xl font-bold text-white mb-4 italic">
-              The <span className="text-gold">Intelligence</span> Loop
+              The <span className="text-yellow-400">Intelligence</span> Loop
             </h2>
             <p className="text-slate-500">
               How we turn your daily spend into long-term generational wealth.
@@ -161,7 +161,8 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="mb-20 text-center md:text-left">
             <h2 className="font-serif text-5xl font-bold text-white mb-6">
-              Built for <span className="text-gold">Life's Complexity</span>
+              Built for{" "}
+              <span className="text-yellow-400">Life's Complexity</span>
             </h2>
             <p className="text-slate-500 text-xl max-w-3xl">
               From Jaipur to Dubai, from today's coffee to your daughter's
@@ -224,7 +225,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="font-serif text-4xl font-bold text-white mb-4 italic">
-              The Butler <span className="text-gold">Lab</span>
+              The Butler <span className="text-yellow-400">Lab</span>
             </h2>
             <div className="flex flex-wrap justify-center gap-4 mt-8">
               <TabBtn
@@ -281,10 +282,10 @@ export default function LandingPage() {
             {/* Right side: AI Execution */}
             <div className="p-12 bg-black relative">
               <div className="flex items-center gap-3 mb-12">
-                <div className="w-10 h-10 rounded-xl bg-gold flex items-center justify-center shadow-lg shadow-gold/20">
+                <div className="w-10 h-10 rounded-xl bg-yellow-400 flex items-center justify-center shadow-lg shadow-gold/20">
                   <Bot className="w-6 h-6 text-black" />
                 </div>
-                <span className="text-gold text-xs font-extrabold uppercase tracking-[0.2em]">
+                <span className="text-yellow-400 text-xs font-extrabold uppercase tracking-[0.2em]">
                   Butler Intelligence Analysis
                 </span>
               </div>
@@ -336,7 +337,7 @@ export default function LandingPage() {
                           Projected: ₹10.42L
                         </h4>
                         <div className="text-right">
-                          <span className="text-gold text-3xl font-bold">
+                          <span className="text-yellow-400 text-3xl font-bold">
                             14.2%
                           </span>
                           <span className="block text-[10px] text-slate-500 font-bold uppercase">
@@ -397,7 +398,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
             <h2 className="font-serif text-5xl font-bold text-white">
-              Market <span className="text-gold">Dominance</span>.
+              Market <span className="text-yellow-400">Dominance</span>.
             </h2>
             <div className="flex gap-4">
               <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-slate-400">
@@ -449,10 +450,10 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
           <div>
             <div className="w-12 h-12 rounded-2xl bg-gold/10 flex items-center justify-center mb-8 border border-gold/20">
-              <ShieldCheck className="w-6 h-6 text-gold" />
+              <ShieldCheck className="w-6 h-6 text-yellow-400" />
             </div>
             <h2 className="font-serif text-5xl font-bold text-white mb-8 italic">
-              Privacy is <span className="text-gold">Luxury</span>.
+              Privacy is <span className="text-yellow-400">Luxury</span>.
             </h2>
             <p className="text-slate-400 text-xl leading-relaxed mb-10">
               Free apps sell your data to banks. We sell intelligence to you.
@@ -542,7 +543,7 @@ function NavLink({ href, children }: any) {
   return (
     <Link
       href={href}
-      className="text-[10px] font-extrabold uppercase tracking-[0.3em] text-slate-500 hover:text-gold transition-colors"
+      className="text-[10px] font-extrabold uppercase tracking-[0.3em] text-slate-500 hover:text-yellow-400 transition-colors"
     >
       {children}
     </Link>
@@ -591,7 +592,7 @@ function TabBtn({ label, active, onClick }: any) {
   return (
     <button
       onClick={onClick}
-      className={`px-8 py-3 rounded-full text-[10px] font-extrabold uppercase tracking-widest transition-all ${active ? "bg-gold text-black shadow-lg shadow-gold/20" : "bg-white/5 text-slate-500 border border-white/10 hover:border-white/20"}`}
+      className={`px-8 py-3 rounded-full text-[10px] font-extrabold uppercase tracking-widest transition-all ${active ? "bg-yellow-400 text-black shadow-lg shadow-gold/20" : "bg-white/5 text-slate-500 border border-white/10 hover:border-white/20"}`}
     >
       {label}
     </button>
@@ -609,7 +610,7 @@ function ComparisonRow({ label, value, active }: any) {
         {label}
       </span>
       <span
-        className={`text-sm ${active ? "text-gold font-bold" : "text-slate-500"}`}
+        className={`text-sm ${active ? "text-yellow-400 font-bold" : "text-slate-500"}`}
       >
         {value}
       </span>
@@ -641,7 +642,7 @@ function SecurityPoint({ title, desc }: any) {
 function ComplianceBox({ title, value }: any) {
   return (
     <div className="p-10 rounded-[2.5rem] bg-black border border-white/5 text-center flex flex-col justify-center">
-      <span className="block text-gold font-bold text-2xl mb-2 tracking-tighter">
+      <span className="block text-yellow-400 font-bold text-2xl mb-2 tracking-tighter">
         {value}
       </span>
       <span className="text-slate-600 text-[9px] uppercase tracking-[0.3em] font-extrabold">
@@ -654,11 +655,11 @@ function ComplianceBox({ title, value }: any) {
 function StepCard({ num, icon: Icon, title, desc }: any) {
   return (
     <div className="p-10 rounded-[2.5rem] bg-white/[0.03] border border-white/5 hover:border-gold/20 transition-all relative group">
-      <span className="absolute top-6 right-8 text-5xl font-serif font-bold text-white/[0.03] group-hover:text-gold/5 transition-colors">
+      <span className="absolute top-6 right-8 text-5xl font-serif font-bold text-white/[0.03] group-hover:text-yellow-400/5 transition-colors">
         {num}
       </span>
       <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center mb-8 border border-gold/20">
-        <Icon className="w-6 h-6 text-gold" />
+        <Icon className="w-6 h-6 text-yellow-400" />
       </div>
       <h4 className="text-xl font-bold text-white mb-3 tracking-tight">
         {title}
@@ -672,7 +673,7 @@ function FooterLink({ children }: any) {
   return (
     <Link
       href="#"
-      className="block text-slate-600 hover:text-gold text-[10px] font-bold uppercase tracking-[0.2em] mb-4 transition-colors"
+      className="block text-slate-600 hover:text-yellow-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 transition-colors"
     >
       {children}
     </Link>

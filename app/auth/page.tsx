@@ -46,10 +46,10 @@ function AuthContent() {
           <div className="w-12 h-12 rounded-xl bg-gold flex items-center justify-center">
             <Wallet className="w-7 h-7 text-background" />
           </div>
-          <span className="font-serif text-2xl font-semibold text-gold">
+          <span className="font-serif text-2xl font-semibold text-amber-400">
             PaisaDekho
           </span>
-          <span className="text-xs px-2 py-0.5 rounded-full bg-gold/20 text-gold font-medium">
+          <span className="text-xs px-2 py-0.5 rounded-full bg-gold/20 text-amber-400 font-medium">
             Luxe
           </span>
         </Link>
@@ -63,7 +63,7 @@ function AuthContent() {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 mode === "signin"
                   ? "bg-gold text-background"
-                  : "text-muted-foreground hover:text-gold"
+                  : "text-muted-foreground hover:text-amber-400"
               }`}
             >
               Sign In
@@ -73,7 +73,7 @@ function AuthContent() {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 mode === "signup"
                   ? "bg-gold text-background"
-                  : "text-muted-foreground hover:text-gold"
+                  : "text-muted-foreground hover:text-amber-400"
               }`}
             >
               Sign Up
@@ -145,7 +145,7 @@ function AuthContent() {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-gold transition-colors"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-amber-400 transition-colors"
                     >
                       {showPassword ? (
                         <EyeOff className="w-4 h-4" />
@@ -160,7 +160,7 @@ function AuthContent() {
                   <div className="flex justify-end">
                     <button
                       type="button"
-                      className="text-sm text-gold hover:text-gold/80 transition-colors"
+                      className="text-sm text-amber-400 hover:text-amber-400/80 transition-colors"
                     >
                       Forgot password?
                     </button>
@@ -253,11 +253,11 @@ function AuthContent() {
         {/* Footer */}
         <p className="text-center text-muted-foreground text-sm mt-8">
           By continuing, you agree to our{" "}
-          <button className="text-gold hover:text-gold/80 transition-colors">
+          <button className="text-amber-400 hover:text-amber-400/80 transition-colors">
             Terms of Service
           </button>{" "}
           and{" "}
-          <button className="text-gold hover:text-gold/80 transition-colors">
+          <button className="text-amber-400 hover:text-amber-400/80 transition-colors">
             Privacy Policy
           </button>
         </p>

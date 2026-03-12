@@ -1,4 +1,4 @@
-import rawCards from "./csvjson (2).json";
+import rawCards from "./csvjson (3).json";
 
 /**
  * 2026 PaisaDekho Credit Card Interface
@@ -47,6 +47,8 @@ export interface CreditCard {
   isLtf: boolean;
   joiningBenefit: string;
   milestoneBenefit: string;
+  minIncomeLakhs: number; // Add this!
+  lifetimeFree?: boolean;
 
   // 🚀 LIFESTYLE & PLATFORM ACCELERATORS (New from JSON)
   swiggyRate: number;
@@ -67,7 +69,7 @@ export interface CreditCard {
   // Travel & Lounge
   forexMarkup: number;
   forexEffective: string;
-  domesticLounge: string;
+  domesticLounge: number | string;
   internationalLounge: number;
   loungeCapDetails: string;
   airIndiaTransferRatio: number;
@@ -348,6 +350,7 @@ export const creditCards: CreditCard[] = (rawCards as any[]).map((c, index) => {
     cromaRate: cleanNumber(c.croma_benefit_pct),
     groceryRate: cleanNumber(c.grocery_rate),
     diningRate: cleanNumber(c.dining_rate),
+    minIncomeLakhs: cleanNumber(c.min_income_annual_lakhs) || 0,
 
     // Airline Transfer String Parsing
     airlineTransferJson:
@@ -448,7 +451,7 @@ function calculateLoungeValue(card: CreditCard, monthlyVisits: number) {
   const visits =
     card.domesticLounge === "Unlimited"
       ? 12
-      : parseInt(card.domesticLounge) || 0;
+      : parseInt(String(card.domesticLounge)) || 0;
 
   const usedVisits = Math.min(visits, monthlyVisits * 12);
 
@@ -696,8 +699,8 @@ export function scoreCard(
   // Lounge
   const lounge =
     card.domesticLounge === "Unlimited"
-      ? 12
-      : parseInt(card.domesticLounge) || 0;
+      ? 999
+      : parseInt(String(card.domesticLounge)) || 0;
   if (lounge >= 8) score += 10;
   else if (lounge >= 4) score += 5;
 
@@ -719,12 +722,18 @@ export function scoreCard(
   };
 }
 
-export function rankCards(spend: SpendProfile, category: string) {
-  // Use the updated scorer to map all cards
-  const scoredCards = creditCards.map((card) =>
+// Add 'availableCards' as an optional 3rd parameter
+export function rankCards(
+  spend: SpendProfile,
+  category: string,
+  availableCards?: CreditCard[],
+) {
+  // Use the passed eligible cards, or fallback to the full list if none provided
+  const listToRank = availableCards || creditCards;
+
+  const scoredCards = listToRank.map((card) =>
     scoreCard(card, spend, category),
   );
 
-  // Sort by the new weighted score descending
   return scoredCards.sort((a, b) => b.score - a.score);
 }

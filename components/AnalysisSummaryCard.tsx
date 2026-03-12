@@ -22,7 +22,7 @@ const AnalysisSummaryCard: React.FC<AnalysisSummaryCardProps> = ({
   return (
     <div className="glass p-8 rounded-[2rem] border-gold/30 bg-gold/5 flex flex-col md:flex-row items-center justify-between animate-in fade-in zoom-in duration-500">
       <div className="flex flex-col gap-1">
-        <span className="text-[10px] font-bold uppercase tracking-widest text-gold">
+        <span className="text-[10px] font-bold uppercase tracking-widest text-amber-400">
           Your Monthly Profile
         </span>
         <h2 className="text-2xl font-serif font-bold">

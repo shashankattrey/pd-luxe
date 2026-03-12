@@ -136,7 +136,7 @@ export default function AdvancedRiskProfiler() {
 
     let profile = {
       label: "Balanced Architect",
-      color: "text-gold",
+      color: "text-amber-400",
       desc: "Stable growth with moderate protection.",
     };
     if (avgScore > 75)
@@ -169,13 +169,13 @@ export default function AdvancedRiskProfiler() {
             <div className="flex justify-between items-center mb-12">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-gold/10 rounded-lg">
-                  <BrainCircuit className="w-5 h-5 text-gold" />
+                  <BrainCircuit className="w-5 h-5 text-amber-400" />
                 </div>
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">
                   Neural Analysis In Progress
                 </span>
               </div>
-              <span className="font-mono text-gold text-sm">
+              <span className="font-mono text-amber-400 text-sm">
                 {currentStep + 1} / {QUESTIONS.length}
               </span>
             </div>
@@ -194,14 +194,14 @@ export default function AdvancedRiskProfiler() {
                   className="group p-6 rounded-2xl bg-white/5 border border-white/5 text-left hover:border-gold/40 hover:bg-gold/[0.02] transition-all flex justify-between items-center"
                 >
                   <div>
-                    <p className="text-lg font-bold text-white group-hover:text-gold transition-colors">
+                    <p className="text-lg font-bold text-white group-hover:text-amber-400 transition-colors">
                       {opt.label}
                     </p>
                     {"desc" in opt && (
                       <p className="text-sm text-white/30">{opt.desc}</p>
                     )}
                   </div>
-                  <ArrowRight className="w-5 h-5 text-white/10 group-hover:text-gold group-hover:translate-x-1 transition-all" />
+                  <ArrowRight className="w-5 h-5 text-white/10 group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
                 </button>
               ))}
             </div>
@@ -276,7 +276,7 @@ export default function AdvancedRiskProfiler() {
 
               <div className="glass-gold p-8 rounded-[2rem] border border-white/5">
                 <h3 className="text-white font-bold mb-4 flex items-center gap-2">
-                  <Target className="w-4 h-4 text-gold" /> 2026 Strategy
+                  <Target className="w-4 h-4 text-amber-400" /> 2026 Strategy
                 </h3>
                 <div className="space-y-4">
                   <StrategyRow

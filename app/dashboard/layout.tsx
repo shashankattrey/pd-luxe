@@ -128,12 +128,12 @@ export default function DashboardLayout({
     <div
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      className="min-h-screen bg-background flex"
+      className="min-h-screen bg-background flex w-full overflow-x-hidden"
     >
       {isMobile && (
         <button
           onClick={() => setMobileMenuOpen(false)}
-          className="absolute top-4 right-4 text-muted-foreground hover:text-gold"
+          className="absolute top-4 right-4 text-muted-foreground hover:text-amber-400"
         >
           <X />
         </button>
@@ -142,7 +142,7 @@ export default function DashboardLayout({
       {!isMobile && (
         <motion.aside
           animate={{ width: sidebarCollapsed ? 80 : 260 }}
-          className="fixed left-0 top-0 bottom-0 z-50 glass-gold border-r border-gold/10 p-4 flex flex-col"
+          className="fixed left-0 top-0 bottom-0 z-50 glass-amber-400 border-r border-gold/10 p-4 flex flex-col"
         >
           {isMobile && mobileMenuOpen && (
             <div
@@ -155,7 +155,7 @@ export default function DashboardLayout({
               <Wallet className="w-6 h-6 text-background" />
             </div>
             {!sidebarCollapsed && (
-              <span className="font-serif text-lg font-semibold text-gold">
+              <span className="font-serif text-lg font-semibold text-amber-400">
                 PaisaDekho
               </span>
             )}
@@ -168,8 +168,8 @@ export default function DashboardLayout({
                 className={cn(
                   "flex items-center gap-3 px-3 py-3 rounded-xl transition-all",
                   pathname === item.href
-                    ? "bg-gold/20 text-gold shadow-inner shadow-gold/10"
-                    : "text-muted-foreground hover:text-gold",
+                    ? "bg-gold/20 text-amber-400 shadow-inner shadow-gold/10"
+                    : "text-muted-foreground hover:text-amber-400",
                 )}
               >
                 <item.icon className="w-5 h-5" />
@@ -181,7 +181,7 @@ export default function DashboardLayout({
           </nav>
           <button
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="p-3 text-muted-foreground hover:text-gold"
+            className="p-3 text-muted-foreground hover:text-amber-400"
           >
             {sidebarCollapsed ? <ChevronRight /> : <ChevronLeft />}
           </button>
@@ -209,8 +209,8 @@ export default function DashboardLayout({
                 className={cn(
                   "flex flex-col items-center justify-center flex-1 py-2 rounded-xl transition-all",
                   pathname === item.href
-                    ? "text-gold bg-gold/10"
-                    : "text-muted-foreground hover:text-gold",
+                    ? "text-amber-400 bg-gold/10"
+                    : "text-muted-foreground hover:text-amber-400",
                 )}
               >
                 <item.icon className="w-5 h-5" />
@@ -258,7 +258,7 @@ export default function DashboardLayout({
             >
               <div className="p-4 border-b border-gold/20 flex justify-between items-center bg-black/40">
                 <div className="flex items-center gap-3">
-                  <Bot className="text-gold animate-pulse" />
+                  <Bot className="text-amber-400 animate-pulse" />
                   <h3 className="font-serif font-bold tracking-wide">
                     Luxe Butler AI
                   </h3>
