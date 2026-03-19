@@ -1,0 +1,1103 @@
+{
+  "bank_name": "ICICI",
+  "account_holder": "Unknown",
+  "summary": {
+    "opening_balance": 110663.3,
+    "total_credits": 1341429.43,
+    "total_debits": 1435390.2,
+    "closing_balance": 16702.53,
+    "count": 109
+  },
+  "transactions": [
+    {
+      "date": "2024-03-01",
+      "description": "UPI/442758328905/Payment fromPh/MANISH YADAV/State Bank Of I/AXLbd6717e856024d768c992868c5efe964 Bank Of I/AXLbd6717e856024d768c992868c5efe964 UPI/442725055615/Payment fromPh/PUSHPENDRA",
+      "amount": 10000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 120663.3,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-01",
+      "description": "UPI/442725055615/Payment fromPh/PUSHPENDRA SAIN/Union Bank of I/IBL24946839807e4d118be61185ef7dd7ac I/IBL24946839807e4d118be61185ef7dd7ac UPI/406218112453/house rentpaym/CREDDreamPlug/ICICI",
+      "amount": 1000,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 119663.3,
+      "mode": "",
+      "category": "rent_and_credit_card"
+    },
+    {
+      "date": "2024-03-02",
+      "description": "UPI/406218112453/house rentpaym/CREDDreamPlug/ICICI Bank/ICICIV2yccXxA6p5skxz47UtLM65f29OnzD Bank/ICICIV2yccXxA6p5skxz47UtLM65f29OnzD UPI/406217364438/Paid via CRED/BHAIRU SINGH/StateBank",
+      "amount": 30000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 149663.3,
+      "mode": "",
+      "category": "rent_and_credit_card"
+    },
+    {
+      "date": "2024-03-02",
+      "description": "UPI/406217364438/Paid via CRED/BHAIRU SINGH/StateBank Of I/ACD01HQYM6D4RXF8YHQN36EEB C JZR/ Of I/ACD01HQYM6D4RXF8YHQN36EEB C JZR/ UPI/442882348724/Payment fromPh/Krishan Saini/State Bank",
+      "amount": 16000,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 133663.3,
+      "mode": "",
+      "category": "rent_and_credit_card"
+    },
+    {
+      "date": "2024-03-02",
+      "description": "UPI/442882348724/Payment fromPh/Krishan Saini/State Bank Of I/AXLcdc6032c5c7b48fba64fd998016b0ec1 Of I/AXLcdc6032c5c7b48fba64fd998016b0ec1 UPI/406403794320/Subscription/angelmfcpupa@in/INDUSIND",
+      "amount": 1000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 134663.3,
+      "mode": "",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-04",
+      "description": "UPI/406403794320/Subscription/angelmfcpupa@in/INDUSIND BANK/IND12 C ADC410114EE3BE063F87C180ACD81/ BANK/IND12 C ADC410114EE3BE063F87C180ACD81/ UPI/406504443036/Subscription/angelmfcpupa@in/INDUSIND",
+      "amount": 3900,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 130763.3,
+      "mode": "",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-05",
+      "description": "UPI/406504443036/Subscription/angelmfcpupa@in/INDUSIND BANK/IND12DF37D31D06531AE063F87C180A03D7/ BANK/IND12DF37D31D06531AE063F87C180A03D7/",
+      "amount": 1100,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 129663.3,
+      "mode": "",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-05",
+      "description": "Personal Loan XX27045 EMI Subo CMS/ GROWW WITHDRAW REQ SUBODH KUMAR",
+      "amount": 6382,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 123281.3,
+      "mode": "",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-06",
+      "description": "CMS/ GROWW WITHDRAW REQ SUBODH KUMAR SAINI/NEXTBI SAINI/NEXTBI UPI/443221477451/Payment fromPh/ns979865@ibl/State",
+      "amount": 22527.99,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 145809.29,
+      "mode": "CMSTRANSACTION",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-06",
+      "description": "UPI/443221477451/Payment fromPh/ns979865@ibl/State Bank Of I/IBLaa031e82a66540b883c62ef2e3275ab8/ Bank Of I/IBLaa031e82a66540b883c62ef2e3275ab8/ UPI/443270218456/Payment fromPh/ns979865@ibl/State",
+      "amount": 25000,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 120809.29,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-06",
+      "description": "UPI/443270218456/Payment fromPh/ns979865@ibl/State Bank Of I/IBL4c647c5a6da1470cb807c83e1b689b81/ Bank Of I/IBL4c647c5a6da1470cb807c83e1b689b81/ UPI/443205075939/Payment fromPh/8503053652@axl/State",
+      "amount": 25000,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 95809.29,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-06",
+      "description": "UPI/443205075939/Payment fromPh/8503053652@axl/State Bank Of I/AXLb772e73ef7a14583b8ab37dab0250ce0 Bank Of I/AXLb772e73ef7a14583b8ab37dab0250ce0 UPI/443287502542/Payment fromPh/9875030772@ybl/Axis",
+      "amount": 7000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 102809.29,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-06",
+      "description": "UPI/443287502542/Payment fromPh/9875030772@ybl/Axis Bank Ltd./IBL6a0d0b85759c4deca8b7d814fe77e3e6/ Bank Ltd./IBL6a0d0b85759c4deca8b7d814fe77e3e6/ UPI/443210386680/Payment fromPh/8740098800@axl/State",
+      "amount": 12400,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 90409.29,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-06",
+      "description": "UPI/443210386680/Payment fromPh/8740098800@axl/State Bank Of I/AXL3b95c1ac970540198660d79fd1981c74 Bank Of I/AXL3b95c1ac970540198660d79fd1981c74 UPI/406636371841/house rentpaym/credpay@icici/ICICI",
+      "amount": 15000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 105409.29,
+      "mode": "",
+      "category": "rent_and_credit_card"
+    },
+    {
+      "date": "2024-03-06",
+      "description": "UPI/406636371841/house rentpaym/credpay@icici/ICICI Bank/ICICIV2ocCra5pAzGrbzaHa4q63SnCc06lF Bank/ICICIV2ocCra5pAzGrbzaHa4q63SnCc06lF UPI/443203737153/payment on CRED/cred.club@axisb/Axis",
+      "amount": 49000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 154409.29,
+      "mode": "",
+      "category": "rent_and_credit_card"
+    },
+    {
+      "date": "2024-03-06",
+      "description": "UPI/443203737153/payment on CRED/cred.club@axisb/Axis Bank Ltd./ACDzQwXv0mvGwe31Yb7VqDZ/ Bank Ltd./ACDzQwXv0mvGwe31Yb7VqDZ/ UPI/443238119810/Payment fromPh/8740098800@axl/State",
+      "amount": 78953,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 75456.29,
+      "mode": "",
+      "category": "rent_and_credit_card"
+    },
+    {
+      "date": "2024-03-06",
+      "description": "UPI/443238119810/Payment fromPh/8740098800@axl/State Bank Of I/AXL978ddb484d644f4ab95d3295312b86cf Bank Of I/AXL978ddb484d644f4ab95d3295312b86cf UPI/443215442826/Payment fromPh/8740098800@axl/State",
+      "amount": 25000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 100456.29,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-06",
+      "description": "UPI/443215442826/Payment fromPh/8740098800@axl/State Bank Of I/AXL6e6e71f8df7a49a3adf49156a13a9d76 Bank Of I/AXL6e6e71f8df7a49a3adf49156a13a9d76 UPI/406608817020/payment on CRED/cred.club@axisb/Axis",
+      "amount": 25000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 125456.29,
+      "mode": "",
+      "category": "rent_and_credit_card"
+    },
+    {
+      "date": "2024-03-06",
+      "description": "UPI/406608817020/payment on CRED/cred.club@axisb/Axis Bank Ltd./ACDB17EYJ3NNrx1N7wyVe6p/ Bank Ltd./ACDB17EYJ3NNrx1N7wyVe6p/ UPI/443244896665/Payment fromPh/8740098800@axl/State",
+      "amount": 34563.44,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 90892.85,
+      "mode": "",
+      "category": "rent_and_credit_card"
+    },
+    {
+      "date": "2024-03-06",
+      "description": "UPI/443244896665/Payment fromPh/8740098800@axl/State Bank Of I/AXL856cff41f523492194945281f7c23613 Bank Of I/AXL856cff41f523492194945281f7c23613 UPI/443216854675/payment on CRED/cred.club@axisb/Axis",
+      "amount": 25000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 115892.85,
+      "mode": "",
+      "category": "rent_and_credit_card"
+    },
+    {
+      "date": "2024-03-06",
+      "description": "UPI/443216854675/payment on CRED/cred.club@axisb/Axis Bank Ltd./ACDELrNjVeyeQwaqyNvVe8g/ Bank Ltd./ACDELrNjVeyeQwaqyNvVe8g/ UPI/406660939715/UPI Mandate/ipo.bhinvitbse@/HDFCBANK",
+      "amount": 30487,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 85405.85,
+      "mode": "",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-06",
+      "description": "UPI/406660939715/UPI Mandate/ipo.bhinvitbse@/HDFCBANK LTD LTD",
+      "amount": 15000,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 70405.85,
+      "mode": "",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-07",
+      "description": "CMS/ CMS3982396162/ANGELONE LIMITED CLIENT A C",
+      "amount": 55000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 125405.85,
+      "mode": "CMSTRANSACTION",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-07",
+      "description": "BIL/NEFT/HS92406735905853/NA/Yogesh kum/PUNB0271800 UPI/443321279981/Payment fromPh/6350480380@ybl/Paytm",
+      "amount": 95000,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 30405.85,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-07",
+      "description": "UPI/443321279981/Payment fromPh/6350480380@ybl/Paytm Payments/YBLd54d788dd0a84cecb10309f4f2c52a2e Payments/YBLd54d788dd0a84cecb10309f4f2c52a2e UPI/443357584397/Payment fromPh/8740098800@axl/State",
+      "amount": 400,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 30805.85,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-07",
+      "description": "UPI/443357584397/Payment fromPh/8740098800@axl/State Bank Of I/AXL11ffd151cd904471b8299fa7a3e6ca3e Bank Of I/AXL11ffd151cd904471b8299fa7a3e6ca3e tal: ngs Account XXXXXXXX3560 in INRfor the periodMarch 01, 2024- PARTICULARS CMS/ GROWW WITHDRAW REQ SUBODH KUMAR",
+      "amount": 15000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 45805.85,
+      "mode": "",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-08",
+      "description": "CMS/ GROWW WITHDRAW REQ SUBODH KUMAR SAINI/NEXTBI SAINI/NEXTBI UPI/443470868022/Payment fromPh/8740098800@axl/State",
+      "amount": 187076.31,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 232882.16,
+      "mode": "CMSTRANSACTION",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-08",
+      "description": "UPI/443470868022/Payment fromPh/8740098800@axl/State Bank Of I/AXL5b559ea6adec4e3380239c8321c8c1a7 Bank Of I/AXL5b559ea6adec4e3380239c8321c8c1a7 UPI/443458151511/Payment fromPh/8740098800@axl/State",
+      "amount": 25000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 257882.16,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-08",
+      "description": "UPI/443458151511/Payment fromPh/8740098800@axl/State Bank Of I/AXL6d28372e5d8c472d95d1305abeb7c72c Bank Of I/AXL6d28372e5d8c472d95d1305abeb7c72c UPI/443479401990/Payment fromPh/8740098800@axl/State",
+      "amount": 25000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 282882.16,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-08",
+      "description": "UPI/443479401990/Payment fromPh/8740098800@axl/State Bank Of I/AXL484d82218ae94c2fb558e72132ed72f4 Bank Of I/AXL484d82218ae94c2fb558e72132ed72f4 UPI/443449949168/Payment fromPh/8740098800@axl/State",
+      "amount": 25000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 307882.16,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-08",
+      "description": "UPI/443449949168/Payment fromPh/8740098800@axl/State Bank Of I/AXL48d1dd422726419abe365cd566d11f49 Bank Of I/AXL48d1dd422726419abe365cd566d11f49 UPI/443562640003/Payment fromPh/7405079899@ybl/Bank",
+      "amount": 10000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 317882.16,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-09",
+      "description": "UPI/443562640003/Payment fromPh/7405079899@ybl/Bank of Baroda/IBL0abe61f67e394c3ebf648e4414ebf935/ of Baroda/IBL0abe61f67e394c3ebf648e4414ebf935/ UPI/443569854403/Payment fromPh/8740098800@axl/State",
+      "amount": 147,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 317735.16,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-09",
+      "description": "UPI/443569854403/Payment fromPh/8740098800@axl/State Bank Of I/AXL3d319ce119124fb3958a10cf8a569cce Bank Of I/AXL3d319ce119124fb3958a10cf8a569cce UPI/443597781496/Payment fromPh/8740098800@axl/State",
+      "amount": 25000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 342735.16,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-09",
+      "description": "UPI/443597781496/Payment fromPh/8740098800@axl/State Bank Of I/AXLd50397d65f1841069d082457b959692b Bank Of I/AXLd50397d65f1841069d082457b959692b UPI/443579726340/Payment fromPh/8740098800@axl/State",
+      "amount": 25000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 367735.16,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-09",
+      "description": "UPI/443579726340/Payment fromPh/8740098800@axl/State Bank Of I/AXL726256676bc64f1fbe4fd2588929d16e Bank Of I/AXL726256676bc64f1fbe4fd2588929d16e MMT/IMPS/407016776440/NA551385083/Yogesh",
+      "amount": 25000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 392735.16,
+      "mode": "",
+      "category": "travel"
+    },
+    {
+      "date": "2024-03-11",
+      "description": "MMT/IMPS/407016776440/NA551385083/Yogesh kum/PUNB0271800 kum/PUNB0271800 UPI/443775182766/Payment from",
+      "amount": 355000,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 37735.16,
+      "mode": "MOBILEBANKING",
+      "category": "travel"
+    },
+    {
+      "date": "2024-03-11",
+      "description": "UPI/443775182766/Payment from Ph/9482323834@axl/Canara Bank/AXL6731da4fe58b4522a84247461d3acc1d Bank/AXL6731da4fe58b4522a84247461d3acc1d UPI/407201672895/Payment fromAi/airtelprepaidRA/Airtel",
+      "amount": 4000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 41735.16,
+      "mode": "",
+      "category": "utilities"
+    },
+    {
+      "date": "2024-03-12",
+      "description": "UPI/407201672895/Payment fromAi/airtelprepaidRA/Airtel Payments/APBa5bec92d58414ac2aff836988ccd624b Payments/APBa5bec92d58414ac2aff836988ccd624b CMS/ GROWW WITHDRAW REQ SUBODH KUMAR",
+      "amount": 29,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 41706.16,
+      "mode": "",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-12",
+      "description": "CMS/ GROWW WITHDRAW REQ SUBODH KUMAR SAINI/NEXTBI SAINI/NEXTBI MMT/IMPS/407209205106/NA551385083/Yogesh",
+      "amount": 360128.18,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 401834.34,
+      "mode": "CMSTRANSACTION",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-12",
+      "description": "MMT/IMPS/407209205106/NA551385083/Yogesh kum/PUNB0271800 kum/PUNB0271800 UPI/407211896342/Payment fromAi/airtelprepaidRA/Airtel",
+      "amount": 350000,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 51834.34,
+      "mode": "MOBILEBANKING",
+      "category": "travel"
+    },
+    {
+      "date": "2024-03-12",
+      "description": "UPI/407211896342/Payment fromAi/airtelprepaidRA/Airtel Payments/APB2e42e5787f07486ea45b7d5c735a7168 Payments/APB2e42e5787f07486ea45b7d5c735a7168 UPI/443948933297/payment on CRED/cred.telecom@ax/Axis",
+      "amount": 65,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 51769.34,
+      "mode": "",
+      "category": "rent_and_credit_card"
+    },
+    {
+      "date": "2024-03-13",
+      "description": "UPI/443948933297/payment on CRED/cred.telecom@ax/Axis Bank Ltd./ACDyrX8dPzDq6a9wQYRVDp3/ Bank Ltd./ACDyrX8dPzDq6a9wQYRVDp3/ UPI/407332923721/Paid Via Elemen/growwnbt.elemen/ICICI",
+      "amount": 179,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 51590.34,
+      "mode": "",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-13",
+      "description": "UPI/407332923721/Paid Via Elemen/growwnbt.elemen/ICICI Bank/GP G 20240313098260948553087388916123/ Bank/GP G 20240313098260948553087388916123/ MMT/IMPS/407315166057/IMPS/SUBODH KUM/Punjab",
+      "amount": 50000,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 1590.34,
+      "mode": "",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-13",
+      "description": "MMT/IMPS/407315166057/IMPS/SUBODH KUM/Punjab National National UPI/407316019451/Payment fromAi/airtelprepaidRA/Airtel",
+      "amount": 5000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 6590.34,
+      "mode": "MOBILEBANKING",
+      "category": "travel"
+    },
+    {
+      "date": "2024-03-13",
+      "description": "UPI/407316019451/Payment fromAi/airtelprepaidRA/Airtel Payments/APBab59e2f3ca324e608126f32ed3dbd787 Payments/APBab59e2f3ca324e608126f32ed3dbd787 UPI/407453217632/Collectrequest/ICCLMF@ybl/Yes Bank",
+      "amount": 65,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 6525.34,
+      "mode": "",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-14",
+      "description": "UPI/407453217632/Collectrequest/ICCLMF@ybl/Yes Bank Ltd/YBL8cd5de78dcb84fa5858888df71d17681/ Ltd/YBL8cd5de78dcb84fa5858888df71d17681/",
+      "amount": 4500,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 2025.34,
+      "mode": "",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-14",
+      "description": "CMS/ CMS4008146171/ANGELONE LIMITED CLIENT A C UPI/444027932808/Payment fromPh/8109432389@ybl/Axis",
+      "amount": 16197,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 18222.34,
+      "mode": "CMSTRANSACTION",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-14",
+      "description": "UPI/444027932808/Payment fromPh/8109432389@ybl/Axis Bank Ltd./IBL16b7de0c0b5f4440849eadf18e5dc732/ Bank Ltd./IBL16b7de0c0b5f4440849eadf18e5dc732/ UPI/407587058350/payment on CRED/cred.telecom@ax/Axis",
+      "amount": 15000,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 3222.34,
+      "mode": "",
+      "category": "rent_and_credit_card"
+    },
+    {
+      "date": "2024-03-15",
+      "description": "UPI/407587058350/payment on CRED/cred.telecom@ax/Axis Bank Ltd./ACDLvMj7Jj94D G MwG6MVNBK/ Bank Ltd./ACDLvMj7Jj94D G MwG6MVNBK/ CMS/ GROWW WITHDRAW REQ SUBODH KUMAR",
+      "amount": 666,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 2556.34,
+      "mode": "",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-16",
+      "description": "CMS/ GROWW WITHDRAW REQ SUBODH KUMAR SAINI/NEXTBI SAINI/NEXTBI UPI/407621241902/Payment fromPh/srajrajmouliv4-/Union",
+      "amount": 59224.45,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 61780.79,
+      "mode": "CMSTRANSACTION",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-16",
+      "description": "UPI/407621241902/Payment fromPh/srajrajmouliv4-/Union Bank of I/IBLc0b2b32f49e14e35bec32f4817d23ea6 Bank of I/IBLc0b2b32f49e14e35bec32f4817d23ea6 UPI/444286426417/payment on CRED/cred.telecom@ax/Axis",
+      "amount": 70,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 61710.79,
+      "mode": "",
+      "category": "rent_and_credit_card"
+    },
+    {
+      "date": "2024-03-16",
+      "description": "UPI/444286426417/payment on CRED/cred.telecom@ax/Axis Bank Ltd./ACDDXbyqJNkmMemjWX7PLeN/ Bank Ltd./ACDDXbyqJNkmMemjWX7PLeN/ MMT/IMPS/407807769952/NA551385083/Yogesh",
+      "amount": 301,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 61409.79,
+      "mode": "",
+      "category": "rent_and_credit_card"
+    },
+    {
+      "date": "2024-03-18",
+      "description": "MMT/IMPS/407807769952/NA551385083/Yogesh kum/PUNB0271800 kum/PUNB0271800 UPI/444462589974/Payment fromPh/7025460549@ybl/State",
+      "amount": 50000,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 11409.79,
+      "mode": "MOBILEBANKING",
+      "category": "travel"
+    },
+    {
+      "date": "2024-03-18",
+      "description": "UPI/444462589974/Payment fromPh/7025460549@ybl/State Bank Of I/YBLc829d7ea8d364632883c74363ce28c3b Bank Of I/YBLc829d7ea8d364632883c74363ce28c3b UPI/407856064810/Payment fromPh/paytmqr1g3mk664/Yes",
+      "amount": 500,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 11909.79,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-18",
+      "description": "UPI/407856064810/Payment fromPh/paytmqr1g3mk664/Yes Bank Ltd/IBL1cd9faae62024246a5c78167ed99702d/ Bank Ltd/IBL1cd9faae62024246a5c78167ed99702d/",
+      "amount": 35,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 11874.79,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-18",
+      "description": "CMS/ CMS4019053857/ANGELONE LIMITED CLIENT A C MMT/IMPS/407822253263/NA551385083/Subodh",
+      "amount": 94811.3,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 106686.09,
+      "mode": "CMSTRANSACTION",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-18",
+      "description": "MMT/IMPS/407822253263/NA551385083/Subodh Kum/PUNB0271800 Kum/PUNB0271800 CMS/ GROWW WITHDRAW REQ SUBODH KUMAR",
+      "amount": 50000,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 56686.09,
+      "mode": "MOBILEBANKING",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-19",
+      "description": "CMS/ GROWW WITHDRAW REQ SUBODH KUMAR SAINI/NEXTBI SAINI/NEXTBI UPI/407985547218/UPI Payment/arati.menon@ici/ICI C I",
+      "amount": 33308.5,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 89994.59,
+      "mode": "CMSTRANSACTION",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-19",
+      "description": "UPI/407985547218/UPI Payment/arati.menon@ici/ICI C I Bank/ICIb364d7c503b448be835dd7c3668ffac4 Bank/ICIb364d7c503b448be835dd7c3668ffac4",
+      "amount": 5000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 94994.59,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-19",
+      "description": "CMS/ CMS4019599735/ANGELONE LIMITED CLIENT A C UPI/407925074065/Paid Via Elemen/growwnbt.elemen/ICICI",
+      "amount": 961.7,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 95956.29,
+      "mode": "CMSTRANSACTION",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-19",
+      "description": "UPI/407925074065/Paid Via Elemen/growwnbt.elemen/ICICI Bank/GP G 20240319042407749579126449632299/ Bank/GP G 20240319042407749579126449632299/ MMT/IMPS/407910751999/IMPS/SUBODH KUM/Punjab",
+      "amount": 80000,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 15956.29,
+      "mode": "",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-19",
+      "description": "MMT/IMPS/407910751999/IMPS/SUBODH KUM/Punjab National National UPI/407993284647/Paid Via Elemen/growwnbt.elemen/ICICI",
+      "amount": 50000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 65956.29,
+      "mode": "MOBILEBANKING",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-19",
+      "description": "UPI/407993284647/Paid Via Elemen/growwnbt.elemen/ICICI Bank/GP G 20240319517460397020257267497453/ Bank/GP G 20240319517460397020257267497453/ UPI/408112171234/Payment fromPh/bvykalvara4.996/HDF C",
+      "amount": 50000,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 15956.29,
+      "mode": "",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-21",
+      "description": "UPI/408112171234/Payment fromPh/bvykalvara4.996/HDF C BANK LTD/IBL37a3c64561c04b38ae02ea8aceac4d5f/ BANK LTD/IBL37a3c64561c04b38ae02ea8aceac4d5f/ tal: ngs Account XXXXXXXX3560 in INRfor the periodMarch 01, 2024- PARTICULARS UPI/408198061598/Payment fromPh/srajrajmouliv4-/Union",
+      "amount": 90,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 15866.29,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-21",
+      "description": "UPI/408198061598/Payment fromPh/srajrajmouliv4-/Union Bank of I/IBL13095f91f7ba494b835cefeb054edfec Bank of I/IBL13095f91f7ba494b835cefeb054edfec UPI/408180302425/Payment fromPh/gpay-1116954218/Axis",
+      "amount": 88,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 15778.29,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-21",
+      "description": "UPI/408180302425/Payment fromPh/gpay-1116954218/Axis Bank Ltd./IBL153e947df6a24bc7afdce53706c66b2a/ Bank Ltd./IBL153e947df6a24bc7afdce53706c66b2a/ UPI/408145852840/Payment fromPh/paytmqr28100505/Yes",
+      "amount": 50,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 15728.29,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-21",
+      "description": "UPI/408145852840/Payment fromPh/paytmqr28100505/Yes Bank Ltd/IBL6921f989bb074ae2b345ac71dc6e8ca6/ Bank Ltd/IBL6921f989bb074ae2b345ac71dc6e8ca6/ UPI/408148927931/Payment fromPh/9895533833@okbi/Axis",
+      "amount": 18,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 15710.29,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-21",
+      "description": "UPI/408148927931/Payment fromPh/9895533833@okbi/Axis Bank Ltd./IBL52622158368242b3a2e97b5bc0898fb7/ Bank Ltd./IBL52622158368242b3a2e97b5bc0898fb7/ UPI/408164383950/Payment fromPh/asterpharmacy.6/HDFC",
+      "amount": 136,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 15574.29,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-21",
+      "description": "UPI/408164383950/Payment fromPh/asterpharmacy.6/HDFC BANK LTD/IBL97ec01f5333842309ea33fd5eedcb63e/ BANK LTD/IBL97ec01f5333842309ea33fd5eedcb63e/ UPI/444884409195/Payment fromPh/8281731967@ibl/Indian",
+      "amount": 296.64,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 15277.65,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-22",
+      "description": "UPI/444884409195/Payment fromPh/8281731967@ibl/Indian Bank/IBL2ae7903b7dda47a79fcbf97b8df6f7ee/ Bank/IBL2ae7903b7dda47a79fcbf97b8df6f7ee/ UPI/408217606789/Payment fromPh/paytm-73256976@/Yes",
+      "amount": 800,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 14477.65,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-22",
+      "description": "UPI/408217606789/Payment fromPh/paytm-73256976@/Yes Bank Ltd/IBL11c4748b457349da917c549385eecb56/ Bank Ltd/IBL11c4748b457349da917c549385eecb56/ UPI/408274021566/Payto BharatPe/BHARATPE9072430/Yes",
+      "amount": 213.15,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 14264.5,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-22",
+      "description": "UPI/408274021566/Payto BharatPe/BHARATPE9072430/Yes Bank Ltd/IBL9fee939ec18746dc836860948f535152/ Bank Ltd/IBL9fee939ec18746dc836860948f535152/ UPI/444849517624/Payment fromPh/Q768531382@ybl/Yes",
+      "amount": 78,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 14186.5,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-22",
+      "description": "UPI/444849517624/Payment fromPh/Q768531382@ybl/Yes Bank Ltd/IBLf9cbe47ba43b43c4b55c315c56d1b32c/ Bank Ltd/IBLf9cbe47ba43b43c4b55c315c56d1b32c/ UPI/408286683224/Payment fromPh/paytm-73256976@/Yes",
+      "amount": 45,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 14141.5,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-22",
+      "description": "UPI/408286683224/Payment fromPh/paytm-73256976@/Yes Bank Ltd/IBL5640f99d9e3449efaea2c196ac45779b/ Bank Ltd/IBL5640f99d9e3449efaea2c196ac45779b/ UPI/444800507829/Payment fromPh/Q013238208@ybl/Yes",
+      "amount": 189,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 13952.5,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-22",
+      "description": "UPI/444800507829/Payment fromPh/Q013238208@ybl/Yes Bank Ltd/IBL4b70b1260d9c42029cfa846a0bc992cf/ Bank Ltd/IBL4b70b1260d9c42029cfa846a0bc992cf/ UPI/408203728692/Payment fromPh/brideprincess97/Axis",
+      "amount": 145,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 13807.5,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-22",
+      "description": "UPI/408203728692/Payment fromPh/brideprincess97/Axis Bank Ltd./IBLad062563fe9343c7a969db3ed73bb803/ Bank Ltd./IBLad062563fe9343c7a969db3ed73bb803/ CMS/ GROWW WITHDRAW REQ SUBODH KUMAR",
+      "amount": 120,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 13687.5,
+      "mode": "",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-22",
+      "description": "CMS/ GROWW WITHDRAW REQ SUBODH KUMAR SAINI/NEXTBI SAINI/NEXTBI CMS/ GROWW WITHDRAW REQ SUBODH KUMAR",
+      "amount": 30000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 43687.5,
+      "mode": "CMSTRANSACTION",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-22",
+      "description": "CMS/ GROWW WITHDRAW REQ SUBODH KUMAR SAINI/NEXTBI SAINI/NEXTBI UPI/444916645247/Paid via CRED/9079726610@axis/State",
+      "amount": 50000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 93687.5,
+      "mode": "CMSTRANSACTION",
+      "category": "investment_and_insurance"
+    },
+    {
+      "date": "2024-03-23",
+      "description": "UPI/444916645247/Paid via CRED/9079726610@axis/State Bank Of I/ACD01HSMFZ4EZWBVYEYP3Y6V0WVN3/ Bank Of I/ACD01HSMFZ4EZWBVYEYP3Y6V0WVN3/ UPI/444911370554/payment on CRED/cred.telecom@ax/Axis",
+      "amount": 25000,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 68687.5,
+      "mode": "",
+      "category": "rent_and_credit_card"
+    },
+    {
+      "date": "2024-03-23",
+      "description": "UPI/444911370554/payment on CRED/cred.telecom@ax/Axis Bank Ltd./ACDGz1BnJWYy9rd67Z909xL/ Bank Ltd./ACDGz1BnJWYy9rd67Z909xL/ UPI/408381715460/Payment fromPh/paytm-73256976@/Yes",
+      "amount": 666,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 68021.5,
+      "mode": "",
+      "category": "rent_and_credit_card"
+    },
+    {
+      "date": "2024-03-23",
+      "description": "UPI/408381715460/Payment fromPh/paytm-73256976@/Yes Bank Ltd/IBLa2d6a7491ced4cb39117a5d801702ab9/ Bank Ltd/IBLa2d6a7491ced4cb39117a5d801702ab9/ UPI/408334338115/Payment fromPh/srajrajmouliv4-/Union",
+      "amount": 573.15,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 67448.35,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-23",
+      "description": "UPI/408334338115/Payment fromPh/srajrajmouliv4-/Union Bank of I/IBL2db6cce45dfc48b1a3861894717181b6 Bank of I/IBL2db6cce45dfc48b1a3861894717181b6 UPI/408307865959/Payto",
+      "amount": 72,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 67376.35,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-23",
+      "description": "UPI/408307865959/Payto BharatPe/BHARATPE.900604/Federal Bank/IBL5accc015fc5e4a10b9d7946259be7f22/ Bank/IBL5accc015fc5e4a10b9d7946259be7f22/ UPI/445007224380/Payment fromPh/Q812138025@ybl/Yes",
+      "amount": 35,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 67341.35,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-25",
+      "description": "UPI/445007224380/Payment fromPh/Q812138025@ybl/Yes Bank Ltd/IBL864d18919a79401880d7d8cc15216a97/ Bank Ltd/IBL864d18919a79401880d7d8cc15216a97/ UPI/408451425616/Payment fromPh/paytm-73256976@/Yes",
+      "amount": 322,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 67019.35,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-25",
+      "description": "UPI/408451425616/Payment fromPh/paytm-73256976@/Yes Bank Ltd/IBL0b3d79e83b224a92ac034bbdf176975d/ Bank Ltd/IBL0b3d79e83b224a92ac034bbdf176975d/ UPI/445003085818/Payment fromPh/hrritik2002@ybl/HDFC",
+      "amount": 629.94,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 66389.41,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-25",
+      "description": "UPI/445003085818/Payment fromPh/hrritik2002@ybl/HDFC BANK LTD/IBLc6a544bfabf446abad928a89de8eeb75/ BANK LTD/IBLc6a544bfabf446abad928a89de8eeb75/ UPI/408419959184/Paid via CRED/8685804714@axis/Punjab",
+      "amount": 490,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 65899.41,
+      "mode": "",
+      "category": "rent_and_credit_card"
+    },
+    {
+      "date": "2024-03-25",
+      "description": "UPI/408419959184/Paid via CRED/8685804714@axis/Punjab National/ACD01HSQJ85YYX3JXXGN3NKG6W0A9/ National/ACD01HSQJ85YYX3JXXGN3NKG6W0A9/ UPI/445011731769/Payment fromPh/Q443961204@ybl/Yes",
+      "amount": 49800,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 16099.41,
+      "mode": "",
+      "category": "rent_and_credit_card"
+    },
+    {
+      "date": "2024-03-25",
+      "description": "UPI/445011731769/Payment fromPh/Q443961204@ybl/Yes Bank Ltd/IBL1564357cf04c4be5bf3be07d3fd6e3be/ Bank Ltd/IBL1564357cf04c4be5bf3be07d3fd6e3be/ UPI/408559273291/Payment fromPh/paytm-73256976@/Yes",
+      "amount": 118,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 15981.41,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-25",
+      "description": "UPI/408559273291/Payment fromPh/paytm-73256976@/Yes Bank Ltd/IBLa0d040255dbd4442bc4c6537c9ba4574/ Bank Ltd/IBLa0d040255dbd4442bc4c6537c9ba4574/ UPI/408574834227/Payment fromPh/paytmqrk5fug5j7/Yes",
+      "amount": 93.37,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 15888.04,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-25",
+      "description": "UPI/408574834227/Payment fromPh/paytmqrk5fug5j7/Yes Bank Ltd/IBL8e29d1d1da444175adbce74619bdba1d/ Bank Ltd/IBL8e29d1d1da444175adbce74619bdba1d/ UPI/408589237082/Payment fromPh/paytmqr11fbrdzy/Yes",
+      "amount": 100,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 15788.04,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-25",
+      "description": "UPI/408589237082/Payment fromPh/paytmqr11fbrdzy/Yes Bank Ltd/IBL924891c47edf462ab218b4a8786cdcb1/ Bank Ltd/IBL924891c47edf462ab218b4a8786cdcb1/ UPI/408666242684/Payment fromPh/bvykalvara4.996/HDF C",
+      "amount": 35,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 15753.04,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-26",
+      "description": "UPI/408666242684/Payment fromPh/bvykalvara4.996/HDF C BANK LTD/IBL9f53db96b4e54bb9ba9af141cde0309a/ BANK LTD/IBL9f53db96b4e54bb9ba9af141cde0309a/ UPI/408628272468/Payment fromPh/paytm-73256976@/Yes",
+      "amount": 444,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 15309.04,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-26",
+      "description": "UPI/408628272468/Payment fromPh/paytm-73256976@/Yes Bank Ltd/IBL91adc7da53fa4bf48faa0e4ade12b137/ Bank Ltd/IBL91adc7da53fa4bf48faa0e4ade12b137/ UPI/408666018478/Payment fromPh/9567834442@ybl/South",
+      "amount": 62,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 15247.04,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-26",
+      "description": "UPI/408666018478/Payment fromPh/9567834442@ybl/South Indian Ba/IBLb6a95e7014654682a8f86c072832275d/ Indian Ba/IBLb6a95e7014654682a8f86c072832275d/ UPI/445238243250/Payment fromPh/Q743835683@ybl/Yes",
+      "amount": 600,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 14647.04,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-26",
+      "description": "UPI/445238243250/Payment fromPh/Q743835683@ybl/Yes Bank Ltd/IBL1f23e2638d2547c9bed194be12add431/ Bank Ltd/IBL1f23e2638d2547c9bed194be12add431/ UPI/408612618510/UPI Payment/arati.menon@ici/ICI C I",
+      "amount": 20,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 14627.04,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-26",
+      "description": "UPI/408612618510/UPI Payment/arati.menon@ici/ICI C I Bank/ICIeb02101aaacc4e6989b4e7220a3397b2 Bank/ICIeb02101aaacc4e6989b4e7220a3397b2 UPI/408659558091/Payment fromPh/paytm-73256976@/Yes",
+      "amount": 5000,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 19627.04,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-26",
+      "description": "UPI/408659558091/Payment fromPh/paytm-73256976@/Yes Bank Ltd/IBLf91b567f6eb44985b5ba2caa26ea7901/ Bank Ltd/IBLf91b567f6eb44985b5ba2caa26ea7901/ UPI/408778847209/Payment fromPh/paytm-73256976@/Yes",
+      "amount": 94.85,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 19532.19,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-27",
+      "description": "UPI/408778847209/Payment fromPh/paytm-73256976@/Yes Bank Ltd/IBLeedd8c2d4ffc4d538aaf2458d51bc3ae/ Bank Ltd/IBLeedd8c2d4ffc4d538aaf2458d51bc3ae/ UPI/408705956101/Payment fromPh/paytm-73256976@/Yes",
+      "amount": 194.05,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 19338.14,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-27",
+      "description": "UPI/408705956101/Payment fromPh/paytm-73256976@/Yes Bank Ltd/IBL0d803e6644384c3aba0a06062332449c/ Bank Ltd/IBL0d803e6644384c3aba0a06062332449c/ UPI/445379924554/Payment from",
+      "amount": 233.61,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 19104.53,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-27",
+      "description": "UPI/445379924554/Payment from Ph/9482323834@axl/Canara Bank/IBL52596fd83f40494198864b12d5ac5e83/ Bank/IBL52596fd83f40494198864b12d5ac5e83/ UPI/445400555312/Payment fromPh/7878984527@ibl/State",
+      "amount": 360,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 18744.53,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-28",
+      "description": "UPI/445400555312/Payment fromPh/7878984527@ibl/State Bank Of I/IBL2c986b04eb134b31adeca15ce45f6873/ Bank Of I/IBL2c986b04eb134b31adeca15ce45f6873/ tal: ngs Account XXXXXXXX3560 in INRfor the periodMarch 01, 2024- PARTICULARS NFS/CASH",
+      "amount": 100,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 18644.53,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-29",
+      "description": "NFS/CASH WDL/408919002467/01015054/ERNAKULAM/29-03-241915 WDL/408919002467/01015054/ERNAKULAM/29-03-241915 UPI/408970370170/Payto BharatPe/BHARATPE0791655/Yes",
+      "amount": 1500,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 17144.53,
+      "mode": "OTHERATMS",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-29",
+      "description": "UPI/408970370170/Payto BharatPe/BHARATPE0791655/Yes Bank Ltd/IBL068e619e62874a989bd3fa9ce219043e/ Bank Ltd/IBL068e619e62874a989bd3fa9ce219043e/ UPI/445563476458/Payment fromPh/Q90825511@ybl/Yes",
+      "amount": 28,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 17116.53,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-29",
+      "description": "UPI/445563476458/Payment fromPh/Q90825511@ybl/Yes Bank Ltd/IBL6481b00cdefb407592e14950d6ccca31/ Bank Ltd/IBL6481b00cdefb407592e14950d6ccca31/",
+      "amount": 50,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 17066.53,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-30",
+      "description": "255201503560:Int.Pd:30-12-2023 to 29-03-2024 UPI/409092711516/Payment fromPh/paytmqr11fbrdzy/Yes",
+      "amount": 294,
+      "type": "credit",
+      "bank": "ICICI",
+      "balance": 17360.53,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-30",
+      "description": "UPI/409092711516/Payment fromPh/paytmqr11fbrdzy/Yes Bank Ltd/IBLdb544af3c51a4f1bb396da5199b00da1/ Bank Ltd/IBLdb544af3c51a4f1bb396da5199b00da1/ UPI/445686125039/Payment fromPh/kumarsushil4808/State",
+      "amount": 38,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 17322.53,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-30",
+      "description": "UPI/445686125039/Payment fromPh/kumarsushil4808/State Bank Of I/IBLe6d807a9c8ca4c4d89e549e9871f78e1 Bank Of I/IBLe6d807a9c8ca4c4d89e549e9871f78e1 UPI/409143709123/Payment fromPh/paytmqr11fbrdzy/Yes",
+      "amount": 500,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 16822.53,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-31",
+      "description": "UPI/409143709123/Payment fromPh/paytmqr11fbrdzy/Yes Bank Ltd/IBLe841713c922449fe8e1a78f4791edf0c/ Bank Ltd/IBLe841713c922449fe8e1a78f4791edf0c/ UPI/409117332142/Payment fromPh/paytmqr11fbrdzy/Yes",
+      "amount": 45,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 16777.53,
+      "mode": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-03-31",
+      "description": "UPI/409117332142/Payment fromPh/paytmqr11fbrdzy/Yes Bank Ltd/IBL708d723f42bd458e8bead7515cacd987/ Bank Ltd/IBL708d723f42bd458e8bead7515cacd987/ tal: ts during the period March 01, 2024 - March 31, 2024 F INTEREST PAID/TAX DEDUCTED CREDITED (INR)(INR) 101.000.00 101.000.00 UNT NUMBERMICR CODEIFS XXXXXX3560332229201ICIC00067 n specific consentof the customer Legends for transactions in VAT/MAT/NFS-CashWithdrawal atother Bank's ATM EBA-Transactionat ICICIDirect VPS/IPS-Debit Card Transaction RTGS-RealTime Gross Settlement (Instant transfer aboveRs 2Lakh) This is a system generated statement. Hence, it does notrequire > Debit Card > Card Block / Unblock domestic Savings Accounts w.e.f. Oct 01, 2022. For details,lDo not fall prey to fictitious offers about winning prizes, e-mails and calls. Conditions for Salary Accounts. For details, visitlAs per the prevailing guidelines of (Clause XV).Form 15G/15H will not be treated and Micro and Small Enterprises (MSE): Please visithigher. PAN can be updated online or at the nearest ICICI Bank Branch . > ‘Code of Commitment’. The Code has been framed aslThe address of the customer department. 13,2011, Form 16A (TDS Certificates) will be generatedlPMJJBY Insurance: The insurance premium is collected on behalf of ICICI Prudential Life Insurance Company Limited PAN of the customer needs to be necessarily updated in theplus administration charges are 2018, a premium is charged and Credit Guarantee Corporation (DICGC) up to arenewal premium for all existing and May 31, every year. For amount held by him/her in the same right and same Mantri Social Security Schemes at www.icicibank.com . lPlease refer to the notice on our website regarding the revisions in IMPS charges for certain Current Account variants.For details, visit For details,visit https:// https://www.icicibank.com/content/dam/icicibank/india/managed-assets/docs/service-charges/corporate/current-a ccounts/notice-for-revision-in-imps-charges-for-current-account-customers-1.pdf",
+      "amount": 75,
+      "type": "debit",
+      "bank": "ICICI",
+      "balance": 16702.53,
+      "mode": "",
+      "category": "investment_and_insurance"
+    }
+  ]
+}

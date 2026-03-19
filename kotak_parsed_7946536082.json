@@ -1,0 +1,7039 @@
+{
+  "metadata": {
+    "entity": "ABOVE EDGE TECH SOLUTIONS PVT LTD",
+    "account_no": "7946536082",
+    "crn": "xxxxxx485",
+    "ifsc": "KKBK0003538",
+    "branch": ""
+  },
+  "bank_name": "KOTAK",
+  "account_holder": "ABOVE EDGE TECH SOLUTIONS PVT LTD",
+  "account_number": "7946536082",
+  "summary": {
+    "total_debits": 300588.52,
+    "total_credits": 636526.0100000001,
+    "transaction_count": 780
+  },
+  "transactions": [
+    {
+      "date": "2024-04-01",
+      "description": "UPI/LAXMI KIRANA ST/445877200830/Oid202404011318",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-409273337445",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-01",
+      "description": "UPI/NARESH KUMAR YO/409358820449/Oid202404020112(Value Date: 02-04-2024)",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-409305612677",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-02",
+      "description": "UPI/LAXMI KIRANA ST/445978262614/Oid202404021312",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-409320887580",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-02",
+      "description": "UPI/Zomato Ltd/409329323822/OidZTDUPIC24346",
+      "amount": 191.04,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-409324812683",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2024-04-02",
+      "description": "UPI/HASTI DAIYA/409342108559/Sent from Paytm",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-409348675514",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-03",
+      "description": "UPI/Fresh Fruit Jui/409425363124/NA",
+      "amount": 70,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-409473680251",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-03",
+      "description": "UPI/Adil Khan/446095425982/Oid202404031634",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-409476673841",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-03",
+      "description": "UPI/RAJ SHREE PAN/446021758550/Sent from Paytm",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-409480226927",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-03",
+      "description": "UPI/SATISH KUMAR/446041936655/Oid202404032214",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-409495718878",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-04",
+      "description": "UPI/LAXMI KIRANA ST/446175697734/Oid202404041432",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-409517434610",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-05",
+      "description": "Ins Debit A\\c CF 22500828 dt 05/04/24",
+      "amount": 27.34,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "KCFC-1828332650",
+      "category": "others"
+    },
+    {
+      "date": "2024-04-11",
+      "description": "UPI/MANISHA SHARMA/446850892072/Payment from Ph",
+      "amount": 20000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410259996207",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-11",
+      "description": "UPI/JAIPUR VIDYUT V/410276014541/collect- pay-req",
+      "amount": 5944,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410260188909",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-11",
+      "description": "UPI/MUKESH GURJAR/410244698507/NA",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410260271208",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-11",
+      "description": "UPI/GANESH MEENA/446843285616/Oid202404112224",
+      "amount": 1500,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410260306058",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-12",
+      "description": "PCD/8633/GOOGLE WORKSPACE/2240920005120424/10:37",
+      "amount": 2,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "410205930140",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-04-12",
+      "description": "UPI/Vodafone India /410353903945/NA",
+      "amount": 860.22,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410370511851",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-12",
+      "description": "UPI/MANOJKUMARGODWA/446918220903/Sen t from Paytm",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410374442563",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-12",
+      "description": "PCD/8633/GOOGLEWORKSP/MUMBAI120424/1 2:55",
+      "amount": 713.94,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "410307248580",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-04-12",
+      "description": "UPI/ASHOK KUMAR/410323765841/Pay to BharatPe Savings Account Transactions Description",
+      "amount": 70,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410380236092",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-12",
+      "description": "UPI/Shankar Lal Maw/446977637120/Oid202404121458",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410380377032",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-12",
+      "description": "UPI/Jio/410361569424/Oid23326958999@",
+      "amount": 301,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410383012775",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2024-04-12",
+      "description": "UPI/APPLE MEDIA SER/410373356987/UPI Mandate",
+      "amount": 299,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410383663720",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-04-12",
+      "description": "UPI/SANTOSH KUMAR Y/446988760489/Payment from Ph",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410393613694",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-12",
+      "description": "UPI/Mrs ANSHU SINGH/410363894436/Payment from Ph",
+      "amount": 38,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410395986456",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-13",
+      "description": "UPI/LAXMI KIRANA ST/410424254569/Payment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410417978567",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-13",
+      "description": "Recd:IMPS/410416730477/SHASHANK /KKBK/X0912/test",
+      "amount": 10000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "IMPS-410416578163",
+      "category": "others"
+    },
+    {
+      "date": "2024-04-13",
+      "description": "Recd:IMPS/410416730511/SHASHANK /KKBK/X0912/test",
+      "amount": 10000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "IMPS-410416579002",
+      "category": "others"
+    },
+    {
+      "date": "2024-04-13",
+      "description": "UPI/JAIPUR INTERNET/410431357483/Payment from Ph",
+      "amount": 826,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410432965138",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-13",
+      "description": "UPI/PANKAJ KUMAR AG/447009876018/Payment from Ph",
+      "amount": 80,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410433655428",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-13",
+      "description": "UPI/LALITLALWANI/447051607841/Payment from Ph",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410437133189",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-13",
+      "description": "UPI/SATYANARAYAN/483696474068/Oid20240 4132013",
+      "amount": 501,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410437613979",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-13",
+      "description": "UPI/MUSHIR AHAMAD/410448536165/NA",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410438287233",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-13",
+      "description": "UPI/Hemendra Indian/447066266571/Oid202404132032",
+      "amount": 1111,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410438732744",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-13",
+      "description": "UPI/Ramesh Meena/447046428203/Oid202404132049",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410439698442",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-13",
+      "description": "UPI/LA MULTIGRAIN/410443935271/1826440A",
+      "amount": 952,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410444673253",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-14",
+      "description": "UPI/LAXMI KIRANA ST/410577907433/Oid202404141052",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410554652048",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-14",
+      "description": "UPI/Mrs ANSHU SINGH/447173645465/Oid202404141345",
+      "amount": 56,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410561839068",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-14",
+      "description": "UPI/LALITLALWANI/410547369037/Sent from Paytm",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410581025399",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-14",
+      "description": "UPI/NARENDRA UDWANI/410547564493/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410581257470",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-14",
+      "description": "UPI/ASHOK KUMAR BAI/410541713706/NA",
+      "amount": 75,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410586326596",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-15",
+      "description": "UPI/LALITLALWANI/410611769414/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410697443811",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-15",
+      "description": "UPI/MOHDSHAKIRQURES/410615048715/NA",
+      "amount": 200,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410600828876",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-15",
+      "description": "UPI/LAXMI KIRANA ST/410672143990/Oid202404151155",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410600970946",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-15",
+      "description": "UPI/SUNIL KUMAR JET/410640790210/Sent from Paytm",
+      "amount": 630,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410619115949",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-16",
+      "description": "UPI/LALITLALWANI/410712556702/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410732688319",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-16",
+      "description": "UPI/NARENDRA UDWANI/410712831307/NA",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410732981885",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-16",
+      "description": "UPI/CURETINO MALVIY/410704198772/Oid202404161108",
+      "amount": 247,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410733816600",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-16",
+      "description": "UPI/LAXMI KIRANA ST/410774781086/Oid202404161149",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410735440326",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-16",
+      "description": "UPI/Shankar Lal Maw/447386598854/Oid202404161820",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410751094404",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-16",
+      "description": "UPI/ACE BROTHERS RE/483996391185/Oid202404162019",
+      "amount": 278,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410758186231",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-16",
+      "description": "UPI/Jigyasa Bhardwa/447343978014/Oid202404162031",
+      "amount": 1111,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410758864553",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-16",
+      "description": "UPI/MANOJKUMARGODWA/447359024962/Pay ment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410759431703",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-17",
+      "description": "UPI/Abhishek Agarwa/410875886828/Oid202404171038",
+      "amount": 800,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410874677738",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-17",
+      "description": "UPI/LALITLALWANI/410811657341/NA Savings Account Transactions Description",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410874848151",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-17",
+      "description": "UPI/LAXMI KIRANA ST/410877173174/Oid202404171124",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410876389075",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-17",
+      "description": "UPI/Apple Services/410896330798/MandateRequest",
+      "amount": 8700,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410877285756",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-04-17",
+      "description": "UPI/RAHUL MEENA/447425576225/Sent from Paytm",
+      "amount": 190,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410889349194",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-17",
+      "description": "UPI/MANOJKUMARGODWA/447478033355/Pay ment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410890077422",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-17",
+      "description": "UPI/PREETI SAIN/410845101657/Sent from Paytm",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410899297098",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-17",
+      "description": "UPI/KAMLESH KUMAR Y/410846578163/Sent from Paytm",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410800880106",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-17",
+      "description": "UPI/OSWALD/410846865730/Sent from Paytm",
+      "amount": 99,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410801198524",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-17",
+      "description": "UPI/OSWALD/410846940997/Sent from Paytm",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410801284630",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-17",
+      "description": "UPI/KAMLESHMALANI/410847559065/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410801996234",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-18",
+      "description": "UPI/LALITLALWANI/410910298191/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410915634412",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-18",
+      "description": "UPI/LALITLALWANI/410910696926/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410916026421",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-18",
+      "description": "UPI/LAXMI KIRANA ST/447570098891/Oid202404181214",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410918309193",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-18",
+      "description": "UPI/APPLE MEDIA SER/410989603865/UPI Mandate",
+      "amount": 299,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410928619097",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-04-18",
+      "description": "UPI/Kumar Bakers An/410945052664/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410941794797",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-18",
+      "description": "UPI/LA MULTI GRAIN/410948776905/NA",
+      "amount": 4468,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-410946164036",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-19",
+      "description": "UPI/LAXMI KIRANA ST/447672864388/Oid202404191230",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411059784749",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-19",
+      "description": "UPI/PANKAJ KUMAR AG/447623479413/NA",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411071158349",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-19",
+      "description": "UPI/Nandani chandna/447687694689/Oid202404191944",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411078178212",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-19",
+      "description": "UPI/LOST WEEKEND HO/411046945082/NA",
+      "amount": 2087,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411085349963",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-19",
+      "description": "UPI/SARAF MOTORS/447665704075/NA",
+      "amount": 2345,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411088475230",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-20",
+      "description": "UPI/URBANCLAP TECHN/411166039686/Payment for Urb",
+      "amount": 148,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411196002681",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-20",
+      "description": "UPI/MANOJKUMARGODWA/447726632185/Pay ment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411101591783",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-20",
+      "description": "UPI/LAXMI KIRANA ST/447742358083/Oid202404202013",
+      "amount": 45,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411121339977",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-20",
+      "description": "UPI/SAMBHARSA/411147776102/NA",
+      "amount": 2893,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411127933371",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-20",
+      "description": "UPI/NIDHI SHARMA/447745568682/Payment from Ph",
+      "amount": 2893,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411130166992",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-21",
+      "description": "UPI/LALITLALWANI/411219635842/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411240178595",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-21",
+      "description": "UPI/LALITLALWANI/411210099853/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411240647990",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-21",
+      "description": "UPI/M/S.TYRES CLINI/447813339526/NA",
+      "amount": 150,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411243951150",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-21",
+      "description": "UPI/MANOJKUMARGODWA/447832821864/Pay ment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411244392765",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-21",
+      "description": "UPI/JIOFiber Prepai/411225149201/OidW2000054452@",
+      "amount": 706.82,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411245912428",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2024-04-21",
+      "description": "VISA-REFUND/190424/190424/GOOGLE WORKSPACE",
+      "amount": 2,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "FOS2411217770925",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-04-21",
+      "description": "UPI/RAJU CHOUDHARY/447882740209/Payment from Ph",
+      "amount": 880,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411264593515",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-21",
+      "description": "UPI/RAHUL TAK/411246616081/NA",
+      "amount": 150,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411269523431",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-21",
+      "description": "UPI/RAVI SOKHAL SO /411247333035/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411270407536",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2024-04-22",
+      "description": "UPI/LALITLALWANI/411316952902/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411380459732",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-22",
+      "description": "UPI/BHARAT ASWANI/411301920553/Oid202404221141",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411381061655",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-22",
+      "description": "UPI/RAJ DEVI/411301957334/Oid202404221143",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411381144681",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-22",
+      "description": "UPI/MANOJKUMARGODWA/447936149628/Pay Savings Account Transactions Description ment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411383125196",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-22",
+      "description": "UPI/Urban Company/411359930588/Payment for Urb",
+      "amount": 218,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411385057756",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-22",
+      "description": "UPI/PANKAJ KUMAR AG/411343518256/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411308800512",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-23",
+      "description": "Recd:IMPS/411410121355/SHASHANK /KKBK/X0912/test",
+      "amount": 3000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "IMPS-411410309762",
+      "category": "others"
+    },
+    {
+      "date": "2024-04-23",
+      "description": "UPI/LALITLALWANI/411414590271/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411420805339",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-23",
+      "description": "UPI/LALITLALWANI/411414981868/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411421185370",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-23",
+      "description": "UPI/MANOJKUMARGODWA/448076747070/Pay ment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411424375225",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-23",
+      "description": "UPI/PANKAJ KUMAR AG/448025614267/NA",
+      "amount": 105,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411432415707",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-23",
+      "description": "UPI/Dharmveer/411413135867/Payment from Ph",
+      "amount": 550,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411433259881",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-23",
+      "description": "UPI/HARISHKUMARCHAN/448032388371/Pay to BharatPe",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411439632808",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-23",
+      "description": "UPI/LOKESH SAINI/448015783462/Payment from Ph",
+      "amount": 2500,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411446500797",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-23",
+      "description": "UPI/ASHISH JUNEJA/411448579669/NA",
+      "amount": 100,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411446608439",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-24",
+      "description": "UPI/LAXMI KIRANA ST/448173894120/Oid202404241217",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411563482278",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-24",
+      "description": "CASH DEPOSIT BY SELF AT MLNGR 3538",
+      "amount": 27500,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-04-24",
+      "description": "Chrg - Cash Deposit On 24-04-2024",
+      "amount": 92.93,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-04-24",
+      "description": "UPI/PhonePe/448124090942/Payment from Ph",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411564090067",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-24",
+      "description": "UPI/APPLE MEDIA SER/411507883532/UPI Mandate",
+      "amount": 5,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411565055824",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-04-24",
+      "description": "UPI/APPLE MEDIA SER/411507941122/Mandate Refund",
+      "amount": 5,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411565718566",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-04-24",
+      "description": "UPI/GYAN LAL SAIN/411521359428/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411571431742",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-24",
+      "description": "Recd:IMPS/411516181709/SHASHANK /KKBK/X0912/test",
+      "amount": 2000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "IMPS-411516178027",
+      "category": "others"
+    },
+    {
+      "date": "2024-04-24",
+      "description": "UPI/Sunil Sharma/411563015639/Oid202404241639",
+      "amount": 880,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411573172064",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-25",
+      "description": "UPI/LALITLALWANI/411610127591/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411602793907",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-25",
+      "description": "UPI/LALITLALWANI/411610419214/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411603104916",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-25",
+      "description": "UPI/Hemendra Indian/411652598635/Oid202404251159",
+      "amount": 789,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411603588632",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-25",
+      "description": "UPI/SANGEETA ATTREY/448212461657/NA",
+      "amount": 1500,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411605232918",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-25",
+      "description": "UPI/ABOVE EDGE TECH/448214750633/Sent from Paytm",
+      "amount": 1000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411607685263",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-25",
+      "description": "UPI/MANOJKUMARGODWA/448222559955/Pay ment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411608214739",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-25",
+      "description": "UPI/APPLE MEDIA SER/411612135011/UPI Mandate",
+      "amount": 299,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411614336491",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-04-25",
+      "description": "UPI/Coffee Sutra C /484891675608/Oid202404252200",
+      "amount": 446,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411630513487",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-26",
+      "description": "UPI/LALITLALWANI/411715870654/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411741647587",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-26",
+      "description": "UPI/LALITLALWANI/411716159527/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411741959758",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-26",
+      "description": "UPI/MANOJKUMARGODWA/448338776049/Pay ment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411745379472",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-26",
+      "description": "UPI/ASHOK KUMAR VER/484999282951/Oid202404262108",
+      "amount": 150,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411767888680",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-27",
+      "description": "UPI/MANOJKUMARGODWA/448421436298/Pay ment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411885408453",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-27",
+      "description": "Recd:IMPS/411819327482/SHASHANK /KKBK/X0912/test",
+      "amount": 298,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "IMPS-411819595256",
+      "category": "others"
+    },
+    {
+      "date": "2024-04-27",
+      "description": "UPI/RAJESH GURJAR/411841297637/NA Savings Account Transactions Description",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411813537984",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-28",
+      "description": "UPI/MANOJKUMARGODWA/448575899901/Pay ment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411926270017",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-28",
+      "description": "UPI/Kumar Bakers An/411947652032/NA",
+      "amount": 75,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-411953418589",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-29",
+      "description": "UPI/MANGAL SINGH RA/412052683037/Oid202404291017",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-412062183702",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-29",
+      "description": "UPI/PANKAJ YADAV/448613274347/NA",
+      "amount": 7,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-412070270064",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-29",
+      "description": "UPI/ASHOK KUMAR BAI/448638278339/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-412086756713",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-30",
+      "description": "UPI/LALITLALWANI/448717324016/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-412107927510",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-04-30",
+      "description": "UPI/MANISHA MEENA/448778801490/Oid202404301259",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-412110228514",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-05-03",
+      "description": "UPI/JITENDRA KUMAR/449062030864/Oid202405032321",
+      "amount": 5,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-412475474499",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-05-04",
+      "description": "UPI/LALITLALWANI/449119498900/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-412588355280",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-05-04",
+      "description": "UPI/Mr OM PRAKASH G/412583719580/Payment from Ph",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-412512317694",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-05-05",
+      "description": "Ins Debit A\\c CF 22500828 dt 05/05/24",
+      "amount": 21.44,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "KCFC-1852734830",
+      "category": "others"
+    },
+    {
+      "date": "2024-05-11",
+      "description": "UPI/PRATIK SULANIYA/413228830253/Payment from Ph",
+      "amount": 291,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-413211992148",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-05-11",
+      "description": "UPI/JITENDRA KUMAR/449864384656/Oid202405112052",
+      "amount": 80,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-413222675213",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-05-13",
+      "description": "UPI/LAXMI KIRANA ST/413489392206/Oid202405131659",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-413493575470",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-05-14",
+      "description": "Chrg - Cash Deposit On 14-05-2024",
+      "amount": 207.09,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-05-14",
+      "description": "CASH DEPOSIT BY SELF AT 3538",
+      "amount": 49000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-05-14",
+      "description": "UPI/PhonePe/450199183044/Payment from Ph",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-413525200189",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-05-14",
+      "description": "UPI/VISHAMBHAR DAYA/450115321917/Rent",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-413525266305",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-05-14",
+      "description": "UPI/RAJ SHREE PAN/450139618793/NA",
+      "amount": 45,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-413540996953",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-05-14",
+      "description": "UPI/SAKSHI GIDWANI/413544943324/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-413546767679",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-05-15",
+      "description": "UPI/LAXMI KIRANA ST/450276466383/Oid202405151209",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-413666531515",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-05-15",
+      "description": "UPI/KAMLESHMALANI/413642766476/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-413688334700",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-05-16",
+      "description": "UPI/NARENDRA UDWANI/450312232188/NA",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-413710091014",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-05-16",
+      "description": "UPI/SURAJ KANWAR/450338233076/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-413727691540",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-05-16",
+      "description": "UPI/MUKESH GURJAR/413743239805/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-413733199248",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-05-17",
+      "description": "UPI/RAJ SHREE PAN/450428556488/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-413861209113",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-05-24",
+      "description": "UPI/CGames Customer/414581833145/UPI Intent",
+      "amount": 1,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-414545035338",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-05",
+      "description": "Ins Debit A\\c CF 22500828 dt 05/06/24",
+      "amount": 2.9,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "KCFC-1878094970",
+      "category": "others"
+    },
+    {
+      "date": "2024-06-14",
+      "description": "UPI/SANGEETA ATTREY/416649414504/Sent from Paytm",
+      "amount": 150,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-416653720951",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-14",
+      "description": "PCD/8633/AMAZONAWSESC/MUMBAI140624/2 0:48",
+      "amount": 2,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "416615386451",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2024-06-16",
+      "description": "UPI/SANGEETA ATTREY/416811064110/Sent from Paytm",
+      "amount": 1640,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-416814856603",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-16",
+      "description": "UPI/CHANDRA SHEKHAR/416811096809/NA",
+      "amount": 1640,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-416814883278",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-16",
+      "description": "VISA-REFUND/140624/140624/AMAZON WEB SERVICES",
+      "amount": 2,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "FOS2416825284219",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2024-06-16",
+      "description": "UPI/SANGEETA ATTREY/416823189995/Sent from Paytm",
+      "amount": 6500,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-416824846051",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-16",
+      "description": "UPI/Goibibo/416806092245/Payment from Ph",
+      "amount": 5443,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-416825091592",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2024-06-16",
+      "description": "UPI/APPLE MEDIA SER/416880744855/UPI Mandate",
+      "amount": 5,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-416835753700",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-06-16",
+      "description": "UPI/APPLE MEDIA SER/416880758256/Mandate Refund",
+      "amount": 5,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-416835974819",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-06-17",
+      "description": "UPI/SANGEETA ATTREY/416912745771/Sent from Paytm Savings Account Transactions Description",
+      "amount": 24500,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-416959263015",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-17",
+      "description": "UPI/Goibibo/416958439082/Payment from Ph",
+      "amount": 6960,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-416959613587",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2024-06-17",
+      "description": "UPI/UBER INDIA SYST/416900783065/Payment from Ph",
+      "amount": 266.11,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-416968209648",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2024-06-17",
+      "description": "UPI/The Point/416924043376/NA",
+      "amount": 18,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-416968700236",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-17",
+      "description": "UPI/APPLE MEDIA SER/416982999696/UPI Mandate",
+      "amount": 149,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-416969029864",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-06-17",
+      "description": "UPI/SABITHA ARUN SH/416924477880/NA",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-416969069656",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-17",
+      "description": "UPI/NIRMAL YADAV/453524755275/NA",
+      "amount": 843,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-416969313234",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-18",
+      "description": "UPI/SATEJA SANTOSH /417018125828/Sent from Paytm",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417097251546",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-18",
+      "description": "UPI/GAYATRI VEG COR/417018483874/NA",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417097535808",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-18",
+      "description": "UPI/RESIDENCY SAROV/453613871515/NA",
+      "amount": 7840,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417002072864",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-18",
+      "description": "UPI/RAJEEV KUMAR CH/453657355319/NA",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417002149417",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-18",
+      "description": "UPI/VINOD SAW/453615153569/NA",
+      "amount": 51,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417003176888",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-18",
+      "description": "UPI/RIZWAN ABDUL RA/417170889411/NA(Value Date: 19-06-2024)",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417129286643",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-19",
+      "description": "UPI/RESIDENCY SAROV/417113483549/NA",
+      "amount": 1416,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417136302072",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-19",
+      "description": "UPI/RAJEEV KUMAR CH/417155086917/NA",
+      "amount": 70,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417136352195",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-19",
+      "description": "UPI/MOHAMMAD ANISH /453710097730/Sent from Paytm",
+      "amount": 209,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417141852611",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-19",
+      "description": "UPI/TANYA MAHESH SH/417171563887/UPI",
+      "amount": 4136,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417145948131",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-19",
+      "description": "UPI/SHAILENDRA MITA/453752620696/NA",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417146350655",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-19",
+      "description": "UPI/SHAILENDRA MITA/453752742962/NA",
+      "amount": 45,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417146524299",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-19",
+      "description": "UPI/GAURISHANKAR KU/417125957850/Sent from Paytm",
+      "amount": 406,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417147011644",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-19",
+      "description": "UPI/NARENDRAVAISHAN/453730745619/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417159390830",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-19",
+      "description": "UPI/SHIVAM JOSHI/490364193801/NA",
+      "amount": 145,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417161088831",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-19",
+      "description": "UPI/APPLE MEDIA SER/417290635709/UPI Mandate(Value Date: 20-06-2024)",
+      "amount": 500,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417270439910",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-06-20",
+      "description": "UPI/LAXMI KIRANA ST/417270503729/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417278279724",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-20",
+      "description": "UPI/AMARJEET SINGH /417220779964/NA",
+      "amount": 380,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417286212481",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-20",
+      "description": "UPI/RAJ SHREE PAN/453833432951/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417297037036",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-21",
+      "description": "UPI/JIOFiber Prepai/417326884441/OidW2000061835@",
+      "amount": 1413.64,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417326266803",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2024-06-21",
+      "description": "UPI/LAXMI KIRANA ST/417381841665/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417330782085",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-21",
+      "description": "UPI/Jigyasa Bhardwa/417382620769/NA",
+      "amount": 510,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417331838184",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-21",
+      "description": "UPI/RAJ SHREE PAN/417330196887/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417337676669",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-24",
+      "description": "CASH DEPOSIT BY SELF AT MLNGR 3538",
+      "amount": 30000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-06-24",
+      "description": "Chrg - Cash Deposit On 24-06-2024",
+      "amount": 106.2,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-06-24",
+      "description": "UPI/PhonePe/454237400176/Payment from Ph",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417647260060",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-24",
+      "description": "UPI/UrbanClap Techn/417683995953/Payment from Ph",
+      "amount": 437,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417647886199",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-24",
+      "description": "UPI/igp/417625724144/UPI Transaction",
+      "amount": 994,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417649595036",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-24",
+      "description": "UPI/APPLE MEDIA SER/417604852716/UPI Mandate",
+      "amount": 149,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417653899872",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-06-24",
+      "description": "UPI/GYAN LAL SAIN/490826695009/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417655697780",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-24",
+      "description": "UPI/MS SHREE BAKERS/490827604672/NA",
+      "amount": 45,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417656466313",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-24",
+      "description": "UPI/Ajay Bairwa/490856914445/NA",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417657410211",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-24",
+      "description": "UPI/DINESHKUMARCHAN/490866190291/NA",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417669115933",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-25",
+      "description": "UPI/UrbanClap Techn/417741164781/Refund",
+      "amount": 437,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417796883564",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-25",
+      "description": "UPI/HARI KISHAN DAI/490934500943/NA",
+      "amount": 120,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417706593473",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-25",
+      "description": "Chrg: Debit card annual fee X8633 for 2024 Savings Account Transactions Description TN89514",
+      "amount": 298.99,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "TBMS-1467993674",
+      "category": "bank_charges_and_taxes"
+    },
+    {
+      "date": "2024-06-26",
+      "description": "UPI/Kumar Bakers An/454434915174/NA",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417842867127",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-26",
+      "description": "UPI/SANJAY CHOUDHAR/454487314713/NA",
+      "amount": 32,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417845080132",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-27",
+      "description": "UPI/SANGEETA ATTREY/417926833308/Sent from Paytm",
+      "amount": 2100,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417971728453",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-27",
+      "description": "UPI/PayUMoney BMC C/417988034533/Payment from Ph",
+      "amount": 2899,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417971931018",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-27",
+      "description": "UPI/KAMLESHMALANI/491136138558/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-417988264169",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-28",
+      "description": "UPI/APPLE MEDIA SER/418016667297/UPI Mandate",
+      "amount": 5,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418004311599",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-06-28",
+      "description": "UPI/APPLE MEDIA SER/418016715045/Mandate Refund",
+      "amount": 5,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418004778783",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-06-29",
+      "description": "UPI/RAHUL MANWANI/418117029987/NA",
+      "amount": 45,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418142798201",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-29",
+      "description": "UPI/SHUBHANGI ATTR/418117227760/Sent from Paytm",
+      "amount": 10000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418142961982",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-29",
+      "description": "UPI/PODDAR PETROLEU/418152656155/NA",
+      "amount": 1469,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418143522036",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-29",
+      "description": "UPI/Sharma Tea Hous/418152964335/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418143886196",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-29",
+      "description": "UPI/HDFC FASTag Rec/418154490067/NA",
+      "amount": 1000,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418145765504",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-29",
+      "description": "UPI/MS SHREE GOVERD/418168158805/NA",
+      "amount": 28,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418163798769",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-29",
+      "description": "UPI/APPLE MEDIA SER/418121387327/UPI Mandate",
+      "amount": 499,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418167171242",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-06-29",
+      "description": "UPI/PINKI WO JAGDIS/454737075977/Sent from Paytm",
+      "amount": 350,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418168942431",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-29",
+      "description": "UPI/MS SHREE JI FIL/491339572347/NA",
+      "amount": 510,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418171058925",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-29",
+      "description": "UPI/SUDHIR ATTREY/491334363420/NA",
+      "amount": 6000,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418175637053",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-29",
+      "description": "UPI/NEETU GAUTAM/418144508880/Sent from Paytm",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418175794995",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-06-30",
+      "description": "Int.Pd:7946536082:01-04-2024 to 30-06-2024",
+      "amount": 19,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-07-01",
+      "description": "UPI/PAWAN GUPTA/418338784336/NA",
+      "amount": 70,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418350880689",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-01",
+      "description": "Recd:IMPS/418320329261/SHASHANK /KKBK/X0912/test",
+      "amount": 25,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "IMPS-418320687625",
+      "category": "others"
+    },
+    {
+      "date": "2024-07-01",
+      "description": "UPI/KAMLESHMALANI/491536081261/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418357297071",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-01",
+      "description": "UPI/SACHIN BATUKBHA/418365588220/UPI",
+      "amount": 740,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418361355083",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-01",
+      "description": "UPI/SACHIN BATUKBHA/418365648148/UPI",
+      "amount": 14000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418361418944",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-02",
+      "description": "UPI/AASHA RAM GURJA/418412778104/Sent from Paytm",
+      "amount": 394,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418475149386",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-02",
+      "description": "UPI/R S Jaipur Dair/418413652632/NA",
+      "amount": 100,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418476021772",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-02",
+      "description": "UPI/VISHAMBHAR DAYA/418415240182/NA",
+      "amount": 4660,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418477550289",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-02",
+      "description": "UPI/NITESH KUMAR/418415690884/Sent from Paytm",
+      "amount": 250,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418478005087",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-02",
+      "description": "UPI/Urban Company/418428422531/Payment from Ph",
+      "amount": 437,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418479057690",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-02",
+      "description": "UPI/PRAHLAD KHORWAL/455074060506/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418485476021",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-02",
+      "description": "UPI/PUSHKAR RAJ ARO/418424429885/Sent from Paytm",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418486295917",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-02",
+      "description": "UPI/Jigyasa Bhardwa/418486376452/NA",
+      "amount": 1111,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418488937756",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-02",
+      "description": "UPI/GYAN LAL SAIN/455029924677/NA",
+      "amount": 450,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418491481500",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-02",
+      "description": "UPI/APPLE MEDIA SER/418433412519/UPI Mandate",
+      "amount": 149,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418491689869",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-07-02",
+      "description": "UPI/VISHAMBHAR DAYA/491623953888/NA",
+      "amount": 100,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418495131819",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-02",
+      "description": "UPI/PRAKASH CHAND/455082004942/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418496323866",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-02",
+      "description": "UPI/SHIVRAJ GADRI/455037458545/Payment from Ph",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418497762507",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-02",
+      "description": "UPI/Zomato Online O/418412490260/Pay via Razorpa",
+      "amount": 2437.3,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418409340415",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2024-07-02",
+      "description": "UPI/KAILASH/491672881047/NA Savings Account Transactions Description",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418410677767",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-03",
+      "description": "UPI/Irctc Web Upi/418552054034/NA",
+      "amount": 508.6,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418524745732",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2024-07-03",
+      "description": "UPI/LAXMI KIRANA ST/455174244099/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418526503457",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-03",
+      "description": "UPI/KUMAR BAKERS AN/455121686315/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418536829303",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-03",
+      "description": "UPI/HANUMAN SAHU/491759691269/NA",
+      "amount": 19,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418537742512",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-03",
+      "description": "UPI/ASHOK KUMAR BAI/491722749557/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418538241744",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-04",
+      "description": "UPI/LAXMI KIRANA ST/455275224528/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418676673857",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-04",
+      "description": "UPI/RAJ SHREE PAN/491821352711/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418684485954",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-04",
+      "description": "UPI/HASTI DAIYA/455235151680/NA",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418688687990",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-04",
+      "description": "UPI/PAWAN GUPTA/455236735385/NA",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418690447891",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-04",
+      "description": "UPI/Brajamohan Acha/455288949443/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418690573131",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-04",
+      "description": "UPI/SANGEETA ATTREY/455307152383/NA(Value Date: 05-07- 2024)",
+      "amount": 3700,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418703145590",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-05",
+      "description": "Ins Debit A\\c CF 22500828 dt 05/07/24",
+      "amount": 36.16,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "KCFC-1903590030",
+      "category": "others"
+    },
+    {
+      "date": "2024-07-05",
+      "description": "UPI/SANGEETA ATTREY/418721143523/Sent from Paytm",
+      "amount": 3500,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418719841363",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-05",
+      "description": "UPI/LAXMI KIRANA ST/455375288177/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418720047584",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-05",
+      "description": "UPI/Jigyasa Bhardwa/455376248128/NA",
+      "amount": 1111,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418721131321",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-05",
+      "description": "UPI/RAHUL MEENA/455325298918/NA",
+      "amount": 240,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418725061173",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-05",
+      "description": "UPI/Shiv Ji Gupta/418782042708/NA",
+      "amount": 55,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418728091687",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-05",
+      "description": "UPI/RAJ SHREE PAN/491928454425/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418729006485",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-05",
+      "description": "UPI/GOPAL GUJRATI V/455331161325/Payment from Ph",
+      "amount": 1,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418731776161",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-05",
+      "description": "UPI/AMRIT/455309475313/Payment from Ph",
+      "amount": 40000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418731898953",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-05",
+      "description": "UPI/Amrit/418739099537/Payment from Ph",
+      "amount": 20000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418731919710",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-05",
+      "description": "UPI/Amrit/418764313960/Payment from Ph",
+      "amount": 20000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418731932426",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-05",
+      "description": "UPI/GOVIND KUMAR/418730959191/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418732028144",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-05",
+      "description": "UPI/JITENDRA KUMAR/491998820575/NA",
+      "amount": 165,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418736094892",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-05",
+      "description": "UPI/JITENDRA KUMAR/491998879769/NA",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418736155818",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-05",
+      "description": "UPI/KAILASH RAJPUT/491936201157/NA",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418738469318",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-05",
+      "description": "UPI/CHANDRA SHEKHAR/418741930907/NA",
+      "amount": 1500,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418746356425",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-06",
+      "description": "UPI/PhonePe/455480596784/Payment from Ph",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418850511569",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-06",
+      "description": "Ins Debit A\\c CF 22500828 dt 05/07/24",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "KCFC-1903590031",
+      "category": "others"
+    },
+    {
+      "date": "2024-07-06",
+      "description": "UPI/Godaddy India D/418828851790/collect- pay-req",
+      "amount": 481.44,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418851473738",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-06",
+      "description": "UPI/SACHIN BATUKBHA/418868241083/UPI",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418851817415",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-06",
+      "description": "UPI/LAXMI KIRANA ST/455474843764/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418862614257",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-06",
+      "description": "UPI/RAHUL MANWANI/418829207120/NA",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418867556391",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-06",
+      "description": "UPI/ASHISH JUNEJA/418889564220/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418867671955",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-06",
+      "description": "UPI/RAMBRIJESH/418889715286/NA",
+      "amount": 200,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418867846779",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-06",
+      "description": "UPI/Mr VINOD SING/418835297735/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418875548970",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-06",
+      "description": "UPI/RAKESH KUMAR/455486977579/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418875671482",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-06",
+      "description": "UPI/PANWAR FILLING /418864399607/NA",
+      "amount": 2121,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418877718260",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-06",
+      "description": "UPI/ALKA MEENA/455438070078/NA",
+      "amount": 100,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418879388610",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-07",
+      "description": "UPI/ASHOK KUMAR BAI/418921331414/NA",
+      "amount": 48,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418910805698",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-07",
+      "description": "UPI/IRCTC Web UPI/418922448769/Oid100005096116",
+      "amount": 518.6,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418912295081",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2024-07-07",
+      "description": "UPI/MANISHKUMARGOYA/492128025710/NA",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418919648286",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-07",
+      "description": "UPI/Tikam Das/418982621569/NA",
+      "amount": 200,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418919994177",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-07",
+      "description": "UPI/MEDIHEALTHINC/418939399314/NA",
+      "amount": 38,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418921445925",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-07",
+      "description": "UPI/ISHWAR SAINI S /455598592033/NA Savings Account Transactions Description",
+      "amount": 120,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418921524431",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-07",
+      "description": "UPI/META/418930359359/UPIIntent",
+      "amount": 247.5,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418922748223",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-07",
+      "description": "UPI/Smart Point JAI/455531698545/NA",
+      "amount": 522,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418924608960",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-07",
+      "description": "UPI/RAVI PRAKASH/455533459468/NA",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418926936706",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2024-07-07",
+      "description": "UPI/HOTEL MARIGOLD/418949630090/NA",
+      "amount": 2419,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418933914053",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-07",
+      "description": "UPI/Shri Shyam Tea /418923056195/NA",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-418935118499",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-08",
+      "description": "PCD/8633/GOOGLEWORKSP/MUMBAI080724/1 1:02",
+      "amount": 2530.14,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "419005135385",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-07-08",
+      "description": "UPI/Naresh Kumar Ve/419025715922/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419055361002",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-08",
+      "description": "UPI/LAKSHYA FOOD /455685710825/NA",
+      "amount": 506,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419066640569",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-08",
+      "description": "UPI/SAKSHI GIDWANI/492237572848/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419071498100",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-09",
+      "description": "UPI/Karan Sharma/455720917114/NA",
+      "amount": 45,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419102350527",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-09",
+      "description": "UPI/RAKESH KUMAR YO/455776054558/Payment from Ph",
+      "amount": 150,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419109979811",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-09",
+      "description": "UPI/RAMBRIJESH/455785359888/NA",
+      "amount": 180,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419110621583",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-10",
+      "description": "UPI/Naresh Kumar Ve/419228663619/NA",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419240903142",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-10",
+      "description": "UPI/Mr VINOD SING/419236567450/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419251684401",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-10",
+      "description": "UPI/CURETINO MALVIY/419203966348/Payment from Ph",
+      "amount": 83,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419257553817",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-10",
+      "description": "UPI/Guddi/419212369199/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419257653124",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-10",
+      "description": "UPI/LAKSHMILALJAT/419279988574/Payment from Ph",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419258878837",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-11",
+      "description": "UPI/Mannat Construc/419372939071/NA",
+      "amount": 18,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419380272014",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-11",
+      "description": "UPI/HARISH KUMAR/455918278392/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419382273976",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-11",
+      "description": "UPI/BHAGWAN SAHAY S/419392116427/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419382557585",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-11",
+      "description": "UPI/SACHIN BATUKBHA/419325026564/UPI",
+      "amount": 14700,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419382606468",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-11",
+      "description": "UPI/RAZORPAY ZOMATO/419369249509/Pay via Razorpa",
+      "amount": 1976,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419386681032",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2024-07-11",
+      "description": "UPI/MOHAK KHIMNANI/419323237269/Sent from Paytm",
+      "amount": 1300,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419388847897",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-11",
+      "description": "UPI/GAJNAND SHARMA/419324382400/Sent from Paytm",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419390432890",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-11",
+      "description": "UPI/PAWANRAWAT/492558308087/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419393175207",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-11",
+      "description": "UPI/DHRUV AJMERA/492526687692/NA",
+      "amount": 2000,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419393603579",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-11",
+      "description": "UPI/KAVITASAIN/492528057405/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419395458908",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-11",
+      "description": "UPI/MANISH KUMAR KH/419339263217/NA",
+      "amount": 1440,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419397105686",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-11",
+      "description": "UPI/PANWAR FILLING /419360751939/NA",
+      "amount": 1111,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419397739220",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-11",
+      "description": "UPI/Blinkit/419380040617/Payment from Ph",
+      "amount": 147,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419300029054",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2024-07-11",
+      "description": "UPI/Vi Mobile Bill/492564792046/NA",
+      "amount": 1008.74,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419305511409",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2024-07-11",
+      "description": "UPI/RAZORPAY ZOMATO/419370561175/Pay via Razorpa",
+      "amount": 902.2,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419307955013",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2024-07-11",
+      "description": "UPI/POOJA DASWANI/419492620675/NA(Value Date: 12-07-2024)",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419413140012",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-12",
+      "description": "UPI/NITESH PARIDWAL/419417598628/Sent from Paytm",
+      "amount": 200,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419422949806",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-12",
+      "description": "UPI/MS SAMRAT/456019356090/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419425273578",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-12",
+      "description": "UPI/GOVIND SALES/419490523539/NA",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419425569080",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-12",
+      "description": "UPI/VEERI SINGH BHA/419423773518/Sent from Paytm",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419430866302",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-12",
+      "description": "UPI/PVR INOX Limite/419424012811/NA",
+      "amount": 600,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419431194326",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-12",
+      "description": "UPI/HASTI DAIYA/492628160158/NA",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419436805636",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-12",
+      "description": "UPI/Raman Lal/419464068233/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419441598077",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-12",
+      "description": "UPI/MAHENDRA SHARMA/456065076491/NA",
+      "amount": 55,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419443553258",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-12",
+      "description": "UPI/PODDAR PETROLEU/492666749661/NA Savings Account Transactions Description",
+      "amount": 510,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419446821181",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-12",
+      "description": "UPI/Glacier ice cre/456044034689/NA",
+      "amount": 205,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419454552069",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-12",
+      "description": "UPI/UBER INDIA SYST/419464758451/Payment from Ph",
+      "amount": 18.99,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419454574704",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2024-07-13",
+      "description": "UPI/LAXMI KIRANA ST/456171432892/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419566526507",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-13",
+      "description": "UPI/ABOVE EDGE TECH/419514330722/Collectpay",
+      "amount": 1,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419571486361",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-13",
+      "description": "UPI/FACEBOOK INDIA /419589128790/Payment from Ph",
+      "amount": 200,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419572886817",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-13",
+      "description": "UPI/TULSI DAS/456127484876/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419576195040",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-13",
+      "description": "UPI/RATAN GURJAR SO/419531330973/NA",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419581270865",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-13",
+      "description": "UPI/Mrs Guddi Mee/419531361145/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419581312037",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-14",
+      "description": "UPI/Mr OM PRAKASH G/456248926654/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419630416440",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-14",
+      "description": "UPI/MEDIHEALTHINC/492831914830/NA",
+      "amount": 32,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419635964847",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-15",
+      "description": "REFUND",
+      "amount": 21709.08,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "KCFC-566376790",
+      "category": "others"
+    },
+    {
+      "date": "2024-07-15",
+      "description": "UPI/SACHIN BATUKBHA/419719249723/UPI",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419746889483",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-15",
+      "description": "UPI/LAXMI KIRANA ST/456341301816/NA",
+      "amount": 70,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419778346423",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-16",
+      "description": "UPI/Apple Services/419882546986/APPLAMP",
+      "amount": 149,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419884027102",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-07-16",
+      "description": "UPI/Zomato Online O/419842187218/Payment from Ph",
+      "amount": 249.58,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419896816406",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2024-07-16",
+      "description": "UPI/Smart Point JAI/419895628764/Payment from Ph",
+      "amount": 992.81,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419816193427",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-16",
+      "description": "UPI/RAMBRIJESH/456445526336/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419819775366",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-17",
+      "description": "UPI/Naresh Kumar Ve/456513213152/NA",
+      "amount": 70,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419937914508",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-17",
+      "description": "UPI/RAHUL MEENA/456591943336/Payment from Ph",
+      "amount": 520,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419949284916",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-17",
+      "description": "UPI/ABHISHEK JANGID/456586009605/NA",
+      "amount": 90,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419951898294",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-17",
+      "description": "UPI/Jigyasa Bhardwa/493193655920/NA",
+      "amount": 1111,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419954978119",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-17",
+      "description": "UPI/JAY KRISHAN KUM/456588760288/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-419955493455",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-18",
+      "description": "UPI/BATRAMEDICOS/420010008577/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420076441325",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-18",
+      "description": "UPI/NARENDRA WADHWA/456699258561/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420093652960",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-18",
+      "description": "UPI/ALANKAR MEDICAL/493291752948/NA",
+      "amount": 100,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420096791121",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-19",
+      "description": "UPI/APPLE MEDIA SER/420191879378/UPI Mandate",
+      "amount": 500,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420108172664",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-07-19",
+      "description": "UPI/Naresh Kumar Ve/420122844362/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420122754632",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-19",
+      "description": "UPI/KHANDELWAL REST/420124804209/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420125610552",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-20",
+      "description": "UPI/LAXMI KIRANA ST/420279158910/NA",
+      "amount": 75,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420258642653",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-20",
+      "description": "UPI/ASHOK KUMAR BAI/456819231782/NA",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420260947525",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-20",
+      "description": "UPI/KHANDELWAL REST/420218707908/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420275459431",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-20",
+      "description": "UPI/APOLLO PHARMACY/420240062736/Generating DYNA",
+      "amount": 6,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420288857910",
+      "category": "health_and_wellness"
+    },
+    {
+      "date": "2024-07-21",
+      "description": "UPI/LAXMI KIRANA ST/456970650360/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420302844223",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-21",
+      "description": "UPI/JIOFiber Prepai/420321965825/OidW4000067434@",
+      "amount": 706.82,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420305152308",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2024-07-21",
+      "description": "UPI/Jigyasa Bhardwa/456995044475/NA",
+      "amount": 1111,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420305458259",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-21",
+      "description": "UPI/RAJ SHREE PAN/456925746648/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420311089008",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-21",
+      "description": "UPI/Bhagyashree Med/456930295227/NA",
+      "amount": 160,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420317905061",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-21",
+      "description": "UPI/RAMBRIJESH/456982065682/NA",
+      "amount": 200,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420319003148",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-21",
+      "description": "UPI/MANISHKUMARGOYA/456931218686/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420319293584",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-22",
+      "description": "UPI/META/420415504008/Payment from Ph",
+      "amount": 215,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420442363137",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-22",
+      "description": "UPI/LAXMI KIRANA ST/457078487242/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420444819144",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-22",
+      "description": "UPI/BILLU KUMAR SAI/420483344652/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420452537714",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-22",
+      "description": "UPI/Shri vardhman d/457099436385/NA",
+      "amount": 27,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420457823525",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-23",
+      "description": "UPI/Munna Das/457117651569/Payment from Savings Account Transactions Description Ph",
+      "amount": 500,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420502358239",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-23",
+      "description": "UPI/NARENDRA WADHWA/493799148404/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420503348289",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-23",
+      "description": "UPI/SAMPURNA MEDICO/457133702213/NA",
+      "amount": 180,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420503689982",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-24",
+      "description": "UPI/AMARJEET SINGH /420699732187/NA",
+      "amount": 380,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420620659661",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-24",
+      "description": "UPI/Naresh Kumar Ve/420634969455/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420640039727",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-25",
+      "description": "UPI/UBER INDIA SYST/420765944039/UberRide",
+      "amount": 133.6,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420758476472",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2024-07-25",
+      "description": "UPI/RAJ KUMAR JONWA/420797641414/NA",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420763941244",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-25",
+      "description": "UPI/LALITLALWANI/420719623865/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420764302716",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-25",
+      "description": "UPI/SUMER KUMAR SAI/457370212663/NA",
+      "amount": 150,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420766784513",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-25",
+      "description": "UPI/SUMER KUMAR SAI/457370235625/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420766822006",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-25",
+      "description": "UPI/Hemendra Indian/457352802976/NA",
+      "amount": 750,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420767035185",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-25",
+      "description": "UPI/SONUBAIRWA/493935005748/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420786266875",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-25",
+      "description": "UPI/BHAGAT PAAN BHA/420748659270/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420792573461",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-25",
+      "description": "UPI/MUKESH GURJAR/457400259844/NA(Value Date: 26-07- 2024)",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420895343082",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-26",
+      "description": "Recd:IMPS/420814701863/THE FEDERA/KKBK/X0001/kfznj",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "IMPS-420814685838",
+      "category": "others"
+    },
+    {
+      "date": "2024-07-26",
+      "description": "UPI/JAIPUR VIDYUT V/420818067287/collect- pay-req",
+      "amount": 6225,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420811462845",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-26",
+      "description": "UPI/PODDAR PETROLEU/494058795310/NA",
+      "amount": 2121,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420815282668",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-26",
+      "description": "UPI/Zomato Ltd/420859506599/Zomato Payment",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420827848069",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2024-07-26",
+      "description": "UPI/APOLLO PHARMACY/494034130319/Generating DYNA",
+      "amount": 500,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420831021221",
+      "category": "health_and_wellness"
+    },
+    {
+      "date": "2024-07-26",
+      "description": "UPI/MUKESH GURJAR/457507261028/NA(Value Date: 27-07- 2024)",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420936839097",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-27",
+      "description": "UPI/APPLE MEDIA SER/420920627359/UPI Mandate",
+      "amount": 2399,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420945113640",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-07-27",
+      "description": "UPI/ASHOK KUMAR BAI/420922821499/NA",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420946137910",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-27",
+      "description": "UPI/Zomato Media Pr/420977357794/Zomato Payment",
+      "amount": 2657,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-420976022491",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2024-07-28",
+      "description": "UPI/KAN SINGH/457663344420/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421094938794",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-28",
+      "description": "UPI/RAJU CHOUDHARY/421098651787/NA",
+      "amount": 530,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421099118289",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-28",
+      "description": "UPI/JITENDRA KUMAR/457618241301/NA",
+      "amount": 120,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421099378438",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-28",
+      "description": "UPI/RAJU CHOUDHARY/421040625170/NA",
+      "amount": 870,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421001483749",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-28",
+      "description": "UPI/RANJAN SINGH/457663374362/NA",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421010382373",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-29",
+      "description": "UPI/ASHOK KUMAR BAI/457741481710/NA",
+      "amount": 79,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421126454348",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-29",
+      "description": "UPI/APPLE MEDIA SER/421126752553/Mandate Refund",
+      "amount": 2399,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421127388688",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-07-29",
+      "description": "UPI/CHANDRA PRAKASH/457795584736/NA",
+      "amount": 800,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421128933908",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-29",
+      "description": "UPI/DEEP MONDAL/457797933131/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421130081824",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-29",
+      "description": "Chrg: POS DECL FEE/xx8633/416410650479/120624",
+      "amount": 29.5,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "TBMS-1490451761",
+      "category": "others"
+    },
+    {
+      "date": "2024-07-29",
+      "description": "UPI/Naresh Kumar Ve/421147121333/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421133315608",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-29",
+      "description": "UPI/SARAF MOTORS/421145281038/NA",
+      "amount": 1111,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421133817653",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-29",
+      "description": "UPI/RAJ SHREE PAN/421192264657/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421137906428",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-29",
+      "description": "UPI/Ramesh Meena/421112619690/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421142835370",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-29",
+      "description": "UPI/PANDIT RESTAURA/457768793102/NA",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421143146972",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-30",
+      "description": "UPI/CHANDRA SHEKHAR/457831969366/NA",
+      "amount": 1575,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421268502857",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-30",
+      "description": "UPI/META/421273120432/UPIIntent",
+      "amount": 297.36,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421272354506",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-30",
+      "description": "UPI/APPLE MEDIA SER/421230677223/UPI Savings Account Transactions Description Mandate",
+      "amount": 149,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421272611951",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-07-30",
+      "description": "UPI/Naresh Kumar Ve/457805936417/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421284834108",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-30",
+      "description": "UPI/DEEPESH BANSAL/457838984429/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421288654580",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-30",
+      "description": "UPI/BANTI SHARMA/421206817195/NA",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421292599443",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-31",
+      "description": "UPI/MANISH MEHTA/421329084789/NA",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421312774750",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-31",
+      "description": "UPI/Tanisha season/421304514681/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421313302284",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-31",
+      "description": "UPI/PARIKSHIT AGRAW/421371001691/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421322235826",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-31",
+      "description": "UPI/JATIN TODI/421380463480/Payment from Ph",
+      "amount": 4000,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421323445076",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-31",
+      "description": "UPI/shahid amit bha/421363034964/Payment from Ph",
+      "amount": 1111,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421325206815",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-31",
+      "description": "UPI/Zomato Ltd/421305217537/Zomato Payment",
+      "amount": 100,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421326764335",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2024-07-31",
+      "description": "UPI/Mr MOHAMMAD RE/421366273591/Payment from Ph",
+      "amount": 200,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421326964743",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-31",
+      "description": "UPI/R K POINT/421310056452/Payment from Ph",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421327025081",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-31",
+      "description": "UPI/UDAY SINGH CHHA/457969545846/Payment from Ph",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421334981724",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-07-31",
+      "description": "UPI/Zomato Ltd/421381627033/Zomato Payment",
+      "amount": 4035.5,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421341382270",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2024-08-01",
+      "description": "UPI/ASHOK KUMAR BAI/458062455200/Payment from Ph",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421453798716",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-01",
+      "description": "UPI/LALITLALWANI/458029916373/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421454127916",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-01",
+      "description": "UPI/Mr SOHAN LAL SH/421408964229/Payment from Ph",
+      "amount": 200,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421455398771",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-01",
+      "description": "UPI/Mr SOHAN LAL SH/421461939912/Payment from Ph",
+      "amount": 700,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421455445355",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-01",
+      "description": "UPI/LAXMI KIRANA ST/421429745605/Payment from Ph",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421475555110",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-02",
+      "description": "UPI/Bank Account XX/421513786695/Payment from Ph",
+      "amount": 1000,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421598211035",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-02",
+      "description": "UPI/LAXMI KIRANA ST/421531462060/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421501626618",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-02",
+      "description": "UPI/KHANDELWAL REST/421519560483/Payment from Ph",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421503853268",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-02",
+      "description": "UPI/LAXMI KIRANA ST/421567188660/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421513896756",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-02",
+      "description": "UPI/KAN SINGH/421519946042/Payment from Ph",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421515938801",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-02",
+      "description": "UPI/KHANDELWAL REST/421535709163/Payment from Ph",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421516045603",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-02",
+      "description": "UPI/PODDAR PETROLEU/421553649226/Payment from Ph",
+      "amount": 1111,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421519334300",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-02",
+      "description": "UPI/SANJAY SINGH AN/421526547022/Payment from Ph",
+      "amount": 220,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421520387483",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-02",
+      "description": "UPI/RAJENDRA SHARM/421596204991/Pay to BharatPe",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421524232104",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-02",
+      "description": "UPI/LOVELYBHERWANI/458141530918/Payme nt from Ph",
+      "amount": 2000,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421524524347",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-02",
+      "description": "UPI/ANUJ SINGH/421506127876/Payment from Ph",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421527057752",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-02",
+      "description": "UPI/SHUBHANGI ATTRE/458113749674/Payment from Ph",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421530989779",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-02",
+      "description": "UPI/BheruSinghGurja/421521866161/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421531160366",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-03",
+      "description": "T21750260-47751014 AKUMS 21259824-ASBA",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-08-03",
+      "description": "UPI/KHANDELWAL REST/421635459526/Payment from Ph Savings Account Transactions Description",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421645770369",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-03",
+      "description": "UPI/KAILASH CHAND G/458249060855/Payment from Ph",
+      "amount": 900,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421647961814",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-03",
+      "description": "UPI/KAILASH CHAND G/458247135713/Payment from Ph",
+      "amount": 100,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421651803009",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-03",
+      "description": "UPI/ASHOK KUMAR BAI/458272457296/Payment from Ph",
+      "amount": 70,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421652196283",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-03",
+      "description": "UPI/LAXMI KIRANA ST/421641532908/Payment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421657732235",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-03",
+      "description": "PCD/8633/GOOGLE WORKSPACE CYBS/SI 2240030824/15:44",
+      "amount": 630.34,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "421610933249",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-08-03",
+      "description": "UPI/GUDDI/458207820293/Payment from Ph",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421658572509",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-03",
+      "description": "UPI/GODADDY INDIA D/421649586445/COLLECT",
+      "amount": 214.54,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421661164569",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-03",
+      "description": "UPI/HARI KISHAN DAI/458266654630/Payment from Ph",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421665287187",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-03",
+      "description": "UPI/SEEMA AGARWAL/421660556576/Payment from Ph",
+      "amount": 220,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421666729356",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-03",
+      "description": "UPI/BHAGWANSINGHGUR/458202750711/NA",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421667305638",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-03",
+      "description": "UPI/Mr AJAY DAS/421671455188/NA",
+      "amount": 15,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421670779149",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-03",
+      "description": "UPI/RAM GANESH/421645908532/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421671084979",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-04",
+      "description": "UPI/SARAF MOTORS/421731416367/Payment from Ph",
+      "amount": 510,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421784080896",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-04",
+      "description": "UPI/NARENDRAVAISHAN/458393569441/Paym ent from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421784132508",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-04",
+      "description": "UPI/HEMANT KUMAR/421749116959/Payment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421703527968",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-05",
+      "description": "Ins Debit A\\c CF 22500828 dt 05/08/24",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "KCFC-1927090280",
+      "category": "others"
+    },
+    {
+      "date": "2024-08-05",
+      "description": "UPI/LAXMI KIRANA ST/421886266833/Payment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421837400296",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-05",
+      "description": "UPI/APPLE MEDIA SER/421856256995/UPI Mandate",
+      "amount": 149,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421843485587",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-08-05",
+      "description": "UPI/TULSI DAS/458409254088/Payment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421853498961",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-05",
+      "description": "UPI/RAMAN LAL SHARM/421889773116/Payment from Ph",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421867065381",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-06",
+      "description": "UPI/LAXMI KIRANA ST/421971017882/Payment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421980076709",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-06",
+      "description": "UPI/PRAKASH CHAND/421998822158/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421995555189",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-06",
+      "description": "UPI/SHUBHANGI ATTRE/421994847430/Sent from Paytm",
+      "amount": 15000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421901884533",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-06",
+      "description": "UPI/SEEMA AGARWAL/421997946771/Payment from Ph",
+      "amount": 220,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421903559206",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-06",
+      "description": "UPI/SHYAM JHAMTANI/421970999494/Payment from Ph",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421903745063",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-06",
+      "description": "UPI/ABHISHEK JANGID/421993121148/Payment from Ph",
+      "amount": 160,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421906549686",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-06",
+      "description": "UPI/RAJESH GURJAR/458555092347/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421908780752",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-06",
+      "description": "UPI/Solution Point /421921620251/Payment from Ph",
+      "amount": 15,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-421911014583",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-07",
+      "description": "UPI/SHUBHANGI ATTRE/458656502332/Payment from Ph",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422024261701",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-07",
+      "description": "UPI/ASHOK KUMAR BAI/458687988923/Payment from Ph",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422026656914",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-07",
+      "description": "UPI/AMARJEET SINGH /422011059909/NA",
+      "amount": 380,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422026809985",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-07",
+      "description": "UPI/LAXMI KIRANA ST/422086997774/Payment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422026860900",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-07",
+      "description": "UPI/Apple Services/422064600973/APPLAMP",
+      "amount": 799,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422041416101",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-08-07",
+      "description": "48351489 TRF FROM KS Savings Account Transactions Description",
+      "amount": 17526,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "FCM-240807C2GGHU",
+      "category": "others"
+    },
+    {
+      "date": "2024-08-07",
+      "description": "UPI/LAXMI KIRANA ST/422074072664/Payment from Ph",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422047524211",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-07",
+      "description": "UPI/Naresh Kumar Ve/458637387952/Payment from Ph",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422048444095",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-07",
+      "description": "UPI/RAMAVTAR MEENA/458656233098/NA",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422050431803",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-07",
+      "description": "UPI/BABLU BANJARA/458606020884/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422052635576",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-08",
+      "description": "UPI/LAXMI KIRANA ST/422160925539/Payment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422185115200",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-08",
+      "description": "UPI/Smart Point JAI/422110964190/Payment from Ph",
+      "amount": 802,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422194431842",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-08",
+      "description": "UPI/SAKSHI GIDWANI/458758569330/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422194602893",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-08",
+      "description": "UPI/HEMRAJ PIPRALIY/422186227988/Payment from Ph",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422101946087",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-09",
+      "description": "ATL/8633/622018/SPECIAL CURRENCY ADMIN090824/17:31",
+      "amount": 5000,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "422217016473",
+      "category": "others"
+    },
+    {
+      "date": "2024-08-09",
+      "description": "UPI/LAXMI KIRANA ST/422217024308/Payment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422235464812",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-09",
+      "description": "UPI/GYAN LAL SAIN/458895256795/Payment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422238219123",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-09",
+      "description": "UPI/BHAGWANSINGHGUR/458825505696/Pay ment from Ph",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422238992176",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-09",
+      "description": "UPI/Jigyasa Bhardwa/422201195651/Payment from Ph",
+      "amount": 2121,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422239259614",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-09",
+      "description": "UPI/RAHUL MEENA/458843981392/Payment from Ph",
+      "amount": 1050,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422239746294",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-10",
+      "description": "UPI/Vi Mobile Bill/458928793839/NA",
+      "amount": 860.22,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422358918783",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2024-08-10",
+      "description": "UPI/LAXMI KIRANA ST/422313325910/Payment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422361042299",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-10",
+      "description": "UPI/LAXMI KIRANA ST/422312911563/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422379298199",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-10",
+      "description": "UPI/AKURI/458969997206/NA",
+      "amount": 891,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422391440404",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-10",
+      "description": "UPI/HARIOM PHARMACY/458958700188/NA",
+      "amount": 8,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422395965136",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-10",
+      "description": "UPI/Sitaram/422350281531/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422396578729",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-11",
+      "description": "UPI/LAXMI KIRANA ST/422485447459/Payment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422423205163",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-11",
+      "description": "UPI/CURETINO MALVIY/422454695929/Payment from Ph",
+      "amount": 95,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422423470685",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-11",
+      "description": "UPI/GUDDU SINGH/459088734214/Payment from Ph",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422423608392",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-11",
+      "description": "UPI/RAHUL MEENA/422492216750/NA",
+      "amount": 640,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422431080128",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-12",
+      "description": "UPI/MANISHKUMARGOYA/459112478820/Pay ment from Ph",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422549682930",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-12",
+      "description": "UPI/ASHOK KUMAR BAI/422511733354/NA",
+      "amount": 79,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422549984778",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-12",
+      "description": "UPI/APPLE MEDIA SER/422581567924/UPI Mandate",
+      "amount": 149,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422559241716",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-08-12",
+      "description": "UPI/JITENDRA SINGH /422579584201/Payment from Ph",
+      "amount": 95,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422563310329",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-12",
+      "description": "UPI/MAHENDRA SHARMA/422587782641/Payment from Ph",
+      "amount": 510,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422564691812",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-12",
+      "description": "UPI/SEEMA AGARWAL/422535383023/NA",
+      "amount": 220,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422573290219",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-12",
+      "description": "UPI/SHYAM JHAMTANI/422531545102/NA",
+      "amount": 95,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422573530854",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-12",
+      "description": "UPI/AJAY POONIA/422553447584/NA",
+      "amount": 150,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422576551281",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-13",
+      "description": "UPI/RAJ KUMAR JONWA/422607644512/NA",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422694849296",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-13",
+      "description": "UPI/Masihuddin/422605336598/NA",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422694980447",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-13",
+      "description": "UPI/SANJAY KUMAR ME/459250344242/Sent from Paytm Savings Account Transactions Description",
+      "amount": 2121,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422695216809",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-13",
+      "description": "UPI/RAJ SHREE PAN/459256093387/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422695833991",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-13",
+      "description": "UPI/KAMLESHMALANI/422600353772/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422606296659",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-13",
+      "description": "UPI/RAJ SHREE PAN/422633071903/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422615775578",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-13",
+      "description": "UPI/RAMBRIJESH/459200930985/NA",
+      "amount": 260,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422622362364",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-13",
+      "description": "UPI/ASHOK KUMAR BAI/422676749270/NA",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422622663959",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-13",
+      "description": "UPI/ASHOK KUMAR BAI/459241545154/NA",
+      "amount": 26,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422629125256",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-14",
+      "description": "UPI/BHAGWANSINGHGUR/459360285384/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422740504335",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-14",
+      "description": "UPI/RAJ SHREE PAN/459307764081/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422745771992",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-14",
+      "description": "UPI/ASHOK KUMAR BAI/422776274438/NA",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422752096230",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-14",
+      "description": "UPI/Sudhir Attrey/459357524126/NA",
+      "amount": 2000,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422752834137",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-14",
+      "description": "UPI/RAJ SHREE PAN/422726339489/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422754426639",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-14",
+      "description": "UPI/AJAY POONIA/422729190886/Payment from Ph",
+      "amount": 850,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422764507638",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-14",
+      "description": "UPI/AJAY POONIA/422789316326/NA",
+      "amount": 85,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422764615304",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-14",
+      "description": "UPI/SHIVAM JOSHI/459364493899/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422771609645",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-14",
+      "description": "UPI/ASHOK KUMAR BAI/422734095542/NA",
+      "amount": 112,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422774548372",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-15",
+      "description": "UPI/CHANDRA PRAKASH/459462736696/NA",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422889311053",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-15",
+      "description": "UPI/RAJ SHREE PAN/422890545576/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422890026864",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-15",
+      "description": "UPI/APNATIME TECH P/422886289916/PayviaRazorpay",
+      "amount": 708,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422892114369",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-15",
+      "description": "UPI/LAXMI KIRANA ST/459467909859/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422810809865",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-16",
+      "description": "UPI/Jai shree Moder/422948232639/NA",
+      "amount": 5,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422929319266",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-16",
+      "description": "UPI/VASU DEV ADWAN/422968743846/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422930352390",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-16",
+      "description": "UPI/Mr Jitendra Bai/422904070856/Pay to BharatPe",
+      "amount": 65,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422942368739",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-16",
+      "description": "UPI/ANIL KUMAR/459577786570/NA",
+      "amount": 820,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422948177819",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-16",
+      "description": "UPI/JITENDRA KUMAR/459563603491/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422948265110",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-16",
+      "description": "UPI/Brajamohan Acha/459550444498/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422948314646",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-16",
+      "description": "UPI/JAIPUR DAIRY 74/422962081896/NA",
+      "amount": 90,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422959348225",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-16",
+      "description": "UPI/Ramesh Meena/422954765582/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422961981465",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-16",
+      "description": "UPI/Mr SANJAY KUMAR/459542661951/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-422962554547",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-17",
+      "description": "UPI/VASU DEV ADWAN/423027958719/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423073942330",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-17",
+      "description": "UPI/Naresh Kumar Ve/423038617424/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423085013792",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-17",
+      "description": "UPI/Jigyasa Bhardwa/423009564904/NA",
+      "amount": 2121,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423093864246",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-17",
+      "description": "UPI/Mr SUNIL GODWAN/423051021824/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423094419174",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-17",
+      "description": "UPI/RAKESH KUMAR/423086987119/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423095546414",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-17",
+      "description": "UPI/Sewa Ram Dhanka/459652300439/NA",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423095646719",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-17",
+      "description": "UPI/HOTEL MARIGOLD/423028760199/Payment from Ph",
+      "amount": 2894,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423008379052",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-17",
+      "description": "UPI/JAY KRISHAN KUM/423098238099/NA",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423008766710",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-18",
+      "description": "UPI/VMAYOTECHNOLOGI/459724193393/chair s",
+      "amount": 2250,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423117879285",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-18",
+      "description": "ATL/8633/622018/SPECIAL CURRENCY ADMIN180824/11:02",
+      "amount": 1500,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "423111022675",
+      "category": "others"
+    },
+    {
+      "date": "2024-08-18",
+      "description": "UPI/ASHOK KUMAR BAI/423143642566/NA",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423119603770",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-18",
+      "description": "ATL/8633/622018/SPECIAL CURRENCY ADMIN180824/13:33",
+      "amount": 1000,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "423113019045",
+      "category": "others"
+    },
+    {
+      "date": "2024-08-18",
+      "description": "UPI/Mr SUNIL GODWAN/459727858490/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423127092324",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-18",
+      "description": "UPI/GYAN LAL SAIN/423103584540/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423128012863",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-18",
+      "description": "UPI/YADAV ENTERPRIS/459708580510/NA",
+      "amount": 190,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423133954130",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-18",
+      "description": "UPI/SWAROOP SINGH B/423146358349/NA",
+      "amount": 290,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423137426660",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-18",
+      "description": "UPI/KAMLESHMALANI/423103060912/NA Savings Account Transactions Description",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423141130198",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-18",
+      "description": "UPI/Sitaram/459761420975/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423146202665",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-19",
+      "description": "UPI/APPLE MEDIA SER/423203935084/UPI Mandate",
+      "amount": 500,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423256971601",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-08-19",
+      "description": "UPI/LAXMI KIRANA ST/459857915535/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423270382634",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-19",
+      "description": "UPI/Abhishek Agarwa/423244139268/NA",
+      "amount": 240,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423272608775",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-19",
+      "description": "ATL/8633/622018/SPECIAL CURRENCY ADMIN190824/14:07",
+      "amount": 5500,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "423214022357",
+      "category": "others"
+    },
+    {
+      "date": "2024-08-19",
+      "description": "UPI/ASHOK KUMAR BAI/459878510671/NA",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423273975676",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-19",
+      "description": "UPI/Sunil Sharma/459889770017/NA",
+      "amount": 420,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423278711622",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-19",
+      "description": "UPI/SUNIL KUMAR MEE/423252677442/NA",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423280738797",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-19",
+      "description": "UPI/LAXMI KIRANA ST/423208334853/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423288859781",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-20",
+      "description": "UPI/NARESH KUMAR BA/459907318849/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423306426440",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-20",
+      "description": "UPI/Mr OM PRAKASH G/423344837856/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423318293179",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-20",
+      "description": "UPI/Kishore/459901857453/NA",
+      "amount": 45,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423328225316",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-20",
+      "description": "UPI/Zomato Ltd/423369852015/Zomato Payment",
+      "amount": 3492.9,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423338176039",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2024-08-20",
+      "description": "UPI/ASHOKKUMARSHARM/423371719330/Sen tfromPaytm",
+      "amount": 3462,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423338224930",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-21",
+      "description": "UPI/SHIVAM COMPUTER/423464686382/Verified Mercha",
+      "amount": 54,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423461348711",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-21",
+      "description": "UPI/PODDAR PETROLEU/423464747633/NA",
+      "amount": 2121,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423461754349",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-21",
+      "description": "UPI/Ramesh Meena/423424439999/NA",
+      "amount": 45,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423461970629",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-21",
+      "description": "PCD/8633/GOOGLE WORKSPACE/2240920005210824/17:33",
+      "amount": 3982.73,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "423412825464",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-08-21",
+      "description": "UPI/SUJEET KUMAR/423490521415/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423470893674",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-21",
+      "description": "UPI/Sakir Ali/460014343776/NA",
+      "amount": 260,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423479507256",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-22",
+      "description": "UPI/JIOFiber Prepai/423503813962/OidW0000075523@",
+      "amount": 706.82,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423587171006",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2024-08-22",
+      "description": "UPI/LAXMI KIRANA ST/460110564819/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423589952835",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-22",
+      "description": "UPI/Rupeek/423593730431/PaymentforRPK17",
+      "amount": 1449,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423590958795",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-22",
+      "description": "UPI/VISHNU KUMAR BA/423525199851/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423596123775",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-22",
+      "description": "UPI/AMARJEET SINGH /460146272603/NA",
+      "amount": 560,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423503165652",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-22",
+      "description": "UPI/KISHAN CHAND GY/423526242392/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423503215614",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-22",
+      "description": "UPI/KHANDELWAL REST/423555075330/NA",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423504841734",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-22",
+      "description": "UPI/SHIVAM JOSHI/460110218289/NA",
+      "amount": 45,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423511716365",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-22",
+      "description": "UPI/KAMLESHMALANI/423528791391/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423520059880",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-23",
+      "description": "UPI/ISHWAR SAINI S /423630035360/NA",
+      "amount": 83,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423628984332",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-23",
+      "description": "UPI/ASHOK KUMAR BAI/423630897147/NA",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423634719630",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-23",
+      "description": "UPI/LAXMI KIRANA ST/460231524353/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423634908157",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-23",
+      "description": "UPI/ISHWAR SAINI S /460263597324/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423642135840",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-23",
+      "description": "UPI/LAXMI KIRANA ST/423679217511/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423643303207",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-23",
+      "description": "UPI/SHYAM JHAMTANI/423694759221/NA",
+      "amount": 235,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423652221296",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-23",
+      "description": "UPI/Nandani chandna/460290284961/NA",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423656280734",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-23",
+      "description": "UPI/MANOJ KUMAR GUP/423680074179/NA",
+      "amount": 95,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423658409629",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-23",
+      "description": "UPI/RAHUL MEENA/460208976985/NA",
+      "amount": 280,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423659384963",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-23",
+      "description": "UPI/ASHOK KUMAR MEE/423680291310/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423659500221",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-23",
+      "description": "UPI/Rajesh Sheetlan/423620816926/NA",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423659782311",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-24",
+      "description": "UPI/NARENDRAVAISHAN/460358053920/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423775322143",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-24",
+      "description": "UPI/Jigyasa Bhardwa/423783191367/NA",
+      "amount": 510,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423775720340",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-24",
+      "description": "UPI/RAM KUMAR YADAV/423784867254/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423784795855",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-24",
+      "description": "UPI/Rahul Dhanka/460349254339/NA Savings Account Transactions Description",
+      "amount": 80,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423785079462",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-25",
+      "description": "UPI/SUNIL KUMAR PAR/423889107742/NA",
+      "amount": 45,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423808929825",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-25",
+      "description": "UPI/Mr NAND KISHORE/423843002257/Sent from Paytm",
+      "amount": 150,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423812654847",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-25",
+      "description": "UPI/SAGAR SHARMA/460489757209/NA",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423817187984",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-25",
+      "description": "UPI/SHUBHANGIATTREY/423896496903/Sentfr omPaytm",
+      "amount": 15000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423817408368",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-25",
+      "description": "UPI/DEEPAK SAINI/423891307414/NA",
+      "amount": 45,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423821667171",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-25",
+      "description": "UPI/Harsh Kumar/423891782816/NA",
+      "amount": 500,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423824423153",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-25",
+      "description": "ATL/8633/504492/CAD CIRCLE 2KOTARJIN250824/15:33",
+      "amount": 3000,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "3023",
+      "category": "others"
+    },
+    {
+      "date": "2024-08-25",
+      "description": "UPI/MR DEEPAK RAJWA/423844994455/NA",
+      "amount": 400,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423825710902",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-25",
+      "description": "UPI/CHETAN PRAKASH /460420970025/NA",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423826544551",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-25",
+      "description": "UPI/FALNESH MEENA/460480402013/NA",
+      "amount": 1000,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423840741612",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-25",
+      "description": "UPI/Sunil Singh Had/423846277234/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423841072352",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-26",
+      "description": "UPI/Smart Point JAI/460532788736/NA",
+      "amount": 660.9,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-423958351993",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-27",
+      "description": "UPI/Sudhir Attrey/460687446996/NA",
+      "amount": 2000,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424098154476",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-27",
+      "description": "UPI/Jigyasa Bhardwa/424048900694/NA",
+      "amount": 1111,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424006519212",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-27",
+      "description": "UPI/SEEMA AGARWAL/460660237689/NA",
+      "amount": 525,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424017520195",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-27",
+      "description": "UPI/SEEMA AGARWAL/424072264135/NA",
+      "amount": 15,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424017561658",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-27",
+      "description": "UPI/JITENDRA SINGH /424069593874/NA",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424026119805",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-27",
+      "description": "UPI/Apple Services/424061153220/MandateRequest",
+      "amount": 149,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424029100960",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-08-28",
+      "description": "UPI/LAXMI KIRANA ST/424161736131/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424138524202",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-28",
+      "description": "UPI/MUSHARRAF/424126530073/Pay To MUSHARRA",
+      "amount": 250,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424145784129",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-28",
+      "description": "UPI/ASHOK KUMAR BAI/424110779542/NA",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424146042661",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-28",
+      "description": "UPI/SEEMA AGARWAL/424112940787/NA",
+      "amount": 1060,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424159567857",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-28",
+      "description": "UPI/SHYAM JHAMTANI/460708264481/NA",
+      "amount": 295,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424159954818",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-28",
+      "description": "UPI/SHYAM JHAMTANI/460774477008/NA",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424162921891",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-29",
+      "description": "UPI/LAXMI KIRANA ST/424283965200/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424280911301",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-29",
+      "description": "UPI/RAM PRASAD MEE/424267394542/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424291714232",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-29",
+      "description": "UPI/PODDAR PETROLEU/424271321434/NA",
+      "amount": 1111,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424203307965",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-29",
+      "description": "UPI/Ramesh Meena/424271479118/NA",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424204256220",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-29",
+      "description": "UPI/MUKESH GURJAR/424280151069/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424206166913",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-30",
+      "description": "UPI/Mr OM PRAKASH G/460911470387/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424322387938",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-30",
+      "description": "UPI/JEETENDRA SO PA/424325756962/NA",
+      "amount": 400,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424335191690",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-30",
+      "description": "UPI/Brajamohan Acha/424301986132/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424354308571",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-30",
+      "description": "UPI/Brajamohan Acha/460993972271/NA",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424354429235",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-30",
+      "description": "UPI/APPLE MEDIA SER/424342219655/UPI Mandate",
+      "amount": 449,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424356364240",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-08-31",
+      "description": "UPI/HEMRAJ PIPRALIY/424430774911/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424464638793",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-31",
+      "description": "UPI/SHUBHAM AGRWAL/424412812645/NA",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424473584279",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-31",
+      "description": "UPI/AJAY POONIA/424482972500/NA",
+      "amount": 460,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424480173947",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-31",
+      "description": "UPI/SEEMA AGARWAL/461039711574/NA",
+      "amount": 400,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424482587928",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-31",
+      "description": "UPI/RAJ SHREE PAN/424498982086/NA",
+      "amount": 15,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424486414674",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-31",
+      "description": "UPI/AJAY POONIA/461065468714/NA",
+      "amount": 450,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424487696675",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-08-31",
+      "description": "UPI/Naresh Pareek/461091944818/NA",
+      "amount": 280,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424490022161",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-02",
+      "description": "UPI/JITENDRA SINGH /424605391502/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424692370460",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-03",
+      "description": "UPI/RAJDEEPSHARMA/424736500144/UPI",
+      "amount": 15000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424708724024",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-03",
+      "description": "UPI/SARAF MOTORS/424701611784/NA",
+      "amount": 1111,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424709123286",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-03",
+      "description": "BY CLG INST 14/02-09-24/BANDHAN/JAIPUR",
+      "amount": 5000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-09-03",
+      "description": "UPI/AMARJEET SINGH /424730221177/NA Savings Account Transactions Description",
+      "amount": 480,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424711464355",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-03",
+      "description": "UPI/GOVIND SAHAY VE/424778928361/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424711837866",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-03",
+      "description": "PCD/8633/GOOGLE WORKSPACE CYBS/SI 2240030924/16:09",
+      "amount": 651.36,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "424710042018",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-09-03",
+      "description": "UPI/RAJ SHREE PAN/424703584002/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424723275381",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-03",
+      "description": "PCD/8633/GOOGLE WORKSPACE CYBS/SI 2240030924/17:31",
+      "amount": 1357.12,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "424712454529",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-09-03",
+      "description": "UPI/SEEMA AGARWAL/461344788797/NA",
+      "amount": 540,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424726134705",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-03",
+      "description": "UPI/SEEMA AGARWAL/424756997798/NA",
+      "amount": 160,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424732868067",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-03",
+      "description": "UPI/Apple Services/424793780589/MandateRequest",
+      "amount": 149,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424743910425",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-09-03",
+      "description": "UPI/SHASHANK ATTREY/424758539623/NA",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-424743924692",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-05",
+      "description": "Ins Debit A\\c CF 22500828 dt 05/09/24",
+      "amount": 0.16,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "KCFC-1950900190",
+      "category": "others"
+    },
+    {
+      "date": "2024-09-15",
+      "description": "UPI/RAJDEEPSHARMA/425961365265/UPI",
+      "amount": 900,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-425981044266",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-16",
+      "description": "UPI/APPLE MEDIA SER/426017828004/UPI Mandate",
+      "amount": 449,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-426095709383",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2024-09-16",
+      "description": "UPI/Mr SUNIL GODWAN/462683052374/NA",
+      "amount": 100,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-426003963143",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-16",
+      "description": "UPI/SATVEER/462659184984/NA",
+      "amount": 120,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-426010797900",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-16",
+      "description": "UPI/RAJ SHREE PAN/426000215004/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-426014250107",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-16",
+      "description": "UPI/KAMLESHMALANI/426097370469/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-426033084003",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-16",
+      "description": "UPI/ASHOK KUMAR BAI/462603316851/NA",
+      "amount": 75,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-426033496844",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-17",
+      "description": "UPI/Mr SUNIL GODWAN/462778825212/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-426147655810",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-17",
+      "description": "UPI/SATVEER/462730457459/NA",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-426156104316",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-21",
+      "description": "UPI/PANKAJPACHAURI/647395499718/Payme ntfromPhon",
+      "amount": 20000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-426522228550",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-21",
+      "description": "UPI/SHASHANK ATTREY/790641751692/Payment from Ph",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-426522277418",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-09-30",
+      "description": "Int.Pd:7946536082:01-07-2024 to 30-09-2024",
+      "amount": 154,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "",
+      "category": "others"
+    },
+    {
+      "date": "2024-10-05",
+      "description": "Ins Debit A\\c CF 22500828 dt 05/10/24",
+      "amount": 165,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "KCFC-1974104590",
+      "category": "others"
+    },
+    {
+      "date": "2024-10-09",
+      "description": "UPI/SHASHANKATTREY/428387650465/Sentfro mPaytm",
+      "amount": 12262,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-428360983061",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-10-09",
+      "description": "UPI/SHASHANKATTREY/428348783099/Sentfro mPaytm",
+      "amount": 800,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-428361030455",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-10-09",
+      "description": "UPI/MakeMyTrip/318877495430/PayviaRazorp ay",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-428361031167",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2024-10-09",
+      "description": "UPI/LALITLALWANI/428349797797/NA",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-428363108900",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-10-09",
+      "description": "UPI/BILLU KUMAR SAI/282876947777/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-428383850278",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-10-10",
+      "description": "UPI/SHASHANKATTREY/428434320756/Sentfro mPaytm",
+      "amount": 435,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-428452269763",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-10-10",
+      "description": "UPI/NANDANI SOUNKHI/428466019790/Sent from Paytm",
+      "amount": 435,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-428452320310",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-11-05",
+      "description": "Ins Debit A\\c CF 22500828 dt 05/11/24",
+      "amount": 7,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "KCFC-1996855340",
+      "category": "others"
+    },
+    {
+      "date": "2024-11-15",
+      "description": "UPI/GOHILSACHINKUMA/468676987864/UPI",
+      "amount": 1,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-432061732798",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-11-24",
+      "description": "UPI/PANKAJPACHAURI/204878861391/Payme ntfromPhon",
+      "amount": 3000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-432946866495",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-11-24",
+      "description": "UPI/ABOVE EDGE TECH/432911848840/MB UPI",
+      "amount": 3000,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-432947763813",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-11-25",
+      "description": "UPI/ABOVEEDGETECHSO/433088488362/Sentf romPaytm",
+      "amount": 26800,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-433018769811",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-11-25",
+      "description": "UPI/Kotak Mahindra /433093949178/NA",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-433018886813",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-12-05",
+      "description": "Ins Debit A\\c CF 22500828 dt 05/12/24",
+      "amount": 1,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "KCFC-2019488430",
+      "category": "others"
+    },
+    {
+      "date": "2024-12-05",
+      "description": "UPI/TANYAMAHESHSHAR/434097498356/udha artoboyfrie",
+      "amount": 5000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-434093244831",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-12-05",
+      "description": "UPI/Above Edge Tech/434006857586/NA",
+      "amount": 5000,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-434093284384",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-12-12",
+      "description": "UPI/PANKAJPACHAURI/079684323394/Payme ntfromPhon",
+      "amount": 20000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-434753255099",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-12-12",
+      "description": "UPI/MS GOTHWAL Savings Account Transactions Description COMP/434719701215/Ticket",
+      "amount": 3000,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-434753452661",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2024-12-12",
+      "description": "UPI/SHASHANK ATTREY/434719713325/MB UPI",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-434753520340",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-03",
+      "description": "UPI/SHASHANKATTREY/500339055950/Sentus ingPaytmU",
+      "amount": 27150,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-500337461260",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-03",
+      "description": "UPI/SHASHANK ATTREY/865588505157/Payment from Ph",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-500337552798",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-04",
+      "description": "UPI/SHASHANKATTREY/500571689224/Sentus ingPaytmU(Value Date: 05-01-2025)",
+      "amount": 27150,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-500589609170",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-05",
+      "description": "Ins Debit A\\c CF 22500828 dt 05/01/25",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "KCFC-2040597880",
+      "category": "others"
+    },
+    {
+      "date": "2025-01-05",
+      "description": "UPI/Naresh Kumar Ve/952819733029/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-500504372826",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-06",
+      "description": "UPI/KAN SINGH/500604091979/Sent using Payt",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-500681722786",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-08",
+      "description": "UPI/PUNEETYADAV/132399926355/Paymentfr omPhon",
+      "amount": 410,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-500867363549",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-08",
+      "description": "UPI/GOURAV SAINI/500824835528/Sent using Payt",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-500872614502",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-08",
+      "description": "UPI/VARUN BEDI/500827379546/NA",
+      "amount": 260,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-500882313773",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-08",
+      "description": "UPI/Nandani chandna/027017478199/Payment from Ph",
+      "amount": 120,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-500884942848",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-09",
+      "description": "UPI/SANGEETAATTREYW/500977655885/Sentu singPaytmU",
+      "amount": 5000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-500917397152",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-09",
+      "description": "PCD/8633/GOOGLE WORKSPACE/2240920005090125/15:21",
+      "amount": 1093.93,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "500909105605",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2025-01-09",
+      "description": "UPI/RAM L CHOUDHARY/393128273765/Payment from Ph",
+      "amount": 45,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-500920004132",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-09",
+      "description": "UPI/SARAF MOTORS/500936725092/Sent using Payt",
+      "amount": 1111,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-500921522028",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-09",
+      "description": "UPI/OTP CAFE/500933790184/Sent using Payt",
+      "amount": 85,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-500923811278",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-09",
+      "description": "UPI/ISHWAR SAINI S /500937835613/Sent using Payt",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-500925875946",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-09",
+      "description": "UPI/GOVIND RAM JOTW/500936889064/NA",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-500932815370",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-09",
+      "description": "UPI/Amazon Pay/500940719038/You are paying",
+      "amount": 1268,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-500937165410",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2025-01-10",
+      "description": "UPI/Mr OM PRAKASH G/294086072322/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-501063307424",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-10",
+      "description": "UPI/SANTOSH SEN/441028396305/Payment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-501065400658",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-10",
+      "description": "UPI/Ghanshyam Ghan/463428922418/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-501071071373",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-10",
+      "description": "UPI/ABOVEEDGETECHSO/501050009470/Sent usingPaytmU",
+      "amount": 10000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-501073008772",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-10",
+      "description": "PCI/8633/PLNTSCALE* TEMP HOLD/+1408214100125/16:24",
+      "amount": 3490.93,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "501010769782",
+      "category": "others"
+    },
+    {
+      "date": "2025-01-10",
+      "description": "PCI/8633/PLNTSCALE* TEMP HOLD/+1408214100125/16:26",
+      "amount": 3490.93,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "501010769782",
+      "category": "others"
+    },
+    {
+      "date": "2025-01-10",
+      "description": "UPI/SHASHANK ATTREY/501057637862/NA",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-501097571414",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-11",
+      "description": "UPI/LALITLALWANI/501160617133/Sent using Payt",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-501115804366",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-11",
+      "description": "UPI/RAM KISHORE DA/501100344113/Sent using Payt",
+      "amount": 11,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-501116172524",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-11",
+      "description": "UPI/PANKAJ GUPTA/501161017267/NA",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-501117435491",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-11",
+      "description": "UPI/PANKAJ GUPTA/501100460636/NA",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-501120235220",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-11",
+      "description": "UPI/Naresh Kumar Ve/501166755748/Sent using Payt",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-501124389868",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-11",
+      "description": "UPI/OTP CAFE/448687753352/Payment from Ph",
+      "amount": 45,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-501134253351",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-11",
+      "description": "UPI/OTP CAFE/965656569884/Payment from Ph Savings Account Transactions Description",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-501138319322",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-11",
+      "description": "UPI/JITENDRA SINGH /651730418866/Payment from Ph",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-501141848421",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-22",
+      "description": "RTGS YESBR52025012254458831 DREAM ANIMATORS YES",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "RTGSINW-0083455975",
+      "category": "others"
+    },
+    {
+      "date": "2025-01-22",
+      "description": "SentIMPS502215859229K Digitech/AUBLX2999/KKBKTrans",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "IMPS-502215147337",
+      "category": "others"
+    },
+    {
+      "date": "2025-01-28",
+      "description": "Chrg - Cash Deposit On 28-01-2025",
+      "amount": 59,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "",
+      "category": "others"
+    },
+    {
+      "date": "2025-01-28",
+      "description": "CASH DEPOSIT BY SELF AT SHYAM NAGAR",
+      "amount": 20000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "",
+      "category": "others"
+    },
+    {
+      "date": "2025-01-28",
+      "description": "UPI/Zomato Ltd/502848723950/Zomato Payment",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502849880009",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2025-01-28",
+      "description": "UPI/ZomatoLtd/502819009738/express",
+      "amount": 50,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502855988570",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2025-01-28",
+      "description": "UPI/ZOMATO/502851393001/Sent using Payt",
+      "amount": 2129,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502857319042",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2025-01-28",
+      "description": "UPI/FRAICHEUR RETAI/502854710555/Sent using Payt",
+      "amount": 648,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502866503117",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-28",
+      "description": "UPI/SITA RAM JAT/502856453135/Sent using Payt",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502871538332",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-28",
+      "description": "UPI/Blinkit/502846227799/OidZTBLINUPIC25",
+      "amount": 151,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502873823725",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2025-01-28",
+      "description": "UPI/Zepto/502858166720/Sent using Payt",
+      "amount": 274.32,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502876912812",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2025-01-28",
+      "description": "UPI/ZOMATO/502899313488/Collect Transac",
+      "amount": 300.1,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502879255625",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2025-01-29",
+      "description": "UPI/HDFC FASTag Rec/502961952179/Sent using Payt",
+      "amount": 1000,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502989175622",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-29",
+      "description": "UPI/Zomato Online O/562791810295/Pay via Razorpa",
+      "amount": 325.32,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502996360083",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2025-01-29",
+      "description": "UPI/Zomato Ltd/502933406166/OidZTDUPIC2591D",
+      "amount": 246.82,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502996817073",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2025-01-29",
+      "description": "UPI/ZOMATO/502901430515/Collect Transac",
+      "amount": 213.03,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502996989553",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2025-01-29",
+      "description": "UPI/MOHD HARIS/502961020890/Sent using Payt",
+      "amount": 70,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502902108890",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-29",
+      "description": "UPI/ROHIT YADAV/502962580811/Sent using Payt",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502908724363",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-29",
+      "description": "UPI/MCDONALDS/502962687522/Generating DYNA",
+      "amount": 45,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502909196205",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2025-01-29",
+      "description": "UPI/CELEBRATION BY /502962945861/NA",
+      "amount": 2158,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502910255893",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-29",
+      "description": "UPI/ADMIRABLE PRIDE/502905439072/Sent using Payt",
+      "amount": 3103,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502923893183",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-29",
+      "description": "UPI/PANKAJ BAKERS/502974516482/Sent using Payt",
+      "amount": 270,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-502927102226",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-30",
+      "description": "UPI/Pradeep Kumar/503076310566/NA",
+      "amount": 45,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503058575897",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-30",
+      "description": "UPI/Mr SUNIL GODWAN/503085876948/Sent using Payt",
+      "amount": 45,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503062610568",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-30",
+      "description": "UPI/BALDEV SINGH CH/503076906933/Sent using Payt",
+      "amount": 32,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503071596611",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-30",
+      "description": "UPI/BALDEV SINGH CH/503006663502/Sent using Payt",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503071667101",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-31",
+      "description": "UPI/ISHWAR SAINI S /503192644485/Sent using Payt",
+      "amount": 90,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503184353402",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-31",
+      "description": "Chrg - Cash Deposit On 31-01-2025",
+      "amount": 79.65,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "",
+      "category": "others"
+    },
+    {
+      "date": "2025-01-31",
+      "description": "CASH DEPOSIT BY SELF AT MLNGR 3538",
+      "amount": 15000,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "",
+      "category": "others"
+    },
+    {
+      "date": "2025-01-31",
+      "description": "UPI/VASU DEV GIDWAN/503197029356/Sent using Payt",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503196881801",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-31",
+      "description": "UPI/Above Edge Tech/503182686789/Sent using Payt",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503196959362",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-31",
+      "description": "UPI/ZOMATO/503111755599/Collect Transac",
+      "amount": 191.57,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503109433909",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2025-01-31",
+      "description": "UPI/SACHINKUMAR BAT/503186501731/NA",
+      "amount": 1500,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503112546960",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-31",
+      "description": "UPI/GOVIND RAM JOTW/503105845477/Sent using Payt",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503122348019",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-01-31",
+      "description": "UPI/APPLE MEDIA SER/503113292636/UPI Mandate",
+      "amount": 279,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503128166063",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2025-02-01",
+      "description": "UPI/BANTI KUMAR JA/503210797116/Sent Savings Account Transactions Description using Payt",
+      "amount": 100,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503239305471",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-02-01",
+      "description": "UPI/Naresh Kumar Ve/503214898266/Sent using Payt",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503251863423",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-02-01",
+      "description": "UPI/ZOMATO/503217970515/Collect Transac",
+      "amount": 67.32,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503277645819",
+      "category": "food_and_dining"
+    },
+    {
+      "date": "2025-02-02",
+      "description": "UPI/Godaddy India D/503323144356/collect- pay-req",
+      "amount": 1196.66,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503397441048",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-02-02",
+      "description": "UPI/Naresh Kumar Ve/503331065334/Sent using Payt",
+      "amount": 41,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503302436102",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-02-02",
+      "description": "UPI/NIRMALSINGH/503332526629/Sent using Payt",
+      "amount": 90,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503307021166",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-02-02",
+      "description": "UPI/ISHWAR SAINI S /503350606576/Sent using Payt",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503323609780",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-02-02",
+      "description": "UPI/MAHENDRA KUMAR /503338137689/Sent using Payt",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503323719455",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-02-02",
+      "description": "UPI/RAJDEEP SHARMA/503315361045/NA",
+      "amount": 5000,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503337492418",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-02-03",
+      "description": "UPI/Naresh Kumar Ve/503401461355/Sent using Payt",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503459615162",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-02-03",
+      "description": "UPI/RAJ SHREE PAN/503453370926/Sent using Payt",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-503472535577",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-02-05",
+      "description": "Ins Debit A\\c CF 22500828 dt 05/02/25",
+      "amount": 3.28,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "KCFC-2061209230",
+      "category": "others"
+    },
+    {
+      "date": "2025-02-26",
+      "description": "UPI/ABOVEEDGETECHSO/505739432910/Sent usingPaytmU",
+      "amount": 27260,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-505765946258",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-02-26",
+      "description": "UPI/PhonePe/729968154931/Payment from Ph",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-505765954357",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2025-03-05",
+      "description": "Ins Debit A\\c CF 22500828 dt 05/03/25",
+      "amount": 1,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "KCFC-2081128990",
+      "category": "others"
+    },
+    {
+      "date": "2025-03-31",
+      "description": "Int.Pd:7946536082:01-01-2025 to 31-03-2025 End of Statement one month from the date of receipt of the statement. This is a system generated report and does not require signature and stamp. Account Summary For assistance, reach out to us at: Shivam Business Centre, Kalgiri Road,Malviya Nagar., Jaipur-302017, Rajasthan, India, 0141- Kotak Mahindra Bank Ltd. | CIN: L65110MH1985PLC038137 Important Information Commonly Used Narrations",
+      "amount": 4,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "",
+      "category": "others"
+    }
+  ]
+}

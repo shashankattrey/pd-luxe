@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ChartBar,
+  User,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -28,6 +29,7 @@ const navItems = [
   { href: "/dashboard/card-vault", icon: CreditCard, label: "Card Vault" },
   { href: "/dashboard/advisor", icon: Bot, label: "AI Advisor" },
   { href: "/dashboard/compare", icon: BarChart3, label: "Comparison Lab" },
+  { href: "/dashboard/profile", icon: User, label: "Profile" },
   {
     href: "/dashboard/wealth-advisor",
     icon: ChartBar,

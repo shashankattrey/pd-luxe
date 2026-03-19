@@ -1,0 +1,1288 @@
+{
+  "metadata": {
+    "entity": "ABOVE EDGE TECH SOLUTIONS PVT LTD",
+    "account_no": "9549800020",
+    "crn": "xxxxxx697",
+    "ifsc": "KKBK0003538",
+    "branch": ""
+  },
+  "bank_name": "KOTAK",
+  "account_holder": "ABOVE EDGE TECH SOLUTIONS PVT LTD",
+  "account_number": "9549800020",
+  "summary": {
+    "total_debits": 18209.03,
+    "total_credits": 36620.719999999994,
+    "transaction_count": 141
+  },
+  "transactions": [
+    {
+      "date": "2026-02-07",
+      "description": "Recd:IMPS/603808611820/CASHFREE P/KKBK/X6991/Cashf",
+      "amount": 1.05,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "IMPS-603808018412",
+      "category": "others"
+    },
+    {
+      "date": "2026-02-11",
+      "description": "DEUTH02604290055 FLIPKART INTERNET PRIVATE LIMITED",
+      "amount": 879.99,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "NEFTINW-1488899965",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2026-02-11",
+      "description": "DEUTH026042A06G5 FLIPKART INTERNET PRIVATE LIMITED",
+      "amount": 830.25,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "NEFTINW-1488909144",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2026-02-13",
+      "description": "DEUTH02604496026 FLIPKART INTERNET PRIVATE LIMITED",
+      "amount": 2075.62,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "NEFTINW-1491181371",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2026-02-16",
+      "description": "DEUTH02604790266 FLIPKART INTERNET PRIVATE LIMITED",
+      "amount": 1610.86,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "NEFTINW-1493779077",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2026-02-16",
+      "description": "DEUTH026047A042J FLIPKART INTERNET PRIVATE LIMITED",
+      "amount": 2525.77,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "NEFTINW-1493785331",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2026-02-16",
+      "description": "UPI/LALITLALWANI/981182949791/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604781937066",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-16",
+      "description": "UPI/Krishna Paint/471160218575/Payment from Ph",
+      "amount": 120,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604782513925",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-16",
+      "description": "UPI/Hemendra Indian/658468990692/Payment from Ph",
+      "amount": 610,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604783465936",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-16",
+      "description": "UPI/DADU DAYAL MISH/989282711680/Payment from Ph",
+      "amount": 750,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604784249478",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-16",
+      "description": "UPI/MANJU CHOUDHARY/574844758910/Payment from Ph",
+      "amount": 48,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604794913036",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-16",
+      "description": "UPI/PARNAMI BROTHER/851699548447/Payment from Ph",
+      "amount": 202,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604795099344",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-16",
+      "description": "UPI/SACHIN SHARMA/395165871423/Payment from Ph",
+      "amount": 78,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604796523877",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-16",
+      "description": "UPI/VIJENDRA SINGH /678276482760/Payment from Ph",
+      "amount": 180,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604712315122",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-16",
+      "description": "UPI/Mr Om Prakash M/661392198132/Payment from Ph",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604712420496",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-16",
+      "description": "UPI/Mrs ANITA KUMAR/641327257409/UPI",
+      "amount": 49,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604732078133",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-17",
+      "description": "UPI/LALITLALWANI/576130060234/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604867187454",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-17",
+      "description": "UPI/Krishna Paint/291753104499/Payment from Ph",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604868062246",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-17",
+      "description": "UPI/KAMAL MAHAWAR/077499559660/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604875305090",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-18",
+      "description": "DEUTH02604999376 FLIPKART INTERNET Current Account Transactions Description PRIVATE LIMITED",
+      "amount": 910.96,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "NEFTINW-1496093189",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2026-02-18",
+      "description": "DEUTH026049A06B4 FLIPKART INTERNET PRIVATE LIMITED",
+      "amount": 4877.29,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "NEFTINW-1496098025",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2026-02-18",
+      "description": "UPI/AMARJEET SINGH /287663606090/Payment from Ph",
+      "amount": 440,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604930155256",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-18",
+      "description": "UPI/MAMTA LALWANI/618803817748/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604930454487",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-18",
+      "description": "UPI/Krishna Paint/900124283122/Payment from Ph",
+      "amount": 120,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604931049324",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-18",
+      "description": "UPI/Jasveer Singh/117044222469/Payment from Ph",
+      "amount": 1200,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604931585238",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-18",
+      "description": "UPI/OM HARDWARE/379831069518/Payment from Ph",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604932535021",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-18",
+      "description": "UPI/SHIVAM COMPUTER/637988150791/UPI",
+      "amount": 24,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604935367849",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-18",
+      "description": "UPI/APPLE MEDIA SER/102735931930/Execution test",
+      "amount": 149,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604941734083",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2026-02-18",
+      "description": "UPI/KAMAL MAHAWAR/458685771212/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604951625924",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-18",
+      "description": "UPI/9358269381ptyes/431122454458/Paymen t from Ph",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604953434842",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-18",
+      "description": "UPI/RAJDEEP SHARMA/641527140419/UPI",
+      "amount": 500,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604965768339",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-18",
+      "description": "UPI/ASHOK KUMAR/935777220860/Payment from Ph",
+      "amount": 620,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604966270253",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-18",
+      "description": "UPI/RAJDEEP SHARMA/297079510559/Payment from Ph",
+      "amount": 500,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604966698908",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-18",
+      "description": "UPI/DOLATMAHAWAR/885263752674/Payment from Ph",
+      "amount": 37,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604975904535",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2026-02-18",
+      "description": "UPI/PRAVEEN KUMAR G/573392720560/Payment from Ph",
+      "amount": 47,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604980028227",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-18",
+      "description": "UPI/Apple Services/102738811381/APPLAMP",
+      "amount": 179,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-604984797606",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2026-02-19",
+      "description": "UPI/LALITLALWANI/900707952687/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605003305390",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-19",
+      "description": "UPI/Jasveer Singh/136217155379/Payment from Ph",
+      "amount": 1200,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605003611422",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-19",
+      "description": "UPI/SHIVAM COMPUTER/773303745069/UPI",
+      "amount": 9,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605004787537",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-19",
+      "description": "UPI/Jaipur Dairy 74/882644719103/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605012211540",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-19",
+      "description": "UPI/KAMLESH KUMAR /682867911179/Payment from Ph",
+      "amount": 72,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605013705223",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-19",
+      "description": "UPI/VIMAL KUMAR/888834837301/Payment from Ph",
+      "amount": 12,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605016145096",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-19",
+      "description": "UPI/GOUTAM KUMAR SW/874609633195/Payment from Ph",
+      "amount": 69,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605017854459",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-19",
+      "description": "UPI/NAVRATNA SINGH /421793421695/Payment from Ph",
+      "amount": 510,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605031517180",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-19",
+      "description": "UPI/VIVEK SHARMA/694258977932/Payment from Ph",
+      "amount": 54,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605042176083",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-19",
+      "description": "UPI/Apple Services/102744217951/Online Refund",
+      "amount": 179,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605044156109",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2026-02-19",
+      "description": "UPI/Apple Services/102744451136/APPLAMP",
+      "amount": 89,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605046919125",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "DEUTH02605180872 FLIPKART INTERNET PRIVATE LIMITED",
+      "amount": 9385.14,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "NEFTINW-1498132180",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "DEUTH026051A0YCO FLIPKART INTERNET PRIVATE LIMITED",
+      "amount": 4423.1,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "NEFTINW-1498200495",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/MANJU CHOUDHARY/109508175313/Payment from Ph",
+      "amount": 21,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605176317616",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/MANISH KUMAR MA/199820323166/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605190699361",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/SHAHEED BASTI R/592261659924/Payment from Ph",
+      "amount": 1111,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605191213003",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/Shahrukh Khan/326443604563/Payment Current Account Transactions Description from Ph",
+      "amount": 500,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605193598595",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/Guddu Kureshi/222110648660/Payment from Ph",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605194672776",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/HEMRAJ SHARMA/352389683908/Payment from Ph",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605195198148",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/7014178004ptyes/911759206456/Paymen t from Ph",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605196033717",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/Govind Khatik/081600562863/Payment from Ph",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605196560469",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/ROHIT KOOLWAL/300185230667/Payment from Ph",
+      "amount": 40,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605196999185",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/Sanju Benwal/611787919822/Payment from Ph",
+      "amount": 80,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605197266740",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/BHAGWAN SAHAY P/097542528392/Payment from Ph",
+      "amount": 90,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605197443232",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/9351261251ptyes/947090553927/Paymen t from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605197726404",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/VARISH/798717540930/Payment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605198054024",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/AISHA PARVEEN/272117790440/Payment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605198397717",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/SAID/644885581963/Payment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605198594485",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/PURAN CHAND NAR/460348235213/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605100908148",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/HARSH SAHU/983591654914/Payment from Ph",
+      "amount": 540,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605105675255",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/Sunita/230509671275/Payment from Ph",
+      "amount": 64,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605109773620",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-20",
+      "description": "UPI/LEENA MEWARA/195663402200/Payment from Ph",
+      "amount": 280,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605113687992",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-21",
+      "description": "UPI/KAMAL MAHAWAR/904659720796/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605259061234",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-21",
+      "description": "UPI/Mr KAMLESH KUMA/945606052462/Payment from Ph",
+      "amount": 76,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605260604427",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-21",
+      "description": "UPI/Abhinav Kumar C/282281481283/Payment from Ph",
+      "amount": 49,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605262513159",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-21",
+      "description": "UPI/Mr KAMLESH KUMA/245312080084/Payment from Ph",
+      "amount": 74,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605263032955",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-21",
+      "description": "UPI/KAVITASAIN/242724256193/Payment from Ph",
+      "amount": 50,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605272983169",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-21",
+      "description": "UPI/SWAROOP SINGH/656392063559/Payment from Ph",
+      "amount": 440,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605275930801",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-21",
+      "description": "UPI/CHAI ADDA/917041779042/Payment from Ph",
+      "amount": 86,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605277584221",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-21",
+      "description": "UPI/SATYANARAYAN/553573061423/Payment from Ph",
+      "amount": 130,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605281018168",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-22",
+      "description": "UPI/KAMAL MAHAWAR/031087077808/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605320718804",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-22",
+      "description": "UPI/Pankaj Soni/012660173964/Payment from Ph",
+      "amount": 70,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605322693640",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-22",
+      "description": "UPI/OMPRAKASH SHARM/815243424172/Payment from Ph",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605323992673",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-22",
+      "description": "UPI/RADHA DEVI PALI/919869239102/Payment from Ph",
+      "amount": 15,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605324148404",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2026-02-22",
+      "description": "UPI/YUVRAJ/664285314988/Payment from Ph",
+      "amount": 81,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605326061389",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-22",
+      "description": "UPI/OTP CAFE/245237365818/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605331904768",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-22",
+      "description": "UPI/SATYANARAYAN/763815890026/Payment from Ph",
+      "amount": 180,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605334183471",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-22",
+      "description": "UPI/PODDAR_PETROLEU/566402690802/Paym ent from Ph",
+      "amount": 1111,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605334924302",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-22",
+      "description": "UPI/OTP CAFE/617365347839/Payment from Ph Current Account Transactions Description",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605339475874",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-22",
+      "description": "UPI/ASHOK KUMAR/847008766751/Payment from Ph",
+      "amount": 500,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605342853364",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-22",
+      "description": "UPI/KAMLESH KUMAR S/939190438577/Payment from Ph",
+      "amount": 110,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605344474968",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-23",
+      "description": "DEUTH026054A08RO FLIPKART INTERNET PRIVATE LIMITED",
+      "amount": 1561.2,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "NEFTINW-1500755827",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2026-02-23",
+      "description": "DEUTH026054A0HF1 FLIPKART INTERNET PRIVATE LIMITED",
+      "amount": 2303.08,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "NEFTINW-1500760651",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2026-02-23",
+      "description": "UPI/Shivam Sunderam/339869908798/Payment from Ph",
+      "amount": 18,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605485758940",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-23",
+      "description": "UPI/KISHAN SINGH/607056879602/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605495343238",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-23",
+      "description": "UPI/UBER INDIA SYST/833427775695/PaymentToUBERIN",
+      "amount": 73.03,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605496298789",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2026-02-23",
+      "description": "UPI/PLASTIC CENTRE/420069214089/Payment from Ph",
+      "amount": 132,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605497619207",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-23",
+      "description": "UPI/VIKRAM SINGH/423990240240/Payment from Ph",
+      "amount": 72,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605499267594",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-23",
+      "description": "UPI/ANT RAM/815873868496/Payment from Ph",
+      "amount": 0,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605400162555",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-23",
+      "description": "UPI/OTP CAFE/364692733482/Payment from Ph",
+      "amount": 80,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605415362400",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-24",
+      "description": "UPI/MANISHA KHILWAN/324122412607/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605551048762",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-24",
+      "description": "UPI/GOPINATH KACHOL/378584763351/Payment from Ph",
+      "amount": 160,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605555764632",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-24",
+      "description": "UPI/MURLIDHAR/725607000827/Payment from Ph",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605555862946",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-24",
+      "description": "UPI/HIMANSHU GUPTA/511270143844/Payment from Ph",
+      "amount": 200,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605556328454",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-24",
+      "description": "UPI/GULAB CHAND MEH/743666902625/Payment from Ph",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605559328415",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-24",
+      "description": "UPI/9358269381ptyes/236806495539/Paymen t from Ph",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605559784719",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-24",
+      "description": "UPI/ARUN PARASHER/007223638383/Payment from Ph",
+      "amount": 60,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605559846059",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-24",
+      "description": "UPI/APPLE MEDIA SER/102772375636/Execution test",
+      "amount": 149,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605566984621",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2026-02-24",
+      "description": "UPI/MANISH KUMAR MA/429318208845/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605581143296",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-25",
+      "description": "DEUTH026056A06PQ FLIPKART INTERNET PRIVATE LIMITED",
+      "amount": 199.78,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "NEFTINW-1502977999",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2026-02-25",
+      "description": "UPI/MANISH KUMAR MA/862138319773/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605624747500",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-25",
+      "description": "UPI/PRAKASH CHAND/088082459576/Payment from Ph",
+      "amount": 48,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605636142813",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-25",
+      "description": "UPI/AUTO FIX POINT/541676306788/Payment from Ph",
+      "amount": 400,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605643204422",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-25",
+      "description": "UPI/NEERAJ/895335244952/Payment from Ph",
+      "amount": 270,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605654384483",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-25",
+      "description": "UPI/SONU GURJAR/597578878934/Payment from Ph",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605654662065",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-25",
+      "description": "UPI/BABA SPECIAL PA/691415480184/Payment from Ph",
+      "amount": 35,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605654768718",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-25",
+      "description": "UPI/KTC BY KHANDELW/434372286669/Payment from Ph",
+      "amount": 17,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605663858859",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-25",
+      "description": "UPI/OTP CAFE/711725222193/Payment from Ph",
+      "amount": 43,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605666086997",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-25",
+      "description": "UPI/OTP CAFE/710047094551/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605667508819",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-25",
+      "description": "UPI/OTP CAFE/674059150637/Payment from Ph Current Account Transactions Description",
+      "amount": 10,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605668025731",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-26",
+      "description": "UPI/Shivam Sunderam/326906848418/Payment from Ph",
+      "amount": 6,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605795352248",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-26",
+      "description": "UPI/RAM L CHOUDHARY/941954493466/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605707058878",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-26",
+      "description": "UPI/SHASHI KANT SHA/342957484523/Payment from Ph",
+      "amount": 69,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605708915217",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-26",
+      "description": "UPI/ATUL PRATAP SIN/417054978574/Payment from Ph",
+      "amount": 67,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605711309234",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-26",
+      "description": "UPI/Mr OM PRAKASH G/799049300247/Payment from Ph",
+      "amount": 13,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605722640272",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-26",
+      "description": "AXISCN1265111607 MEESHO TECHNOLOGIES PRIVATE LIMIT",
+      "amount": 1442,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "NEFTINW-1504566565",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2026-02-26",
+      "description": "UPI/LEENA SINGH/421555693063/Payment from Ph",
+      "amount": 200,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605733211215",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-26",
+      "description": "UPI/Shivam Sunderam/906092922963/Payment from Ph",
+      "amount": 12,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605733934229",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-26",
+      "description": "UPI/ISHWAR SAINI/562423489030/Payment from Ph",
+      "amount": 80,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605734559959",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-26",
+      "description": "UPI/RELIANCE JIO IN/328119792196/JIO20BR000DAQM6",
+      "amount": 239,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605741116283",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2026-02-27",
+      "description": "DEUTH02605830526 FLIPKART INTERNET PRIVATE LIMITED",
+      "amount": 110.56,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "NEFTINW-1505197841",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2026-02-27",
+      "description": "DEUTH026058A0VJ7 FLIPKART INTERNET PRIVATE LIMITED",
+      "amount": 2256.07,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "NEFTINW-1505265288",
+      "category": "shopping_and_ecommerce"
+    },
+    {
+      "date": "2026-02-27",
+      "description": "UPI/RELIANCE JIO IN/300061523014/JIO20BR000DARWB",
+      "amount": 39,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605868781319",
+      "category": "travel_and_utilities"
+    },
+    {
+      "date": "2026-02-27",
+      "description": "UPI/KAMAL MAHAWAR/888530927951/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605885383687",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-27",
+      "description": "UPI/KIRTI SINGH/672664343064/Payment from Ph",
+      "amount": 49,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605887794052",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-27",
+      "description": "UPI/RAJKUMAR KUNCHA/425957360376/Payment from Ph",
+      "amount": 30,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605889664580",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-27",
+      "description": "UPI/MEHTA PUSTAK BH/268165851858/Payment from Ph",
+      "amount": 20,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605890069921",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-27",
+      "description": "UPI/Kartik Keshav S/198771366398/Payment from Ph",
+      "amount": 501,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605891363143",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-27",
+      "description": "UPI/Kartik Keshav S/629848789964/Payment from Ph",
+      "amount": 451,
+      "type": "credit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605891478888",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-28",
+      "description": "UPI/Shri Mali/584132584224/Payment from Ph",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605949195161",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-28",
+      "description": "UPI/Dinesh Saini/057146233269/Payment from Ph",
+      "amount": 70,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605950149535",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-28",
+      "description": "UPI/7300396969ptyes/138550057796/Paymen t from Ph",
+      "amount": 70,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605952762009",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-28",
+      "description": "UPI/PODDAR_PETROLEU/482825932038/Paym ent from Ph",
+      "amount": 710,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605966176115",
+      "category": "transfers_and_p2p"
+    },
+    {
+      "date": "2026-02-28",
+      "description": "UPI/APPLE MEDIA SER/102800991150/Execution test",
+      "amount": 99,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605966343550",
+      "category": "subscriptions_and_digital"
+    },
+    {
+      "date": "2026-02-28",
+      "description": "UPI/OTP CAFE/892844865618/Payment from Ph End of Statement one month from the date of receipt of the statement. This is a system generated report and does not require signature and stamp. Account Summary For assistance, reach out to us at: Shivam Business Centre, Kalgiri Road,Malviya Nagar., Jaipur-302017, Rajasthan, India, 0141- Kotak Mahindra Bank Ltd. | CIN: L65110MH1985PLC038137 Important Information . Commonly Used Narrations",
+      "amount": 25,
+      "type": "debit",
+      "bank": "KOTAK",
+      "refNo": "UPI-605966894008",
+      "category": "transfers_and_p2p"
+    }
+  ]
+}

@@ -2,5 +2,15 @@ name = "paisadekho-ai"
 main = "src/index.ts"
 compatibility_date = "2024-01-01"
 
+[ai]
+binding = "AI"
+
+# Optional: Add compatibility flag for better buffer handling
+compatibility_flags = ["nodejs_compat"]
+
+[[kv_namespaces]]
+binding = "PD_USER_VAULT"
+id = "96ef850463a6448dae80785dffaa6493"
+
 [vars]
-# We will add GROQ_API_KEY via the dashboard later
+PROD_FRONTEND_URL = "https://pd-luxe.vercel.app"

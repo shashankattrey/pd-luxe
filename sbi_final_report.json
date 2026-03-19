@@ -1,0 +1,16 @@
+{
+  "bank_name": "SBI",
+  "metadata": {
+    "account_holder": "Shashank Attrey",
+    "account_no": "43982227129",
+    "ifsc": "SBIN0031798",
+    "branch": "JAIPUR JAGATPURA"
+  },
+  "summary": {
+    "total_debits": "0.00",
+    "total_credits": "0.00",
+    "closing_balance": 0,
+    "count": 0
+  },
+  "transactions": []
+}
