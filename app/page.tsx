@@ -74,7 +74,7 @@ export default function LandingPage() {
             <NavLink href="#wealth">Wealth Meta</NavLink>
             <NavLink href="#security">Privacy</NavLink>
           </div>
-          <Link href="/auth?mode=signup">
+          <Link href="/auth/login">
             <Button className="bg-yellow-400 text-black font-extrabold hover:scale-105 transition-all rounded-full px-8 shadow-lg shadow-gold/20 h-12">
               Apply for Access
             </Button>
