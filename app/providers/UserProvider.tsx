@@ -29,19 +29,23 @@ export const useUser = () => {
 
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true); // Add this
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const res = await fetch(
           "https://paisadekho-ai.paisadekhogroup.workers.dev/auth/me",
-          { credentials: "include" }, // important to include cookies
+          { credentials: "include" },
         );
-        if (!res.ok) return;
-        const data = await res.json();
-        setUser(data);
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data);
+        }
       } catch (err) {
         console.error("Failed to fetch user", err);
+      } finally {
+        setLoading(false); // Done trying
       }
     };
     fetchUser();
@@ -50,7 +54,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
   return (
     <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
       <UserContext.Provider value={{ user, setUser }}>
-        {children}
+        {/* Prevent children from rendering until we know the auth status */}
+        {!loading ? children : <div className="loading-screen">Loading...</div>}
       </UserContext.Provider>
     </GoogleOAuthProvider>
   );

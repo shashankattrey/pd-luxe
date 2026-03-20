@@ -1,4 +1,4 @@
-// --- MANUAL TYPE DEFINITIONS (Bypassing macOS 12 limitations) ---
+// --- MANUAL TYPE DEFINITIONS ---
 interface KVNamespace {
   get(
     key: string,
@@ -34,6 +34,20 @@ export interface Env {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+    const origin = "https://pd-luxe.vercel.app";
+
+    // Helper to apply CORS headers to all responses
+    const corsHeaders = {
+      "Access-Control-Allow-Origin": origin,
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Credentials": "true",
+    };
+
+    // --- HANDLE CORS PREFLIGHT ---
+    if (request.method === "OPTIONS") {
+      return new Response(null, { headers: corsHeaders });
+    }
 
     // --- TRUECALLER LOGIN ---
     if (request.method === "POST" && url.pathname === "/auth/callback") {
@@ -56,8 +70,10 @@ export default {
         if (!profileRes.ok) throw new Error("Auth Failed");
         const profile: any = await profileRes.json();
 
+        // Use phoneNumber as ID for Truecaller
+        const userId = profile.phoneNumber;
         await env.PD_USER_VAULT.put(
-          `user:${profile.phoneNumber}`,
+          `user:${userId}`,
           JSON.stringify({
             name: `${profile.firstName} ${profile.lastName}`.trim(),
             verifiedAt: new Date().toISOString(),
@@ -68,19 +84,22 @@ export default {
           status: 302,
           headers: {
             Location: `${env.PROD_FRONTEND_URL}/dashboard`,
-            "Set-Cookie": `pd_session=${profile.phoneNumber}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`,
+            // FIXED: Omit Domain (let browser default to Worker domain) and use SameSite=None
+            "Set-Cookie": `pd_session=${userId}; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=2592000`,
+            ...corsHeaders,
           },
         });
       } catch (err) {
-        return new Response("Unauthorized", { status: 401 });
+        return new Response("Unauthorized", {
+          status: 401,
+          headers: corsHeaders,
+        });
       }
     }
 
     // --- GOOGLE LOGIN: STEP 1: Redirect user to Google ---
     if (url.pathname === "/auth/google") {
-      // Use the Worker's own URL for the callback, not Vercel.
       const workerCallbackUri = `${url.origin}/auth/google/callback`;
-
       const params = new URLSearchParams({
         client_id: env.GOOGLE_CLIENT_ID,
         redirect_uri: workerCallbackUri,
@@ -102,7 +121,6 @@ export default {
         const code = url.searchParams.get("code");
         const workerCallbackUri = `${url.origin}/auth/google/callback`;
 
-        // Exchange code for token
         const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -110,21 +128,14 @@ export default {
             code: code || "",
             client_id: env.GOOGLE_CLIENT_ID,
             client_secret: env.GOOGLE_CLIENT_SECRET,
-            // CRITICAL: This MUST match the URI used in Step 1 exactly
             redirect_uri: workerCallbackUri,
             grant_type: "authorization_code",
           }),
         });
 
-        if (!tokenRes.ok) {
-          const errorData = await tokenRes.text();
-          console.error("Token Exchange Error:", errorData);
-          throw new Error("Token exchange failed");
-        }
-
+        if (!tokenRes.ok) throw new Error("Token exchange failed");
         const tokenData: any = await tokenRes.json();
 
-        // Fetch user info
         const userRes = await fetch(
           "https://www.googleapis.com/oauth2/v2/userinfo",
           {
@@ -133,7 +144,6 @@ export default {
         );
         const user: any = await userRes.json();
 
-        // Store user in KV
         await env.PD_USER_VAULT.put(
           `user:${user.email}`,
           JSON.stringify({
@@ -143,42 +153,33 @@ export default {
           }),
         );
 
-        // FINALLY: Send them to Vercel (pd-luxe.vercel.app/dashboard)
         return new Response(null, {
           status: 302,
           headers: {
             Location: `${env.PROD_FRONTEND_URL}/dashboard`,
-            "Set-Cookie": `pd_session=${user.email}; Path=/; Domain=vercel.app; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`,
+            // FIXED: Removed Domain=vercel.app and set SameSite=None
+            "Set-Cookie": `pd_session=${user.email}; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=2592000`,
+            ...corsHeaders,
           },
         });
       } catch (err) {
-        return new Response(`Unauthorized: ${err}`, { status: 401 });
+        return new Response(`Unauthorized: ${err}`, {
+          status: 401,
+          headers: corsHeaders,
+        });
       }
     }
 
-    // --- inside your fetch() handler ---
-    if (request.method === "OPTIONS") {
-      return new Response(null, {
-        headers: {
-          "Access-Control-Allow-Origin": "https://pd-luxe.vercel.app",
-          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Access-Control-Allow-Credentials": "true",
-        },
-      });
-    }
-
+    // --- AUTH CHECK ENDPOINT ---
     if (url.pathname === "/auth/me") {
       try {
         const cookie = request.headers.get("cookie") || "";
         const match = cookie.match(/pd_session=([^;]+)/);
+
         if (!match) {
-          return new Response("Unauthorized", {
+          return new Response(JSON.stringify({ error: "No session" }), {
             status: 401,
-            headers: {
-              "Access-Control-Allow-Origin": "https://pd-luxe.vercel.app",
-              "Access-Control-Allow-Credentials": "true",
-            },
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
           });
         }
 
@@ -188,33 +189,26 @@ export default {
         });
 
         if (!user) {
-          return new Response("Not found", {
+          return new Response(JSON.stringify({ error: "User not found" }), {
             status: 404,
-            headers: {
-              "Access-Control-Allow-Origin": "https://pd-luxe.vercel.app",
-              "Access-Control-Allow-Credentials": "true",
-            },
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
           });
         }
 
         return new Response(JSON.stringify(user), {
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "https://pd-luxe.vercel.app",
-            "Access-Control-Allow-Credentials": "true",
-          },
+          headers: { "Content-Type": "application/json", ...corsHeaders },
         });
       } catch (err) {
-        return new Response("Error fetching user", {
+        return new Response(JSON.stringify({ error: "Server Error" }), {
           status: 500,
-          headers: {
-            "Access-Control-Allow-Origin": "https://pd-luxe.vercel.app",
-            "Access-Control-Allow-Credentials": "true",
-          },
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
     }
-    // --- Default response ---
-    return new Response("PaisaDekho AI Node Active", { status: 200 });
+
+    return new Response("PaisaDekho AI Node Active", {
+      status: 200,
+      headers: corsHeaders,
+    });
   },
 };
