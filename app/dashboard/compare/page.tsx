@@ -1,335 +1,263 @@
+// ═══════════════════════════════════════════════════════════════════
+// COMPARE PAGE — /dashboard/compare
+// ═══════════════════════════════════════════════════════════════════
 "use client";
 
-import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Search,
-  X,
-  CreditCard,
-  Plus,
-  ArrowRight,
-  Check,
-  AlertTriangle,
-  Plane,
-  Globe,
-  Zap,
-} from "lucide-react";
+import { useState } from "react";
+import { Search, X, Plus, ChevronDown, BarChart3 } from "lucide-react";
+import { creditCards, calculateInDepthSavings } from "@/lib/credit-cards-data";
+import { cn } from "@/lib/utils";
 
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+const SAMPLE_SPEND = {
+  food: 8000,
+  shopping: 12000,
+  travel: 5000,
+  utilities: 3000,
+  fuel: 2000,
+  rent: 0,
+  other: 4000,
+};
 
-import {
-  creditCards,
-  type CreditCard as CardType,
-  calculateInDepthSavings,
-} from "@/lib/credit-cards-data";
+const COMPARE_ROWS = [
+  {
+    label: "Annual Fee",
+    key: "annualFee",
+    format: (v: any) => (v === 0 ? "Free" : `₹${Number(v).toLocaleString()}`),
+  },
+  {
+    label: "Base Reward Rate",
+    key: "baseRewardRate",
+    format: (v: any) => `${v}%`,
+  },
+  { label: "Effective Rate", key: "_eff", format: (v: any) => `${v}%` },
+  {
+    label: "Net Value/yr",
+    key: "_net",
+    format: (v: any) => `₹${Number(v).toLocaleString()}`,
+  },
+  {
+    label: "Domestic Lounge",
+    key: "domesticLounge",
+    format: (v: any) => String(v),
+  },
+  {
+    label: "Intl Lounge",
+    key: "internationalLounge",
+    format: (v: any) => String(v),
+  },
+  { label: "Forex Markup", key: "forexMarkup", format: (v: any) => `${v}%` },
+  { label: "Food/Dining Rate", key: "_food", format: (v: any) => `${v}%` },
+  { label: "Amazon Rate", key: "amazonRate", format: (v: any) => `${v}%` },
+  { label: "Flight Rate", key: "flightRate", format: (v: any) => `${v}%` },
+  { label: "Fuel Rate", key: "fuelRewardRate", format: (v: any) => `${v}%` },
+  { label: "Reward Unit", key: "rewardUnit", format: (v: any) => String(v) },
+  { label: "Point Value", key: "pointValue", format: (v: any) => `₹${v}` },
+  {
+    label: "Fee Waiver",
+    key: "retentionSpendDisplay",
+    format: (v: any) => String(v) || "—",
+  },
+];
 
-const MAX_CARDS = 4;
+export default function ComparePage() {
+  const [selectedIds, setSelectedIds] = useState<string[]>(["1", "5"]);
+  const [search, setSearch] = useState("");
+  const [showPicker, setShowPicker] = useState(false);
 
-export default function ComparisonPage() {
-  const [selectedCards, setSelectedCards] = useState<CardType[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showSelector, setShowSelector] = useState(false);
-  const [annualSpend, setAnnualSpend] = useState(500000);
+  const allCards = creditCards as any[];
+  const selected = selectedIds
+    .map((id) => allCards.find((c) => c.id === id))
+    .filter(Boolean);
 
-  const filteredCards = useMemo(() => {
-    return creditCards.filter(
-      (card) =>
-        !selectedCards.find((sc) => sc.id === card.id) &&
-        (card.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          card.bank.toLowerCase().includes(searchQuery.toLowerCase())),
-    );
-  }, [searchQuery, selectedCards]);
-
-  const addCard = (card: CardType) => {
-    if (selectedCards.length < MAX_CARDS) {
-      setSelectedCards((prev) => [...prev, card]);
-      setShowSelector(false);
-      setSearchQuery("");
+  const getVal = (card: any, key: string) => {
+    if (key === "_eff") {
+      const audit = calculateInDepthSavings(card, SAMPLE_SPEND);
+      return audit.effectiveRewardRate;
     }
+    if (key === "_net") {
+      const audit = calculateInDepthSavings(card, SAMPLE_SPEND);
+      return audit.netValue;
+    }
+    if (key === "_food") {
+      return Math.max(
+        card.swiggyRate || 0,
+        card.zomatoRate || 0,
+        card.diningRate || 0,
+        card.baseRewardRate || 0,
+      );
+    }
+    return card[key];
   };
 
-  const removeCard = (cardId: string) => {
-    setSelectedCards((prev) => prev.filter((c) => c.id !== cardId));
+  const isBest = (row: (typeof COMPARE_ROWS)[0], cardIdx: number) => {
+    if (selected.length < 2) return false;
+    const vals = selected.map(
+      (c) => parseFloat(String(getVal(c, row.key))) || 0,
+    );
+    const best =
+      row.key === "annualFee" || row.key === "forexMarkup"
+        ? Math.min(...vals)
+        : Math.max(...vals);
+    return vals[cardIdx] === best && best > 0;
   };
+
+  const searchResults = allCards
+    .filter(
+      (c) =>
+        !selectedIds.includes(c.id) &&
+        (c.name.toLowerCase().includes(search.toLowerCase()) ||
+          c.bank.toLowerCase().includes(search.toLowerCase())),
+    )
+    .slice(0, 8);
 
   return (
-    // "overflow-x-hidden" on the main container is key
-    <div className="w-full max-w-full overflow-x-hidden px-4 py-6 space-y-8">
-      {/* HEADER: Stack on mobile, side-by-side on desktop */}
-      <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between max-w-screen-xl mx-auto">
+    <div className="max-w-2xl mx-auto space-y-5">
+      <div className="flex items-start justify-between">
         <div>
-          <h1 className="font-serif text-2xl md:text-4xl font-bold text-foreground">
-            Comparison Lab
+          <h1 className="font-serif text-2xl font-bold text-foreground">
+            Compare Cards
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Side-by-side audit
+            Select up to 3 cards to compare
           </p>
         </div>
-
-        <div className="flex items-center gap-3 glass-gold p-2 rounded-2xl border border-gold/20 w-full md:w-auto">
-          <span className="text-[10px] font-black uppercase tracking-tighter text-amber-400 pl-2">
-            Annual Spend
-          </span>
-          <div className="relative flex-1">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-400/50 text-xs">
-              ₹
-            </span>
-            <Input
-              type="number"
-              value={annualSpend}
-              onChange={(e) => setAnnualSpend(parseInt(e.target.value) || 0)}
-              className="pl-7 h-9 bg-black/40 border-gold/10 text-sm font-bold focus-visible:ring-gold/30"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* CARD GRID: 2 columns on mobile, 4 on desktop */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 max-w-screen-xl mx-auto">
-        <AnimatePresence mode="popLayout">
-          {selectedCards.map((card) => (
-            <motion.div
-              key={card.id}
-              layout
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-            >
-              <SelectedCardSlot
-                card={card}
-                onRemove={() => removeCard(card.id)}
-              />
-            </motion.div>
-          ))}
-        </AnimatePresence>
-
-        {selectedCards.length < MAX_CARDS && (
+        {selected.length < 3 && (
           <button
-            onClick={() => setShowSelector(true)}
-            className="h-32 md:h-44 rounded-2xl border-2 border-dashed border-gold/20 flex flex-col items-center justify-center gap-2 hover:bg-gold/5 transition-colors group"
+            onClick={() => setShowPicker(!showPicker)}
+            className="flex items-center gap-2 px-3 py-2 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 text-sm font-medium hover:bg-amber-500/25 transition-all"
           >
-            <Plus className="w-5 h-5 text-amber-400/50 group-hover:text-amber-400 transition-colors" />
-            <span className="text-[10px] uppercase font-bold text-muted-foreground">
-              Add Card
-            </span>
+            <Plus className="w-4 h-4" /> Add card
           </button>
         )}
       </div>
 
-      {/* COMPARISON TABLE: The heavy lifting for responsiveness */}
-      {selectedCards.length >= 2 ? (
-        <div className="max-w-screen-xl mx-auto">
-          <div className="glass-gold rounded-3xl border border-gold/100 overflow-hidden shadow-2xl">
-            {/* The scrollable wrapper */}
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse min-w-[280px] md:min-w-[640px]">
-                <thead>
-                  <tr className="bg-black/60">
-                    <th className="w-[120px] md:w-[180px] p-4 text-left text-[10px] uppercase font-black text-amber-400/60 border-b border-gold/10">
-                      Features
-                    </th>
-                    {selectedCards.map((card) => (
-                      <th
-                        key={card.id}
-                        className="p-4 text-center border-gold/10"
-                      >
-                        <p className="text-xs font-serif font-bold truncate">
-                          {card.name}
-                        </p>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gold/5">
-                  <ComparisonRow
-                    label="Net Profit"
-                    icon={Zap}
-                    values={selectedCards.map((card) => {
-                      const audit = calculateInDepthSavings(card, {
-                        dining: annualSpend * 0.3,
-                        travel: annualSpend * 0.3,
-                        shopping: annualSpend * 0.2,
-                        fuel: annualSpend * 0.1,
-                        other: annualSpend * 0.1,
-                      } as any);
-                      return {
-                        display: `₹${audit.netValue.toLocaleString()}`,
-                        value: audit.netValue,
-                      };
-                    })}
-                    highlight="highest"
-                  />
-                  <ComparisonRow
-                    label="Forex Fee"
-                    icon={Globe}
-                    values={selectedCards.map((card) => ({
-                      display: `${card.forexMarkup}%`,
-                      value: card.forexMarkup,
-                    }))}
-                    highlight="lowest"
-                  />
-                  <ComparisonRow
-                    label="Lounge"
-                    icon={Plane}
-                    values={selectedCards.map((card) => ({
-                      display:
-                        card.loungeCap === -1
-                          ? "Unlimited"
-                          : `${card.loungeCap}/yr`,
-                      value: card.loungeCap,
-                    }))}
-                    highlight="highest"
-                  />
-                </tbody>
-              </table>
-            </div>
+      {/* Card picker */}
+      {showPicker && (
+        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-3">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <input
+              autoFocus
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search to add a card…"
+              className="w-full pl-9 py-2.5 bg-white/5 border border-white/10 rounded-xl text-sm focus:outline-none focus:border-amber-400/50"
+            />
           </div>
-        </div>
-      ) : (
-        <div className="text-center py-12 glass-gold rounded-3xl border border-gold/10 max-w-md mx-auto">
-          <CreditCard className="w-8 h-8 text-amber-400/20 mx-auto mb-3" />
-          <p className="text-sm font-serif text-muted-foreground">
-            Add at least two cards to compare
-          </p>
+          {searchResults.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => {
+                setSelectedIds((p) => [...p, c.id]);
+                setSearch("");
+                setShowPicker(false);
+              }}
+              className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 text-left transition-all"
+            >
+              <div
+                className={cn(
+                  "w-8 h-6 rounded shrink-0 bg-gradient-to-br",
+                  c.imageGradient || "from-zinc-700 to-zinc-900",
+                )}
+              />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-foreground">{c.name}</p>
+                <p className="text-xs text-muted-foreground">{c.bank}</p>
+              </div>
+              <Plus className="w-4 h-4 text-muted-foreground" />
+            </button>
+          ))}
         </div>
       )}
 
-      {/* SELECTOR MODAL */}
-      <AnimatePresence>
-        {showSelector && (
-          <>
-            <motion.div
-              className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowSelector(false)}
-            />
-            <motion.div
-              className="fixed left-4 right-4 top-[10%] bottom-[10%] md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-xl z-[101] glass-gold rounded-3xl overflow-hidden flex flex-col"
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 50, opacity: 0 }}
-            >
-              <div className="p-4 border-b border-gold/10 flex justify-between items-center">
-                <h2 className="font-serif font-bold">Choose a Card</h2>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setShowSelector(false)}
-                >
-                  <X />
-                </Button>
-              </div>
-              <div className="p-4 bg-white/5">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-400/40" />
-                  <Input
-                    placeholder="Search bank..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 h-10 bg-black/20 border-gold/10"
-                  />
-                </div>
-              </div>
-              <div className="flex-1 overflow-y-auto p-2">
-                {filteredCards.map((card) => (
-                  <button
-                    key={card.id}
-                    onClick={() => addCard(card)}
-                    className="w-full flex items-center gap-4 p-3 hover:bg-gold/5 rounded-xl transition-colors text-left group"
-                  >
-                    <div
-                      className={`w-12 h-8 rounded bg-gradient-to-br ${card.imageGradient}`}
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold truncate">{card.name}</p>
-                      <p className="text-[10px] text-muted-foreground uppercase">
-                        {card.bank}
-                      </p>
-                    </div>
-                    <ArrowRight className="w-4 h-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-function SelectedCardSlot({
-  card,
-  onRemove,
-}: {
-  card: CardType;
-  onRemove: () => void;
-}) {
-  return (
-    <div className="relative h-32 md:h-44 rounded-2xl overflow-hidden shadow-xl border border-amber-400">
+      {/* Selected card headers */}
       <div
-        className={`absolute inset-0 bg-gradient-to-br ${card.imageGradient}`}
-      />
-      <div className="absolute inset-0 bg-black/20" />
-      <div className="absolute top-4 left-4 w-8 h-6 rounded-sm bg-gradient-to-br from-yellow-300 via-yellow-500 to-yellow-700 shadow-inner">
-        <div className="grid grid-cols-3 grid-rows-3 w-full h-full opacity-60"></div>
-      </div>
-      <button
-        onClick={onRemove}
-        className="absolute top-2 right-2 p-1 bg-black/50 rounded-full text-white z-10"
+        className="grid gap-3"
+        style={{ gridTemplateColumns: `180px repeat(${selected.length}, 1fr)` }}
       >
-        <X className="w-3 h-3" />
-      </button>
-      {/* Card Network */}
-      <div className="absolute top-4 right-10 text-[9px] font-bold text-white/80 bg-background px-2 rounded-lg">
-        {card.network}
-      </div>
-      <div className="absolute bottom-3 left-3 right-3 text-white">
-        <p className="text-[8px] font-black uppercase tracking-widest opacity-70 mb-0.5">
-          {card.bank}
-        </p>
-        <p className="text-[11px] md:text-sm font-serif font-bold leading-tight line-clamp-2">
-          {card.name}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function ComparisonRow({ label, icon: Icon, values, highlight }: any) {
-  const numericValues = values.map((v: any) => v.value);
-  const bestValue =
-    highlight === "highest"
-      ? Math.max(...numericValues)
-      : Math.min(...numericValues);
-
-  return (
-    <tr className="hover:bg-gold/[0.02] transition-colors">
-      <td className="p-4 bg-black/20 md:bg-transparent">
-        <div className="flex items-center gap-2">
-          <Icon className="w-3.5 h-3.5 text-amber-400/40" />
-          <span className="text-[11px] font-medium text-muted-foreground">
-            {label}
-          </span>
-        </div>
-      </td>
-      {values.map((v: any, i: number) => (
-        <td key={i} className="p-4 text-center">
-          <div className="flex flex-col items-center">
-            <span
-              className={`text-xs font-bold ${v.value === bestValue ? "text-amber-400" : "text-foreground"}`}
-            >
-              {v.display}
-            </span>
-            {v.value === bestValue && (
-              <Check className="w-2.5 h-2.5 text-amber-400 mt-1" />
+        <div />
+        {selected.map((card) => (
+          <div
+            key={card.id}
+            className={cn(
+              "rounded-xl p-3 text-center relative bg-gradient-to-br",
+              card.imageGradient || "from-zinc-800 to-zinc-950",
             )}
+          >
+            <button
+              onClick={() =>
+                setSelectedIds((p) => p.filter((id) => id !== card.id))
+              }
+              className="absolute top-2 right-2 w-5 h-5 rounded-full bg-black/40 flex items-center justify-center hover:bg-black/60 transition-all"
+            >
+              <X className="w-3 h-3 text-white" />
+            </button>
+            <p className="text-[10px] text-white/50 uppercase tracking-widest">
+              {card.bank}
+            </p>
+            <p className="text-xs font-bold text-white mt-0.5 leading-snug">
+              {card.name}
+            </p>
           </div>
-        </td>
-      ))}
-    </tr>
+        ))}
+      </div>
+
+      {/* Comparison table */}
+      <div className="rounded-2xl border border-white/8 overflow-hidden">
+        {COMPARE_ROWS.map((row, ri) => (
+          <div
+            key={row.label}
+            className={cn(
+              "grid items-center",
+              ri % 2 === 0 ? "bg-white/2" : "bg-transparent",
+            )}
+            style={{
+              gridTemplateColumns: `180px repeat(${selected.length}, 1fr)`,
+            }}
+          >
+            <div className="px-4 py-3">
+              <p className="text-xs text-muted-foreground">{row.label}</p>
+            </div>
+            {selected.map((card, ci) => {
+              const raw = getVal(card, row.key);
+              const formatted = row.format(raw);
+              const best = isBest(row, ci);
+              return (
+                <div key={card.id} className="px-3 py-3 text-center">
+                  <p
+                    className={cn(
+                      "text-sm font-semibold",
+                      best ? "text-amber-400" : "text-foreground",
+                    )}
+                  >
+                    {formatted}
+                    {best && (
+                      <span className="ml-1 text-[9px] text-amber-400">★</span>
+                    )}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+
+      {selected.length >= 2 && (
+        <p className="text-xs text-muted-foreground text-center">
+          ★ = best value for this metric · Spend profile: ₹
+          {Object.values(SAMPLE_SPEND)
+            .reduce((a, b) => a + b, 0)
+            .toLocaleString()}
+          /mo
+        </p>
+      )}
+
+      {selected.length === 0 && (
+        <div className="text-center py-16 text-muted-foreground">
+          <BarChart3 className="w-10 h-10 mx-auto mb-3 opacity-30" />
+          <p>Select at least 2 cards to compare</p>
+        </div>
+      )}
+    </div>
   );
 }

@@ -1,438 +1,1066 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useMemo } from "react";
 import {
-  TrendingUp,
-  PieChart,
   ArrowRight,
-  RotateCcw,
-  ShieldCheck,
-  Home,
-  Landmark,
-  Coins,
-  Scale,
-  Bitcoin,
-  Globe,
+  ArrowLeft,
   CheckCircle2,
   AlertTriangle,
+  Info,
+  ChevronDown,
+  ChevronUp,
+  Sparkles,
+  RefreshCcw,
+  Zap,
+  TrendingUp,
+  Repeat,
+  Target,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Slider } from "@/components/ui/slider";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  PROFILE_QUESTIONS,
+  TOTAL_STEPS,
+  generatePreciseRecommendations,
+  generatePlanSummary,
+  type FinancialProfile,
+  type Recommendation,
+  type RecommendationPriority,
+  type PlanSummary,
+} from "@/lib/smart-engine";
 import { cn } from "@/lib/utils";
 
-// --- Advanced Financial Data Models ---
-
-type Step = "setup" | "assets" | "risk" | "results";
-
-interface PortfolioItem extends Asset {
-  weight: number; // raw weight before normalization
-  finalWeight: number; // normalized % weight
-  monthlyAmount: number; // allocated SIP
-}
-
-interface Asset {
-  id: string;
-  label: string;
-  icon: any;
-  desc: string;
-  color: string;
-  annualReturn: number; // 2026 Expected CAGR
-  volatility: number; // Standard Deviation (Risk)
-}
-
-const ASSETS: Asset[] = [
+const PRIORITY_CONFIG: Record<
+  RecommendationPriority,
   {
-    id: "equity",
-    label: "Equity SIP",
+    bg: string;
+    border: string;
+    label: string;
+    labelColor: string;
+  }
+> = {
+  critical: {
+    bg: "bg-red-500/8",
+    border: "border-red-500/30",
+    label: "Do First",
+    labelColor: "text-red-400",
+  },
+  high: {
+    bg: "bg-amber-500/8",
+    border: "border-amber-400/25",
+    label: "High",
+    labelColor: "text-amber-400",
+  },
+  medium: {
+    bg: "bg-blue-500/8",
+    border: "border-blue-500/25",
+    label: "Medium",
+    labelColor: "text-blue-400",
+  },
+  optional: {
+    bg: "bg-white/3",
+    border: "border-white/10",
+    label: "Optional",
+    labelColor: "text-muted-foreground",
+  },
+};
+
+const INV_TYPE_CONFIG: Record<
+  string,
+  { label: string; color: string; bg: string; icon: React.ElementType }
+> = {
+  sip: {
+    label: "SIP / Monthly",
+    color: "text-violet-400",
+    bg: "bg-violet-500/15",
+    icon: Repeat,
+  },
+  "lump-sum": {
+    label: "Lump Sum",
+    color: "text-amber-400",
+    bg: "bg-amber-500/15",
+    icon: Zap,
+  },
+  both: {
+    label: "SIP + Lump Sum",
+    color: "text-emerald-400",
+    bg: "bg-emerald-500/15",
     icon: TrendingUp,
-    desc: "Growth Funds",
-    color: "text-emerald-500",
-    annualReturn: 0.15,
-    volatility: 0.18,
   },
-  {
-    id: "crypto",
-    label: "Digital Assets",
-    icon: Bitcoin,
-    desc: "BTC/ETH Mix",
-    color: "text-orange-500",
-    annualReturn: 0.4,
-    volatility: 0.75,
+  "one-time-then-sip": {
+    label: "Lump Sum → then SIP",
+    color: "text-blue-400",
+    bg: "bg-blue-500/15",
+    icon: ArrowRight,
   },
-  {
-    id: "gold",
-    label: "Sovereign Gold",
-    icon: ShieldCheck,
-    desc: "RBI SGB Bonds",
-    color: "text-yellow-500",
-    annualReturn: 0.09,
-    volatility: 0.1,
-  },
-  {
-    id: "bonds",
-    label: "Corporate Debt",
-    icon: Landmark,
-    desc: "AA+ Rated Paper",
-    color: "text-blue-500",
-    annualReturn: 0.08,
-    volatility: 0.05,
-  },
-  {
-    id: "reit",
-    label: "Real Estate",
-    icon: Home,
-    desc: "Commercial REIT",
-    color: "text-purple-500",
-    annualReturn: 0.11,
-    volatility: 0.14,
-  },
-  {
-    id: "etf",
-    label: "Index ETFs",
-    icon: Globe,
-    desc: "Nifty 50 / Next 50",
-    color: "text-cyan-500",
-    annualReturn: 0.13,
-    volatility: 0.16,
-  },
-];
+};
+
+const CATEGORY_LABELS: Record<string, string> = {
+  protection: "🛡️ Protection",
+  emergency: "💵 Emergency",
+  debt: "🔴 Debt",
+  tax: "💰 Tax Saving",
+  goal: "🎯 Goal",
+  wealth: "📈 Wealth",
+  rebalance: "🔄 Rebalance",
+};
+
+const DEFAULT_PROFILE: FinancialProfile = {
+  age: 30,
+  isMarried: false,
+  hasGirlChild: false,
+  girlChildAge: undefined,
+  isGovtEmployee: false,
+  dependents: 0,
+  monthlyIncome: 80000,
+  incomeType: "salaried",
+  taxBracket: 20,
+  employerPfMonthly: 0,
+  monthlyExpenses: 30000,
+  monthlyEmi: 0,
+  monthlyRent: 0,
+  hasTermInsurance: false,
+  termCoverAmount: 0,
+  hasHealthInsurance: false,
+  healthCoverAmount: 0,
+  emergencyFund: 0,
+  existing80cInvested: 0,
+  highInterestDebt: 0,
+  existingInvestments: [],
+  existingCorpus: 0,
+  availableLumpSum: 0,
+  lumpSumSource: "none" as const,
+  primaryGoal: "wealth",
+  goalAmountTarget: 5000000,
+  goalYears: 10,
+  retirementAge: 60,
+  riskAppetite: "moderate",
+  prefersSip: true,
+};
 
 export default function WealthAdvisorPage() {
-  const [step, setStep] = useState<Step>("setup");
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [profile, setProfile] = useState({
-    monthlySip: 10000,
-    horizon: 5,
-    selectedAssets: ["equity", "gold"],
-    riskAppetite: "balanced",
-  });
+  const [step, setStep] = useState(0);
+  const [profile, setProfile] = useState<FinancialProfile>(DEFAULT_PROFILE);
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
-  const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
-
-  const runSmartAllocation = async (risk: string) => {
-    setIsAnalyzing(true);
-    setStep("results");
-    await new Promise((r) => setTimeout(r, 2000));
-
-    const selected = ASSETS.filter((a) =>
-      profile.selectedAssets.includes(a.id),
-    );
-
-    // 1. Calculate Inverse Volatility Weights (The "Smart" part)
-    let rawWeights = selected.map((asset) => {
-      // Logic: Risk Parity - assets with lower volatility get higher base weight
-      let weight = 1 / asset.volatility;
-
-      // 2. Apply Strategic Tilts based on Risk Appetite
-      if (risk === "aggressive") {
-        if (asset.id === "crypto") weight *= 2.5;
-        if (asset.id === "equity") weight *= 1.5;
-      } else if (risk === "conservative") {
-        if (asset.id === "bonds" || asset.id === "gold") weight *= 2.0;
-        if (asset.id === "crypto") weight *= 0.1; // Maximum de-risking
-      }
-      return { ...asset, weight };
-    });
-
-    // 3. Normalize to 100%
-    const totalRawWeight = rawWeights.reduce(
-      (acc, curr) => acc + curr.weight,
-      0,
-    );
-    const finalPortfolio = rawWeights.map((w) => ({
-      ...w,
-      finalWeight: w.weight / totalRawWeight,
-      monthlyAmount: Math.round(
-        (w.weight / totalRawWeight) * profile.monthlySip,
-      ),
-    }));
-
-    setPortfolio(finalPortfolio);
-    setIsAnalyzing(false);
-  };
-
-  return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
-      <AnimatePresence mode="wait">
-        {step === "setup" && (
-          <SetupStep
-            onNext={(sip: number, h: number) => {
-              setProfile({ ...profile, monthlySip: sip, horizon: h });
-              setStep("assets");
-            }}
-          />
-        )}
-
-        {step === "assets" && (
-          <AssetPicker
-            selected={profile.selectedAssets}
-            onToggle={(id: string) => {
-              const current = profile.selectedAssets;
-              setProfile({
-                ...profile,
-                selectedAssets: current.includes(id)
-                  ? current.filter((x) => x !== id)
-                  : [...current, id],
-              });
-            }}
-            onNext={() => setStep("risk")}
-          />
-        )}
-
-        {step === "risk" && (
-          <RiskSelector onSelect={(r: any) => runSmartAllocation(r)} />
-        )}
-
-        {step === "results" && (
-          <WealthDashboard
-            portfolio={portfolio}
-            profile={profile}
-            isAnalyzing={isAnalyzing}
-            onReset={() => setStep("setup")}
-          />
-        )}
-      </AnimatePresence>
-    </div>
+  const recommendations = useMemo(
+    () => (step > TOTAL_STEPS ? generatePreciseRecommendations(profile) : []),
+    [step, profile],
   );
-}
-
-// --- Component Fragments ---
-
-function SetupStep({ onNext }: any) {
-  const [sip, setSip] = useState(10000);
-  const [horizon, setHorizon] = useState(5);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="max-w-xl mx-auto glass-gold p-10 rounded-[2rem] border border-gold/20"
-    >
-      <h2 className="text-3xl font-serif font-bold mb-8 text-center">
-        Investment Foundation
-      </h2>
-      <div className="space-y-8">
-        <div className="space-y-4">
-          <label className="text-sm uppercase tracking-widest text-muted-foreground">
-            Monthly Commitment
-          </label>
-          <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400 font-bold">
-              ₹
-            </span>
-            <Input
-              type="number"
-              value={sip}
-              onChange={(e) => setSip(Number(e.target.value))}
-              className="pl-10 h-16 text-2xl bg-black/20 border-gold/10"
-            />
-          </div>
-        </div>
-        <div className="space-y-4">
-          <div className="flex justify-between">
-            <label className="text-sm uppercase tracking-widest text-muted-foreground">
-              Time Horizon
-            </label>
-            <span className="text-amber-400 font-bold">{horizon} Years</span>
-          </div>
-          <Slider
-            defaultValue={[5]}
-            max={30}
-            min={1}
-            onValueChange={(v) => setHorizon(v[0])}
-          />
-        </div>
-        <Button
-          onClick={() => onNext(sip, horizon)}
-          className="w-full h-16 bg-gold text-black font-bold text-lg rounded-2xl hover:scale-[1.02] transition-transform"
-        >
-          Continue to Asset Selection
-        </Button>
-      </div>
-    </motion.div>
+  const summary = useMemo(
+    () =>
+      recommendations.length > 0
+        ? generatePlanSummary(profile, recommendations)
+        : null,
+    [recommendations, profile],
   );
-}
 
-function AssetPicker({ selected, onToggle, onNext }: any) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      className="space-y-8"
-    >
-      <div className="text-center mb-10">
-        <h2 className="text-3xl font-serif font-bold">The Luxe Universe</h2>
-        <p className="text-muted-foreground">
-          Select the instruments for your dynamic portfolio
-        </p>
-      </div>
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
-        {ASSETS.map((asset) => (
-          <button
-            key={asset.id}
-            onClick={() => onToggle(asset.id)}
-            className={cn(
-              "p-8 rounded-3xl border transition-all text-left relative overflow-hidden group",
-              selected.includes(asset.id)
-                ? "glass-gold border-gold/50 bg-gold/5 shadow-2xl"
-                : "bg-white/5 border-white/10 opacity-50",
-            )}
-          >
-            <asset.icon className={cn("w-8 h-8 mb-4", asset.color)} />
-            <h4 className="font-bold text-xl">{asset.label}</h4>
-            <p className="text-sm text-muted-foreground">{asset.desc}</p>
-            {selected.includes(asset.id) && (
-              <CheckCircle2 className="absolute top-6 right-6 text-amber-400 w-6 h-6" />
-            )}
-          </button>
-        ))}
-      </div>
-      <Button
-        disabled={selected.length === 0}
-        onClick={onNext}
-        className="w-full h-16 bg-gold text-black font-bold text-lg rounded-2xl"
-      >
-        Analyze Strategy Performance
-      </Button>
-    </motion.div>
+  const surplus = Math.max(
+    0,
+    profile.monthlyIncome -
+      profile.monthlyExpenses -
+      profile.monthlyEmi -
+      profile.monthlyRent,
   );
-}
+  const updateField = (id: string, value: unknown) =>
+    setProfile((p) => ({ ...p, [id]: value }));
+  const questionsForStep = PROFILE_QUESTIONS.filter((q) => q.step === step);
+  const fmtC = (v: number) =>
+    v >= 10000000
+      ? `₹${(v / 10000000).toFixed(1)}Cr`
+      : v >= 100000
+        ? `₹${(v / 100000).toFixed(0)}L`
+        : v >= 1000
+          ? `₹${(v / 1000).toFixed(0)}k`
+          : `₹${v}`;
 
-function RiskSelector({ onSelect }: any) {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="text-center space-y-12"
-    >
-      <Scale className="w-20 h-20 text-amber-400 mx-auto" />
-      <h2 className="text-4xl font-serif font-bold">
-        Determine Your Risk Appetite
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-        {["conservative", "balanced", "aggressive"].map((risk) => (
-          <Button
-            key={risk}
-            onClick={() => onSelect(risk)}
-            variant="outline"
-            className="h-32 rounded-3xl border-gold/10 hover:bg-gold/5 capitalize text-xl font-serif"
-          >
-            {risk}
-          </Button>
-        ))}
-      </div>
-    </motion.div>
-  );
-}
-
-function WealthDashboard({ portfolio, profile, isAnalyzing, onReset }: any) {
-  if (isAnalyzing)
+  // ── LANDING ──────────────────────────────────────────────────────────────
+  if (step === 0)
     return (
-      <div className="flex flex-col items-center justify-center py-40 space-y-6">
-        <div className="w-20 h-20 border-4 border-gold/20 border-t-gold rounded-full animate-spin" />
-        <p className="text-xl font-serif italic text-amber-400">
-          Running Monte Carlo Simulations...
-        </p>
+      <div className="max-w-lg mx-auto space-y-6">
+        <div>
+          <p className="text-xs text-muted-foreground uppercase tracking-widest mb-2">
+            AI-Powered · Precise
+          </p>
+          <h1 className="font-serif text-3xl font-bold leading-tight">
+            Exact SIP & Lump Sum
+            <br />
+            <span className="text-amber-400">Plan for You</span>
+          </h1>
+          <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
+            Not vague advice. Exact instruments, amounts, platforms — and honest
+            assessment of whether your goal is actually achievable.
+          </p>
+        </div>
+        <div className="space-y-3">
+          {[
+            {
+              icon: "🎯",
+              t: "Goal feasibility check",
+              d: "We tell you if your goal is achievable — and 3 alternatives if it's not",
+            },
+            {
+              icon: "📅",
+              t: "Exact SIP + lump sum split",
+              d: '"₹6,250/mo ELSS + ₹1.5L PPF lump sum on April 5" — not just categories',
+            },
+            {
+              icon: "🔒",
+              t: "Lock-in aware",
+              d: "PPF/NPS never suggested for short goals — lock-in is always checked",
+            },
+            {
+              icon: "📈",
+              t: "10% step-up projection",
+              d: "Shows how annual SIP increase multiplies your corpus vs flat SIP",
+            },
+          ].map((i) => (
+            <div
+              key={i.t}
+              className="flex gap-3 p-4 rounded-xl bg-white/3 border border-white/8"
+            >
+              <span className="text-xl shrink-0">{i.icon}</span>
+              <div>
+                <p className="text-sm font-semibold">{i.t}</p>
+                <p className="text-xs text-muted-foreground mt-0.5 italic">
+                  {i.d}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="space-y-2">
+          <button
+            onClick={() => setStep(1)}
+            className="w-full py-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold flex items-center justify-center gap-2 text-base transition-all"
+          >
+            <Sparkles className="w-5 h-5" /> Build My Precise Plan — 6 Steps
+          </button>
+          <p className="text-center text-xs text-muted-foreground">
+            ~3 minutes · data stays on device only
+          </p>
+        </div>
       </div>
     );
 
-  const totalInvested = profile.monthlySip * 12 * profile.horizon;
-  const projectedValue = portfolio.reduce((acc: number, a: PortfolioItem) => {
-    const r = a.annualReturn / 12;
-    const n = profile.horizon * 12;
-    return acc + a.monthlyAmount * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
-  }, 0);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="space-y-10"
-    >
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Breakdown */}
-        <div className="lg:col-span-2 glass-gold p-10 rounded-[2.5rem] border border-gold/10">
-          <h3 className="text-2xl font-serif font-bold mb-8">
-            Strategic Allocation
-          </h3>
-          <div className="space-y-6">
-            {portfolio.map((item: PortfolioItem, idx: number) => (
+  // ── PROFILING STEPS ───────────────────────────────────────────────────────
+  if (step >= 1 && step <= TOTAL_STEPS) {
+    const stepLabels = [
+      "",
+      "Identity",
+      "Income",
+      "Obligations",
+      "Current State",
+      "Goals",
+      "Risk",
+    ];
+    return (
+      <div className="max-w-lg mx-auto space-y-5">
+        <div className="space-y-2">
+          <div className="flex justify-between">
+            <p className="text-xs text-muted-foreground">
+              Step {step}/{TOTAL_STEPS} —{" "}
+              <span className="text-foreground font-medium">
+                {stepLabels[step]}
+              </span>
+            </p>
+            <button
+              onClick={() => setStep(0)}
+              className="text-xs text-muted-foreground hover:text-foreground"
+            >
+              Reset
+            </button>
+          </div>
+          <div className="flex gap-1">
+            {Array.from({ length: TOTAL_STEPS }, (_, i) => (
               <div
-                key={idx}
-                className="flex items-center justify-between p-6 bg-white/5 rounded-2xl border border-white/5 group hover:bg-white/10 transition-colors"
-              >
-                <div className="flex items-center gap-6">
-                  <div
-                    className={cn(
-                      "w-14 h-14 rounded-2xl flex items-center justify-center bg-black/40",
-                      item.color,
-                    )}
-                  >
-                    <item.icon className="w-7 h-7" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-lg">{item.label}</h4>
-                    <p className="text-xs text-muted-foreground uppercase tracking-widest">
-                      {Math.round(item.finalWeight * 100)}% Weight
-                    </p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-2xl font-mono font-bold text-amber-400">
-                    ₹{item.monthlyAmount.toLocaleString()}
-                  </p>
-                  <p className="text-[10px] text-muted-foreground">per month</p>
-                </div>
-              </div>
+                key={i}
+                className={cn(
+                  "flex-1 h-1 rounded-full transition-all",
+                  i < step ? "bg-amber-400" : "bg-white/10",
+                )}
+              />
             ))}
           </div>
         </div>
 
-        {/* Wealth Card */}
-        <div className="space-y-6">
-          <div className="glass-gold p-10 rounded-[2.5rem] border border-gold/10 bg-emerald-500/5 relative overflow-hidden">
-            <h3 className="text-xl font-serif font-bold mb-2">
-              Projected Corpus
-            </h3>
-            <p className="text-5xl font-bold font-mono text-emerald-400 mb-8">
-              ₹{Math.round(projectedValue).toLocaleString()}
-            </p>
-            <div className="space-y-4">
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Total Invested</span>
-                <span className="font-bold">
-                  ₹{totalInvested.toLocaleString()}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Net Wealth Gain</span>
-                <span className="text-emerald-500 font-bold">
-                  +₹
-                  {Math.round(projectedValue - totalInvested).toLocaleString()}
-                </span>
-              </div>
-            </div>
-            {portfolio.some((p: PortfolioItem) => p.id === "crypto") && (
-              <div className="mt-8 p-4 rounded-xl bg-orange-500/10 border border-orange-500/20 flex gap-3 items-start">
-                <AlertTriangle className="w-5 h-5 text-orange-500 shrink-0 mt-0.5" />
-                <p className="text-[10px] text-orange-200 leading-relaxed">
-                  High-volatility assets (Crypto) are included. Projections are
-                  subject to extreme variance.
-                </p>
-              </div>
-            )}
-          </div>
-          <Button
-            onClick={onReset}
-            variant="ghost"
-            className="w-full h-16 border border-gold/10 text-amber-400 rounded-2xl hover:bg-gold/5"
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={step}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="space-y-5"
           >
-            <RotateCcw className="mr-3 w-5 h-5" /> Re-construct Portfolio
-          </Button>
+            {questionsForStep.map((q) => {
+              const value = profile[q.id as keyof FinancialProfile] as any;
+              if (q.id === "lumpSumSource" && profile.availableLumpSum === 0)
+                return null;
+
+              if (q.type === "boolean")
+                return (
+                  <div key={q.id} className="space-y-3">
+                    <div>
+                      <p className="text-base font-semibold">{q.question}</p>
+                      {q.subtext && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {q.subtext}
+                        </p>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      {q.options!.map((opt) => (
+                        <button
+                          key={String(opt.value)}
+                          onClick={() => updateField(q.id, opt.value)}
+                          className={cn(
+                            "p-4 rounded-xl border text-sm font-medium transition-all",
+                            value === opt.value
+                              ? "border-amber-400/50 bg-amber-400/10 text-amber-400"
+                              : "border-white/10 bg-white/3 hover:border-white/20",
+                          )}
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+
+              if (q.type === "select")
+                return (
+                  <div key={q.id} className="space-y-3">
+                    <div>
+                      <p className="text-base font-semibold">{q.question}</p>
+                      {q.subtext && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {q.subtext}
+                        </p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      {q.options!.map((opt) => (
+                        <button
+                          key={String(opt.value)}
+                          onClick={() => updateField(q.id, opt.value)}
+                          className={cn(
+                            "w-full p-3.5 rounded-xl border text-left text-sm flex items-center justify-between transition-all",
+                            value === opt.value
+                              ? "border-amber-400/50 bg-amber-400/10"
+                              : "border-white/10 bg-white/3 hover:border-white/20",
+                          )}
+                        >
+                          <span
+                            className={
+                              value === opt.value
+                                ? "text-amber-400"
+                                : "text-foreground"
+                            }
+                          >
+                            {opt.label}
+                          </span>
+                          {value === opt.value && (
+                            <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+
+              if (q.type === "slider") {
+                const disp =
+                  q.format === "currency"
+                    ? fmtC(value)
+                    : q.format === "years"
+                      ? `${value} yrs`
+                      : q.format === "percent"
+                        ? `${value}%`
+                        : String(value);
+                return (
+                  <div key={q.id} className="space-y-3">
+                    <div>
+                      <p className="text-base font-semibold">{q.question}</p>
+                      {q.subtext && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {q.subtext}
+                        </p>
+                      )}
+                    </div>
+                    <div
+                      className={cn(
+                        "p-4 rounded-xl border space-y-3",
+                        q.id === "availableLumpSum" && value > 0
+                          ? "bg-amber-500/8 border-amber-400/30"
+                          : "bg-white/3 border-white/8",
+                      )}
+                    >
+                      <p className="text-3xl font-bold text-amber-400 text-center">
+                        {disp}
+                      </p>
+                      <input
+                        type="range"
+                        min={q.min}
+                        max={q.max}
+                        step={q.step_size}
+                        value={value}
+                        onChange={(e) =>
+                          updateField(q.id, Number(e.target.value))
+                        }
+                        className="w-full accent-amber-400"
+                      />
+                      <div className="flex justify-between text-[10px] text-muted-foreground/50">
+                        <span>
+                          {q.format === "currency" ? fmtC(q.min!) : q.min}
+                        </span>
+                        <span>
+                          {q.format === "currency" ? fmtC(q.max!) : q.max}
+                        </span>
+                      </div>
+                    </div>
+                    {q.id === "availableLumpSum" && value > 0 && (
+                      <div className="flex gap-2 p-3 rounded-xl bg-amber-400/8 border border-amber-400/20 text-xs text-amber-300">
+                        <Zap className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                        We'll deploy this {fmtC(value)} precisely — FD, PPF lump
+                        sum, debt payoff, or equity.
+                      </div>
+                    )}
+                    {q.id === "emergencyFund" && value > 0 && (
+                      <p className="text-xs text-muted-foreground">
+                        Covers{" "}
+                        <span
+                          className={cn(
+                            "font-medium",
+                            value /
+                              (profile.monthlyExpenses + profile.monthlyEmi ||
+                                1) >=
+                              6
+                              ? "text-green-400"
+                              : "text-orange-400",
+                          )}
+                        >
+                          {(
+                            value /
+                            (profile.monthlyExpenses + profile.monthlyEmi || 1)
+                          ).toFixed(1)}{" "}
+                          months
+                        </span>{" "}
+                        · target 6 months
+                      </p>
+                    )}
+                    {q.id === "existing80cInvested" && (
+                      <p className="text-xs text-muted-foreground">
+                        80C remaining:{" "}
+                        <span className="text-amber-400 font-medium">
+                          {fmtC(
+                            Math.max(
+                              0,
+                              150000 - value - profile.employerPfMonthly * 24,
+                            ),
+                          )}
+                        </span>
+                      </p>
+                    )}
+                  </div>
+                );
+              }
+              return null;
+            })}
+          </motion.div>
+        </AnimatePresence>
+
+        {step === 1 && profile.hasGirlChild && (
+          <div className="space-y-3">
+            <p className="text-sm font-semibold">Your daughter's age</p>
+            <div className="p-4 rounded-xl bg-white/3 border border-white/8 space-y-3">
+              <p className="text-3xl font-bold text-amber-400 text-center">
+                {profile.girlChildAge ?? 5} years
+              </p>
+              <input
+                type="range"
+                min={0}
+                max={18}
+                step={1}
+                value={profile.girlChildAge ?? 5}
+                onChange={(e) =>
+                  updateField("girlChildAge", Number(e.target.value))
+                }
+                className="w-full accent-amber-400"
+              />
+              {(profile.girlChildAge ?? 5) < 10 ? (
+                <p className="text-xs text-green-400">
+                  ✓ SSY eligible — 8.2% guaranteed + fully tax-free
+                </p>
+              ) : (
+                <p className="text-xs text-orange-400">
+                  SSY requires opening before age 10
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+
+        <div className="flex gap-3 pt-2">
+          {step > 1 && (
+            <button
+              onClick={() => setStep((s) => s - 1)}
+              className="flex items-center gap-2 px-4 py-3 rounded-xl border border-white/10 text-sm text-muted-foreground hover:text-foreground transition-all"
+            >
+              <ArrowLeft className="w-4 h-4" /> Back
+            </button>
+          )}
+          <button
+            onClick={() => setStep((s) => s + 1)}
+            className="flex-1 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold flex items-center justify-center gap-2 text-sm transition-all"
+          >
+            {step === TOTAL_STEPS ? (
+              <>
+                <Sparkles className="w-4 h-4" />
+                Generate Precise Plan
+              </>
+            ) : (
+              <>
+                Next <ArrowRight className="w-4 h-4" />
+              </>
+            )}
+          </button>
         </div>
       </div>
-    </motion.div>
+    );
+  }
+
+  // ── RESULTS ───────────────────────────────────────────────────────────────
+  const criticalCount = recommendations.filter(
+    (r) => r.priority === "critical",
+  ).length;
+  const visibleRecs = showAll ? recommendations : recommendations.slice(0, 5);
+  const hasLumpSum = profile.availableLumpSum > 0;
+
+  return (
+    <div className="max-w-lg mx-auto space-y-5">
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div>
+          <p className="text-xs text-muted-foreground uppercase tracking-widest mb-1">
+            Precise · Personalised
+          </p>
+          <h1 className="font-serif text-2xl font-bold">Your Financial Plan</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            {fmtC(profile.monthlyIncome)}/mo · {profile.age}yr ·{" "}
+            {profile.taxBracket}% tax
+            {hasLumpSum ? ` · ${fmtC(profile.availableLumpSum)} lump sum` : ""}
+          </p>
+        </div>
+        <button
+          onClick={() => {
+            setStep(1);
+            setExpanded(null);
+          }}
+          className="text-muted-foreground hover:text-amber-400"
+        >
+          <RefreshCcw className="w-4 h-4" />
+        </button>
+      </div>
+
+      {/* Goal feasibility card — first thing user sees */}
+      {summary && <GoalProgressCard summary={summary} fmtC={fmtC} />}
+
+      {/* Deployment summary */}
+      {summary && (
+        <div className="grid grid-cols-3 gap-3">
+          <StatBox
+            label="SIPs/month"
+            value={
+              summary.totalMonthlySip > 0 ? fmtC(summary.totalMonthlySip) : "—"
+            }
+            sub="recurring"
+            color="text-violet-400"
+          />
+          <StatBox
+            label="Lump sum"
+            value={summary.totalLumpSum > 0 ? fmtC(summary.totalLumpSum) : "—"}
+            sub="one-time"
+            color="text-amber-400"
+          />
+          <StatBox
+            label="Tax saved"
+            value={
+              summary.totalTaxSaving > 0 ? fmtC(summary.totalTaxSaving) : "—"
+            }
+            sub="/yr"
+            color="text-green-400"
+          />
+        </div>
+      )}
+
+      {/* Surplus usage */}
+      {summary && summary.surplusRemaining > 0 && (
+        <div className="flex gap-2 p-3 rounded-xl bg-blue-500/8 border border-blue-500/20 text-xs text-blue-300">
+          <Info className="w-4 h-4 shrink-0 mt-0.5" />
+          <span>
+            {fmtC(summary.surplusRemaining)}/mo unallocated — keep as liquid
+            buffer in IDFC FIRST savings (7%).
+          </span>
+        </div>
+      )}
+
+      {summary && summary.remainingLumpSum > 0 && (
+        <div className="flex gap-2 p-3 rounded-xl bg-blue-500/8 border border-blue-500/20 text-xs text-blue-300">
+          <Info className="w-4 h-4 shrink-0 mt-0.5" />
+          <span>
+            {fmtC(summary.remainingLumpSum)} lump sum undeployed — keep in HDFC
+            Liquid Fund (6.8%) as buffer.
+          </span>
+        </div>
+      )}
+
+      {criticalCount > 0 && (
+        <div className="flex gap-2 p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-xs text-red-300">
+          <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+          Complete {criticalCount} critical action{criticalCount > 1 ? "s" : ""}{" "}
+          before investing in markets.
+        </div>
+      )}
+
+      {/* Recommendations */}
+      <div className="space-y-3">
+        {visibleRecs.map((rec, i) => {
+          const cfg = PRIORITY_CONFIG[rec.priority];
+          const invCfg = INV_TYPE_CONFIG[rec.investmentType];
+          const InvIcon = invCfg.icon;
+          const isExp = expanded === rec.id;
+          return (
+            <motion.div
+              key={rec.id}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.04 }}
+              className={cn(
+                "rounded-2xl border overflow-hidden cursor-pointer",
+                cfg.bg,
+                cfg.border,
+              )}
+              onClick={() => setExpanded(isExp ? null : rec.id)}
+            >
+              <div className="p-4">
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl shrink-0">{rec.emoji}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
+                      <span
+                        className={cn(
+                          "text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full border",
+                          cfg.labelColor,
+                          rec.priority === "critical"
+                            ? "border-red-500/30"
+                            : rec.priority === "high"
+                              ? "border-amber-400/30"
+                              : "border-blue-500/30",
+                        )}
+                      >
+                        {cfg.label}
+                      </span>
+                      <span className="text-[9px] text-muted-foreground/50">
+                        {CATEGORY_LABELS[rec.category]}
+                      </span>
+                      <span
+                        className={cn(
+                          "inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded-full",
+                          invCfg.color,
+                          invCfg.bg,
+                        )}
+                      >
+                        <InvIcon className="w-2.5 h-2.5" />
+                        {invCfg.label}
+                      </span>
+                    </div>
+                    <p className="text-sm font-bold leading-snug">
+                      {rec.title}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {rec.subtitle}
+                    </p>
+                    <div className="flex gap-3 mt-2 flex-wrap">
+                      {rec.monthlyAmount > 0 && (
+                        <span className="text-[10px] text-violet-400 font-medium">
+                          ₹{rec.monthlyAmount.toLocaleString()}/mo
+                        </span>
+                      )}
+                      {rec.lumpSum && rec.lumpSum > 0 && (
+                        <span className="text-[10px] text-amber-400 font-medium">
+                          ₹{rec.lumpSum.toLocaleString()} lump sum
+                        </span>
+                      )}
+                      {rec.taxSaving && (
+                        <span className="text-[10px] text-green-400 font-medium">
+                          saves ₹{rec.taxSaving.toLocaleString()}/yr tax
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  {isExp ? (
+                    <ChevronUp className="w-4 h-4 text-muted-foreground/40 shrink-0" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-muted-foreground/40 shrink-0" />
+                  )}
+                </div>
+              </div>
+              <AnimatePresence>
+                {isExp && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="border-t border-white/8 p-4 space-y-4"
+                  >
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+                      <Zap className="w-3 h-3 text-amber-400" />
+                      <span className="text-xs font-medium text-amber-400">
+                        {rec.urgency}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1.5">
+                        Why this is right for you
+                      </p>
+                      <p className="text-sm leading-relaxed">{rec.reasoning}</p>
+                    </div>
+                    <div className="p-3 rounded-xl bg-amber-400/8 border border-amber-400/20">
+                      <p className="text-[10px] text-amber-400 font-bold uppercase tracking-widest mb-1.5">
+                        Exactly what to do
+                      </p>
+                      <p className="text-sm leading-relaxed whitespace-pre-line">
+                        {rec.action}
+                      </p>
+                    </div>
+                    <div
+                      className="grid gap-3"
+                      style={{
+                        gridTemplateColumns: `repeat(${[rec.monthlyAmount > 0, rec.lumpSum && rec.lumpSum > 0, rec.taxSaving].filter(Boolean).length},1fr)`,
+                      }}
+                    >
+                      {rec.monthlyAmount > 0 && (
+                        <div className="p-3 rounded-xl bg-violet-500/8 border border-violet-500/20 text-center">
+                          <p className="text-[10px] text-violet-400">
+                            SIP / Month
+                          </p>
+                          <p className="text-lg font-bold">
+                            ₹{rec.monthlyAmount.toLocaleString()}
+                          </p>
+                        </div>
+                      )}
+                      {rec.lumpSum && rec.lumpSum > 0 && (
+                        <div className="p-3 rounded-xl bg-amber-500/8 border border-amber-400/20 text-center">
+                          <p className="text-[10px] text-amber-400">Lump Sum</p>
+                          <p className="text-lg font-bold text-amber-400">
+                            ₹{rec.lumpSum.toLocaleString()}
+                          </p>
+                        </div>
+                      )}
+                      {rec.taxSaving && (
+                        <div className="p-3 rounded-xl bg-green-500/8 border border-green-500/20 text-center">
+                          <p className="text-[10px] text-green-400">
+                            Tax saved/yr
+                          </p>
+                          <p className="text-lg font-bold text-green-400">
+                            ₹{rec.taxSaving.toLocaleString()}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-3 rounded-xl bg-emerald-500/8 border border-emerald-500/20">
+                      <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest mb-1">
+                        Expected outcome
+                      </p>
+                      <p className="text-sm">{rec.expectedOutcome}</p>
+                    </div>
+                    <div className="flex gap-2 p-3 rounded-xl bg-red-500/8 border border-red-500/20">
+                      <AlertTriangle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" />
+                      <p className="text-xs leading-relaxed">
+                        <span className="text-red-400 font-bold">Avoid: </span>
+                        {rec.avoidMistake}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-2">
+                        Where to do this
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {rec.platform.map((pl) => (
+                          <span
+                            key={pl}
+                            className="text-xs px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 font-medium"
+                          >
+                            {pl}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {recommendations.length > 5 && (
+        <button
+          onClick={() => setShowAll((s) => !s)}
+          className="w-full py-3 rounded-xl border border-white/10 text-sm text-muted-foreground hover:text-foreground transition-all"
+        >
+          {showAll
+            ? "Show less"
+            : `Show ${recommendations.length - 5} more recommendations`}
+        </button>
+      )}
+      <p className="text-[10px] text-muted-foreground/40 text-center leading-relaxed pb-4">
+        AI-generated from your inputs. Consult a SEBI-registered fee-only
+        advisor for large decisions.
+      </p>
+    </div>
+  );
+}
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
+
+function StatBox({
+  label,
+  value,
+  color,
+  sub,
+}: {
+  label: string;
+  value: string;
+  color: string;
+  sub?: string;
+}) {
+  return (
+    <div className="text-center p-3 rounded-xl bg-white/3 border border-white/8">
+      <p className={cn("text-xl font-bold", color)}>{value}</p>
+      <p className="text-[10px] text-muted-foreground mt-0.5">{label}</p>
+      {sub && <p className="text-[9px] text-muted-foreground/50">{sub}</p>}
+    </div>
+  );
+}
+
+function GoalProgressCard({
+  summary,
+  fmtC,
+}: {
+  summary: PlanSummary;
+  fmtC: (v: number) => string;
+}) {
+  const [showAlts, setShowAlts] = useState(false);
+  const f = summary.feasibility;
+  const pct = Math.min(100, f.achievablePct);
+
+  const STATUS = {
+    achievable: {
+      color: "text-emerald-400",
+      bg: "bg-emerald-500/8",
+      border: "border-emerald-500/25",
+      icon: "✅",
+      label: "On Track",
+    },
+    close: {
+      color: "text-blue-400",
+      bg: "bg-blue-500/8",
+      border: "border-blue-500/25",
+      icon: "🔵",
+      label: "Nearly There",
+    },
+    stretch: {
+      color: "text-amber-400",
+      bg: "bg-amber-500/8",
+      border: "border-amber-400/25",
+      icon: "⚠️",
+      label: "Stretch Goal",
+    },
+    impossible: {
+      color: "text-red-400",
+      bg: "bg-red-500/8",
+      border: "border-red-500/25",
+      icon: "🔴",
+      label: "Needs Revision",
+    },
+  } as const;
+  const s = STATUS[f.status];
+
+  return (
+    <div className={cn("rounded-2xl border p-5 space-y-4", s.bg, s.border)}>
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <Target className="w-4 h-4 text-muted-foreground" />
+            <span className="text-xs text-muted-foreground uppercase tracking-widest">
+              Goal Projection
+            </span>
+            <span
+              className={cn(
+                "text-[9px] font-bold px-1.5 py-0.5 rounded-full border",
+                s.color,
+                f.status === "achievable"
+                  ? "border-emerald-500/30"
+                  : f.status === "close"
+                    ? "border-blue-500/30"
+                    : f.status === "stretch"
+                      ? "border-amber-400/30"
+                      : "border-red-500/30",
+              )}
+            >
+              {s.icon} {s.label}
+            </span>
+          </div>
+          <p className="font-serif text-lg font-bold">{summary.goalName}</p>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Target {fmtC(summary.goalTarget)} by {summary.targetYear} (
+            {summary.goalYears} yr{summary.goalYears > 1 ? "s" : ""})
+          </p>
+        </div>
+        <div className="text-right shrink-0">
+          <p className={cn("text-3xl font-bold", s.color)}>{pct}%</p>
+          <p className="text-[10px] text-muted-foreground">of target</p>
+        </div>
+      </div>
+
+      {/* Progress bar */}
+      <div className="space-y-1.5">
+        <div className="h-3 rounded-full bg-white/10 overflow-hidden">
+          <div
+            className={cn(
+              "h-full rounded-full transition-all",
+              f.status === "achievable"
+                ? "bg-emerald-400"
+                : f.status === "close"
+                  ? "bg-blue-400"
+                  : f.status === "stretch"
+                    ? "bg-amber-400"
+                    : "bg-red-400",
+            )}
+            style={{ width: `${pct}%` }}
+          />
+        </div>
+        <div className="flex justify-between text-[10px] text-muted-foreground">
+          <span>₹0</span>
+          <span className={cn("font-medium", s.color)}>
+            Projected: {fmtC(summary.projectedCorpus)}
+          </span>
+          <span>Target: {fmtC(summary.goalTarget)}</span>
+        </div>
+      </div>
+
+      {/* SIP vs lump sum split */}
+      {(summary.projectedFromSip > 0 || summary.projectedFromLump > 0) && (
+        <div className="grid grid-cols-2 gap-2">
+          {summary.projectedFromSip > 0 && (
+            <div className="p-2.5 rounded-xl bg-white/5 text-center">
+              <p className="text-[10px] text-violet-400">From SIPs</p>
+              <p className="text-sm font-bold">
+                {fmtC(summary.projectedFromSip)}
+              </p>
+            </div>
+          )}
+          {summary.projectedFromLump > 0 && (
+            <div className="p-2.5 rounded-xl bg-white/5 text-center">
+              <p className="text-[10px] text-amber-400">From Lump Sum</p>
+              <p className="text-sm font-bold">
+                {fmtC(summary.projectedFromLump)}
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 10% step-up bonus */}
+      {summary.goalYears >= 3 &&
+        summary.sipStepupCorpus > summary.projectedCorpus * 1.08 && (
+          <div className="flex items-start gap-2 p-3 rounded-xl bg-violet-500/10 border border-violet-500/20 text-xs">
+            <TrendingUp className="w-3.5 h-3.5 text-violet-400 shrink-0 mt-0.5" />
+            <span className="text-violet-300">
+              <strong>10% annual SIP step-up:</strong> corpus grows to{" "}
+              {fmtC(summary.sipStepupCorpus)} —{" "}
+              {fmtC(summary.sipStepupCorpus - summary.projectedCorpus)} more
+              than flat SIP
+            </span>
+          </div>
+        )}
+
+      {/* Verdict */}
+      <div
+        className={cn(
+          "p-3 rounded-xl text-xs leading-relaxed",
+          s.bg,
+          "border",
+          s.border,
+        )}
+      >
+        <p className={cn("font-bold mb-1", s.color)}>
+          {s.icon}{" "}
+          {f.status === "achievable"
+            ? "You're on track"
+            : f.status === "close"
+              ? "Almost there"
+              : f.status === "stretch"
+                ? "Achievable with adjustments"
+                : "Goal needs revision"}
+        </p>
+        <p className="text-muted-foreground leading-relaxed">
+          {f.status === "achievable"
+            ? `Your plan projects ${fmtC(summary.projectedCorpus)} by ${summary.targetYear} — ${fmtC(summary.projectedCorpus - summary.goalTarget)} above target. Keep going.`
+            : f.status === "close"
+              ? `You'll reach ${fmtC(summary.projectedCorpus)} — ${fmtC(f.shortfall)} short. Increase SIP by ${fmtC(Math.round(f.shortfall / (summary.goalYears * 12)))}/mo or extend 1–2 years.`
+              : f.status === "stretch"
+                ? `Current plan reaches ${fmtC(summary.projectedCorpus)} (${pct}% of target). To hit ${fmtC(summary.goalTarget)}, you need ${fmtC(f.requiredSipMonthly)}/mo or ${Math.ceil(f.yearsAtCurrentSip)} years.`
+                : `${fmtC(summary.goalTarget)} in ${summary.goalYears} years needs ${fmtC(f.requiredSipMonthly)}/mo — your surplus is ${fmtC(summary.totalMonthlySip)}. See the alternatives below.`}
+        </p>
+      </div>
+
+      {/* Equity risk warning */}
+      {f.riskWarning && (
+        <div className="flex gap-2 p-3 rounded-xl bg-orange-500/8 border border-orange-500/20 text-xs text-orange-300">
+          <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+          {f.riskWarning}
+        </div>
+      )}
+
+      {/* Alternative scenarios */}
+      {f.altScenarios.length > 0 && (
+        <div>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowAlts((s) => !s);
+            }}
+            className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground w-full text-left"
+          >
+            <span>{showAlts ? "▲" : "▼"}</span>
+            {showAlts ? "Hide" : "Show"} {f.altScenarios.length} alternative
+            {f.altScenarios.length > 1 ? "s" : ""} to reach your goal
+          </button>
+          {showAlts && (
+            <div className="mt-3 space-y-2">
+              {f.altScenarios.map((alt, i) => (
+                <div
+                  key={i}
+                  className="p-3 rounded-xl bg-white/3 border border-white/8"
+                >
+                  <p className="text-xs font-semibold text-foreground">
+                    {i + 1}. {alt.label}
+                  </p>
+                  <p className="text-[11px] text-muted-foreground mt-1">
+                    {alt.description}
+                  </p>
+                  <p className="text-[10px] text-amber-400 mt-1 font-medium">
+                    → {alt.action}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   );
 }

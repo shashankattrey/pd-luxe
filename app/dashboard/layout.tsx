@@ -17,6 +17,7 @@ import {
   Bell,
   User,
   TrendingUp,
+  Home,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -45,21 +46,27 @@ import { calculateInDepthSavings } from "@/lib/credit-cards-data";
 // Profile avatar in header corner (not a nav tab).
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Mobile bottom nav — exactly 4 items
+// Mobile bottom nav — 5 items
+// Settings lives in header avatar (top-right) — not a primary destination
+// Wealth Advisor given equal slot to Cards Advisor — both are core to the product
 const mobileNavItems = [
   {
-    href: "/dashboard/advisor",
-    icon: Sparkles,
-    label: "Advisor",
-    // Gold = card/wealth AI — the primary CTA
+    href: "/dashboard",
+    icon: Home,
+    label: "Home",
     activeClass: "text-amber-400 bg-amber-400/10",
   },
   {
-    href: "/dashboard/my-money",
-    icon: LayoutDashboard,
-    label: "My Money",
-    // Neutral — personal portfolio overview
+    href: "/dashboard/advisor",
+    icon: Sparkles,
+    label: "Cards",
     activeClass: "text-amber-400 bg-amber-400/10",
+  },
+  {
+    href: "/dashboard/wealth-advisor",
+    icon: TrendingUp,
+    label: "Wealth",
+    activeClass: "text-emerald-400 bg-emerald-400/10",
   },
   {
     href: "/dashboard/explore",
@@ -68,9 +75,9 @@ const mobileNavItems = [
     activeClass: "text-amber-400 bg-amber-400/10",
   },
   {
-    href: "/dashboard/settings",
-    icon: Settings,
-    label: "Settings",
+    href: "/dashboard/my-money",
+    icon: LayoutDashboard,
+    label: "My Money",
     activeClass: "text-amber-400 bg-amber-400/10",
   },
 ];
@@ -80,10 +87,11 @@ const desktopNavItems = [
   {
     group: "Core",
     items: [
+      { href: "/dashboard", icon: Home, label: "Home", badge: null },
       {
         href: "/dashboard/advisor",
         icon: Sparkles,
-        label: "AI Advisor",
+        label: "Card Advisor",
         badge: null,
       },
       {

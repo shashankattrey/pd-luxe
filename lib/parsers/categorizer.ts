@@ -1,31 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// CATEGORY RULES
-//
-// ORDER IS CRITICAL — the first matching category wins.
-// Non-rewardable categories (bank charges, P2P, gambling) come first or last:
-//   • bank_charges_and_taxes  — FIRST  (unambiguous bank-generated text)
-//   • gambling_and_restricted — EARLY  (before generic "others")
-//   • transfers_and_p2p       — LAST   (after all merchant categories, because
-//                                        P2P handles like @YBL- can appear in
-//                                        merchant narrations too)
-//
-// KEY FIXES vs original:
-//   1. "UPI/" removed — HDFC narrations end in "-UPI", never contain "UPI/"
-//   2. "PAYMENT FROM" removed — only appears in CREDIT (deposit) rows, not debits
-//   3. travel_and_utilities SPLIT into travel + utilities + fuel (3 separate cats)
-//      so the scoring engine applies the right card rates to each
-//   4. JIO moved from travel → utilities
-//   5. HPCL/BPCL moved from travel → fuel
-//   6. P2P detection uses UPI personal-bank handle suffixes (@OKICICI, @YBL-, @IBL-,
-//      @OKAXIS, @SBIN-, @UBIN-, @BARB-, @PUNB-) which are personal accounts.
-//      Merchant aggregator handles (@PTYS, @YESB0PTMUPI, @YESB0MCHUPI, @MERUPI,
-//      @AUBANK) are NOT in P2P list — they correctly fall through to "others"
-//      or get caught by merchant keyword rules above.
-//   7. Added gambling_and_restricted category (non-rewardable)
-//   8. Added MUJ.4276 (restaurant UPI handle), BAOZI (restaurant name) to food
-//   9. "COIN" removed from investments — too generic, matches "BITCOIN" etc.
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const CATEGORY_RULES: Record<string, string[]> = {
   // ── Non-rewardable: bank-generated charges ─────────────────────────────
   bank_charges_and_taxes: [
@@ -89,6 +61,11 @@ export const CATEGORY_RULES: Record<string, string[]> = {
     "SBI MF",
     "PARAG PARIKH",
     "INB MF",
+    "CHIT FUND",
+    "SAVING SCHEME",
+    " SCHEME ", // chit fund schemes (space-delimited)
+    "SCHEME-PAYTM", // chit fund / cooperative schemes paid via Paytm
+    "NIDHI SCHEME",
   ],
 
   // ── Non-rewardable: rent & credit card bill payments ───────────────────
@@ -149,7 +126,7 @@ export const CATEGORY_RULES: Record<string, string[]> = {
   food_and_dining: [
     "ZOMATO",
     "SWIGGY",
-    "MOMOS", // generic restaurant type
+    "MOMOS",
     "NESCAFE",
     "GORDHANDASS",
     "STARBUCKS",
@@ -163,16 +140,16 @@ export const CATEGORY_RULES: Record<string, string[]> = {
     "CHAIOS",
     "BLUE TOKAI",
     "EATSURE",
-    "BLINKIT", // quick commerce / food
-    "ZEPTO", // quick commerce / food
-    "MUJ.4276", // restaurant UPI handle pattern (HDFC Merchant UPI)
-    "BAOZI", // restaurant name
+    "BLINKIT",
+    "ZEPTO",
+    "MUJ.4276",
+    "BAOZI",
     "DINEOUT",
     "EAZYDINER",
     "FASOOS",
     "BOX8",
     "FRESHMENU",
-    "DUNZO", // quick delivery (food)
+    "DUNZO",
     "CHAI POINT",
     "CAFE COFFEE",
     "HALDIRAMS",
@@ -196,13 +173,13 @@ export const CATEGORY_RULES: Record<string, string[]> = {
     "DECATHLON",
     "PEPPERFRY",
     "URBAN LADDER",
-    "BOAT ", // boAt audio (note trailing space to avoid "BOAT CLUB")
+    "BOAT ",
     "NOISE ",
     "VIJAY SALES",
     "CHROMA",
     "SHREE SHYAM ART",
-    "ART AND", // local art/stationery shops
-    "MERCHANT", // catch-all for merchant UPI IDs with "MERCHANT" in name
+    "ART AND",
+    "MERCHANT",
   ],
 
   // ── Rewardable: grocery & daily essentials ─────────────────────────────
@@ -245,7 +222,6 @@ export const CATEGORY_RULES: Record<string, string[]> = {
   ],
 
   // ── Rewardable: fuel ──────────────────────────────────────────────────
-  // Kept separate from travel so fuel-specialist cards score correctly
   fuel: [
     "HPCL",
     "BPCL",
@@ -262,6 +238,8 @@ export const CATEGORY_RULES: Record<string, string[]> = {
     "FUEL STATION",
     "NAYARA",
     "RELIANCE PETRO",
+    "INDIAN OI",
+    "SRINATH INDIAN", // catches "MS SRINATH INDIAN OI" (Indian Oil dealer)
   ],
 
   // ── Rewardable: travel (flights, hotels, cabs, trains) ────────────────
@@ -295,14 +273,13 @@ export const CATEGORY_RULES: Record<string, string[]> = {
     "MSRTC",
     "GSRTC",
     "MERU",
-    "BLUEBIKE", // BluSmart / EV cabs
+    "BLUEBIKE",
     "BLUSMART",
     "DRIVEZY",
     "ZOOMCAR",
   ],
 
   // ── Rewardable: utilities & telecom bills ─────────────────────────────
-  // Separated from travel so utility-specialist cards score correctly
   utilities: [
     "JIO",
     "JIOFIBER",
@@ -310,7 +287,7 @@ export const CATEGORY_RULES: Record<string, string[]> = {
     "AIRTEL PAYMENTS",
     "BSNL",
     "VODAFONE",
-    "VI ", // note trailing space — avoids matching "VIVEK" etc.
+    "VI ",
     "IDEA CELLULAR",
     "TATA SKY",
     "TATAPLAY",
@@ -334,7 +311,7 @@ export const CATEGORY_RULES: Record<string, string[]> = {
     "BROADBAND",
     "FIBER",
     "PARK+",
-    "GPAYRECHARGE", // Google Pay mobile recharge
+    "GPAYRECHARGE",
     "RECHARGE",
     "PREPAID",
     "FASTAG",
@@ -344,72 +321,49 @@ export const CATEGORY_RULES: Record<string, string[]> = {
 
   // ── Non-rewardable: P2P UPI transfers ─────────────────────────────────
   // MUST BE LAST — after all merchant keyword categories.
-  //
-  // HOW IT WORKS:
-  // Indian UPI handles fall into two groups:
-  //   PERSONAL: person@okicici  person@okhdfcbank  person@okaxis
-  //             name@ybl  name@ibl  name@sbin  name@ubin  name@barb  name@punb
-  //   MERCHANT: shop@ptys (Paytm)  shop@yesb0ptmupi  shop@yesb0mchupi
-  //             shop@merupi (HDFC merchant)  shop@aubank  shop@paytm
-  //
-  // We match personal suffixes. The "dash-before" (@YBL-, @IBL- etc.) is
-  // important — HDFC narrations include the IFSC after the handle:
-  //   UPI-PERSON-handle@YBL-YESB0YBLUPI-refno-UPI
-  // The "-YBL-" suffix distinguishes personal Yes Bank handles from merchant ones.
-  //
-  // We do NOT match @PTYS, @MERUPI, @AUBANK here — those are merchant aggregators
-  // and correctly fall to "others" (rewardable general spend).
   transfers_and_p2p: [
     "@OKICICI",
     "@OKHDFCBANK",
     "@OKAXIS",
-    "@YBL-", // Yes Bank personal UPI (followed by IFSC code)
-    "@IBL-", // IndusInd personal UPI
-    "@SBIN-", // SBI personal UPI
-    "@UBIN-", // Union Bank personal UPI
-    "@BARB-", // Bank of Baroda personal UPI
-    "@PUNB-", // Punjab National Bank personal UPI
-    "@CNRB-", // Canara Bank personal UPI
-    "@KKBK-", // Kotak personal UPI
+    "@YBL-",
+    "@IBL-",
+    "@SBIN-",
+    "@UBIN-",
+    "@BARB-",
+    "@PUNB-",
+    "@CNRB-",
+    "@KKBK-",
+    "@SBI-", // SBI personal UPI (narration uses @SBI- not @SBIN-)
+    "@HDFC-",
+    "@ICICI-",
+    "@AXIS-",
     "SENT TO",
     "CASH WITHDRAWAL",
     "SELF TRANSFER",
-    "NEFT DR-", // outward NEFT (person-to-person)
-    "IMPS-P2A", // IMPS person-to-account
+    "NEFT DR-",
+    "IMPS-P2A",
     "P2P TRANSFER",
   ],
 };
 
 /**
  * Categorizes a bank transaction based on its narration string.
- *
  * Returns one of the keys in CATEGORY_RULES, or "others" for unmatched.
  * "others" is treated as REWARDABLE (general card spend) by the advisor.
- *
- * Non-rewardable categories (excluded from spend profile):
- *   bank_charges_and_taxes, gambling_and_restricted, investment_and_insurance,
- *   rent_and_credit_card, loans_and_emi, transfers_and_p2p
- *
- * @param narration  Raw transaction description from the PDF / statement
  */
 export function getCategory(narration: string): string {
   if (!narration) return "others";
-
-  // Uppercase once for all comparisons
   const norm = narration.toUpperCase();
-
   for (const [category, keywords] of Object.entries(CATEGORY_RULES)) {
-    if (keywords.some((keyword) => norm.includes(keyword))) {
+    if (keywords.some((kw) => norm.includes(kw))) {
       return category;
     }
   }
-
   return "others";
 }
 
 /**
- * Returns true for categories that CANNOT earn credit card rewards.
- * Used by the advisor to strip non-rewardable spend from the profile.
+ * Categories that CANNOT earn credit card rewards.
  */
 export const NON_REWARDABLE_CATEGORIES = new Set([
   "bank_charges_and_taxes",
