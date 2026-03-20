@@ -6,9 +6,10 @@ export default function ClientOnly({ children }: { children: ReactNode }) {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    setHasMounted(true);
+    // Wrap in a microtask to avoid sync state update warning
+    Promise.resolve().then(() => setHasMounted(true));
   }, []);
 
-  if (!hasMounted) return null; // don't render until client
+  if (!hasMounted) return null;
   return <>{children}</>;
 }

@@ -28,7 +28,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     // Fetch user info from your KV session endpoint
     const fetchUser = async () => {
       try {
-        const res = await fetch("/api/me"); // create a worker endpoint or Next.js API route
+        const res = await fetch(
+          "https://paisadekho-ai.paisadekhogroup.workers.dev/auth/me",
+          { credentials: "include" }, // important to include cookies
+        );
         if (!res.ok) return;
         const data = await res.json();
         setUser(data);
