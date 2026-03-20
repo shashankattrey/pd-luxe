@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Figtree, Playfair_Display } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
-import { UserProvider } from "./providers/UserProvider";
+import { UserProvider } from "@/context/UserContext";
 import ClientOnly from "./providers/ClientOnly";
 
 const figtree = Figtree({
