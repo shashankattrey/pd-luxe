@@ -12,6 +12,7 @@ type User = { name: string; email?: string } | null;
 
 interface UserContextProps {
   user: User;
+  isLoading: boolean; // 👈 Add this
   refreshUser: () => Promise<void>;
 }
 
@@ -19,43 +20,31 @@ const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User>(null);
+  const [isLoading, setIsLoading] = useState(true); // 👈 Initialize true
 
-  // Safe effect wrapper
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await fetch(
-          "https://paisadekho-ai.paisadekhogroup.workers.dev/auth/me",
-          { credentials: "include" },
-        );
-        if (!res.ok) return;
-        const data = await res.json();
-        setUser(data); // <-- now safely inside async function
-      } catch (err) {
-        console.error("Failed to fetch user", err);
-      }
-    };
-
-    fetchUser(); // call it here
-  }, []);
-
-  // Optional: refresh function
-  const refreshUser = async () => {
+  const fetchUser = async () => {
     try {
       const res = await fetch(
         "https://paisadekho-ai.paisadekhogroup.workers.dev/auth/me",
         { credentials: "include" },
       );
-      if (!res.ok) return;
-      const data = await res.json();
-      setUser(data);
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data);
+      }
     } catch (err) {
-      console.error("Failed to refresh user", err);
+      console.error("Failed to fetch user", err);
+    } finally {
+      setIsLoading(false); // 👈 Always stop loading
     }
   };
 
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   return (
-    <UserContext.Provider value={{ user, refreshUser }}>
+    <UserContext.Provider value={{ user, isLoading, refreshUser: fetchUser }}>
       {children}
     </UserContext.Provider>
   );
@@ -63,6 +52,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
 export function useUser() {
   const context = useContext(UserContext);
-  if (!context) throw new Error("useUser must be used inside UserProvider");
+  if (context === undefined) {
+    throw new Error("useUser must be used inside UserProvider");
+  }
   return context;
 }
