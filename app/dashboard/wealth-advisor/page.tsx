@@ -15,6 +15,8 @@ import {
   TrendingUp,
   Repeat,
   Target,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -27,16 +29,15 @@ import {
   type RecommendationPriority,
   type PlanSummary,
 } from "@/lib/smart-engine";
+import InvestmentReport from "../../../components/InvestmentReport";
+import { useMarketData } from "@/hooks/useMarketData";
 import { cn } from "@/lib/utils";
+
+// ─── CONFIG MAPS ─────────────────────────────────────────────────────────────
 
 const PRIORITY_CONFIG: Record<
   RecommendationPriority,
-  {
-    bg: string;
-    border: string;
-    label: string;
-    labelColor: string;
-  }
+  { bg: string; border: string; label: string; labelColor: string }
 > = {
   critical: {
     bg: "bg-red-500/8",
@@ -104,6 +105,8 @@ const CATEGORY_LABELS: Record<string, string> = {
   rebalance: "🔄 Rebalance",
 };
 
+// ─── DEFAULT PROFILE ─────────────────────────────────────────────────────────
+
 const DEFAULT_PROFILE: FinancialProfile = {
   age: 30,
   isMarried: false,
@@ -135,18 +138,38 @@ const DEFAULT_PROFILE: FinancialProfile = {
   retirementAge: 60,
   riskAppetite: "moderate",
   prefersSip: true,
+  prefersOldRegime: false,
+  includeStepUp: true,
+  inflationRate: 6,
 };
+
+// ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 
 export default function WealthAdvisorPage() {
   const [step, setStep] = useState(0);
   const [profile, setProfile] = useState<FinancialProfile>(DEFAULT_PROFILE);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
+  const [viewMode, setViewMode] = useState<"cards" | "report">("cards");
 
+  // ── Live market data ───────────────────────────────────────────────────────
+  const {
+    data: marketData,
+    loading: marketLoading,
+    refreshing,
+    error: marketError,
+    refetch,
+  } = useMarketData();
+
+  // ── Engine — pass live marketData so rates are real, not hardcoded ─────────
   const recommendations = useMemo(
-    () => (step > TOTAL_STEPS ? generatePreciseRecommendations(profile) : []),
-    [step, profile],
+    () =>
+      step > TOTAL_STEPS
+        ? generatePreciseRecommendations(profile, marketData ?? undefined)
+        : [],
+    [step, profile, marketData],
   );
+
   const summary = useMemo(
     () =>
       recommendations.length > 0
@@ -155,6 +178,7 @@ export default function WealthAdvisorPage() {
     [recommendations, profile],
   );
 
+  // ── Helpers ───────────────────────────────────────────────────────────────
   const surplus = Math.max(
     0,
     profile.monthlyIncome -
@@ -174,10 +198,156 @@ export default function WealthAdvisorPage() {
           ? `₹${(v / 1000).toFixed(0)}k`
           : `₹${v}`;
 
-  // ── LANDING ──────────────────────────────────────────────────────────────
+  // ── Market ticker bar — shown at top of every step ─────────────────────────
+  const MarketTicker = () => {
+    if (marketLoading && !marketData) {
+      return (
+        <div className="w-full h-8 mb-4 rounded-lg bg-white/3 border border-white/8 animate-pulse flex items-center px-3">
+          <span className="text-[10px] text-muted-foreground">
+            Loading live rates…
+          </span>
+        </div>
+      );
+    }
+    if (marketError && !marketData) {
+      return (
+        <div className="w-full mb-4 px-3 py-2 rounded-lg bg-red-500/8 border border-red-500/20 flex items-center justify-between">
+          <span className="flex items-center gap-1.5 text-[10px] text-red-400">
+            <WifiOff className="w-3 h-3" /> Live rates unavailable — using
+            latest cached values
+          </span>
+          <button
+            onClick={refetch}
+            className="text-[10px] text-red-400 hover:text-red-300 underline"
+          >
+            Retry
+          </button>
+        </div>
+      );
+    }
+    if (!marketData) return null;
+
+    const { equity, gold, govtSchemes, macro, crypto } = marketData;
+    const niftyUp = equity.nifty50.changePct >= 0;
+
+    return (
+      <div className="w-full mb-4 flex items-center gap-0 overflow-x-auto scrollbar-hide rounded-lg bg-white/3 border border-white/8 text-[10px]">
+        <span className="flex items-center gap-1 shrink-0 px-3 py-2 border-r border-white/8">
+          <Wifi
+            className={cn(
+              "w-2.5 h-2.5",
+              refreshing ? "text-amber-400 animate-pulse" : "text-emerald-400",
+            )}
+          />
+          <span className="text-muted-foreground">
+            {refreshing ? "updating…" : "live"}
+          </span>
+        </span>
+        <span className="flex items-center gap-1 shrink-0 px-3 py-2 border-r border-white/8">
+          <span className="text-muted-foreground">NIFTY</span>
+          <span className="font-semibold">
+            {equity.nifty50.value.toLocaleString("en-IN", {
+              maximumFractionDigits: 0,
+            })}
+          </span>
+          <span className={niftyUp ? "text-emerald-400" : "text-red-400"}>
+            {niftyUp ? "+" : ""}
+            {equity.nifty50.changePct.toFixed(2)}%
+          </span>
+        </span>
+        <span className="flex items-center gap-1 shrink-0 px-3 py-2 border-r border-white/8">
+          <span className="text-muted-foreground">Gold</span>
+          <span className="font-semibold">
+            ₹
+            {gold.price24k.toLocaleString("en-IN", {
+              maximumFractionDigits: 0,
+            })}
+            /g
+          </span>
+        </span>
+        <span className="flex items-center gap-1 shrink-0 px-3 py-2 border-r border-white/8">
+          <span className="text-muted-foreground">PPF</span>
+          <span className="font-semibold text-amber-400">
+            {govtSchemes.ppf.rate}%
+          </span>
+        </span>
+        <span className="flex items-center gap-1 shrink-0 px-3 py-2 border-r border-white/8">
+          <span className="text-muted-foreground">SSY</span>
+          <span className="font-semibold text-amber-400">
+            {govtSchemes.ssy.rate}%
+          </span>
+        </span>
+        <span className="flex items-center gap-1 shrink-0 px-3 py-2 border-r border-white/8">
+          <span className="text-muted-foreground">USD/₹</span>
+          <span className="font-semibold">{macro.usdInr.toFixed(2)}</span>
+        </span>
+        <span className="flex items-center gap-1 shrink-0 px-3 py-2">
+          <span className="text-muted-foreground">BTC</span>
+          <span className="font-semibold">
+            ₹{(crypto.bitcoin.priceINR / 100000).toFixed(1)}L
+          </span>
+          <span
+            className={
+              crypto.bitcoin.changePct1d >= 0
+                ? "text-emerald-400"
+                : "text-red-400"
+            }
+          >
+            {crypto.bitcoin.changePct1d >= 0 ? "+" : ""}
+            {crypto.bitcoin.changePct1d.toFixed(1)}%
+          </span>
+        </span>
+      </div>
+    );
+  };
+
+  // ── Live rates pill — shown above GoalProgressCard on results screen ────────
+  const LiveRatesPill = () => {
+    if (!marketData) return null;
+    const { equity, gold, govtSchemes } = marketData;
+    return (
+      <div className="flex flex-wrap gap-2 text-[10px]">
+        <span className="px-2 py-1 rounded-full bg-white/5 border border-white/10">
+          NIFTY{" "}
+          {equity.nifty50.value.toLocaleString("en-IN", {
+            maximumFractionDigits: 0,
+          })}
+          <span
+            className={
+              equity.nifty50.changePct >= 0
+                ? " text-emerald-400"
+                : " text-red-400"
+            }
+          >
+            {" "}
+            {equity.nifty50.changePct >= 0 ? "+" : ""}
+            {equity.nifty50.changePct.toFixed(2)}%
+          </span>
+        </span>
+        <span className="px-2 py-1 rounded-full bg-white/5 border border-white/10">
+          Gold ₹
+          {gold.price24k.toLocaleString("en-IN", { maximumFractionDigits: 0 })}
+          /g
+        </span>
+        <span className="px-2 py-1 rounded-full bg-white/5 border border-white/10">
+          PPF {govtSchemes.ppf.rate}% · SSY {govtSchemes.ssy.rate}%
+        </span>
+        {refreshing && (
+          <span className="px-2 py-1 rounded-full bg-white/5 border border-white/10 flex items-center gap-1 text-muted-foreground">
+            <RefreshCcw className="w-2.5 h-2.5 animate-spin" /> updating…
+          </span>
+        )}
+      </div>
+    );
+  };
+
+  // ── LANDING ───────────────────────────────────────────────────────────────
   if (step === 0)
     return (
       <div className="max-w-lg mx-auto space-y-6">
+        {/* Live market ticker */}
+        <MarketTicker />
+
         <div>
           <p className="text-xs text-muted-foreground uppercase tracking-widest mb-2">
             AI-Powered · Precise
@@ -191,7 +361,23 @@ export default function WealthAdvisorPage() {
             Not vague advice. Exact instruments, amounts, platforms — and honest
             assessment of whether your goal is actually achievable.
           </p>
+          {/* Live rates inline teaser */}
+          {marketData && (
+            <div className="mt-3 flex items-center gap-2 text-[11px] text-muted-foreground">
+              <Wifi className="w-3 h-3 text-emerald-400" />
+              Rates updated live: NIFTY{" "}
+              {marketData.equity.nifty50.value.toLocaleString("en-IN", {
+                maximumFractionDigits: 0,
+              })}
+              {" · "}PPF {marketData.govtSchemes.ppf.rate}%{" · "}Gold ₹
+              {marketData.gold.price24k.toLocaleString("en-IN", {
+                maximumFractionDigits: 0,
+              })}
+              /g
+            </div>
+          )}
         </div>
+
         <div className="space-y-3">
           {[
             {
@@ -229,6 +415,7 @@ export default function WealthAdvisorPage() {
             </div>
           ))}
         </div>
+
         <div className="space-y-2">
           <button
             onClick={() => setStep(1)}
@@ -256,6 +443,9 @@ export default function WealthAdvisorPage() {
     ];
     return (
       <div className="max-w-lg mx-auto space-y-5">
+        {/* Live ticker on profiling steps too */}
+        <MarketTicker />
+
         <div className="space-y-2">
           <div className="flex justify-between">
             <p className="text-xs text-muted-foreground">
@@ -444,8 +634,8 @@ export default function WealthAdvisorPage() {
                             (profile.monthlyExpenses + profile.monthlyEmi || 1)
                           ).toFixed(1)}{" "}
                           months
-                        </span>{" "}
-                        · target 6 months
+                        </span>
+                        {" · "}target 6 months
                       </p>
                     )}
                     {q.id === "existing80cInvested" && (
@@ -489,7 +679,9 @@ export default function WealthAdvisorPage() {
               />
               {(profile.girlChildAge ?? 5) < 10 ? (
                 <p className="text-xs text-green-400">
-                  ✓ SSY eligible — 8.2% guaranteed + fully tax-free
+                  ✓ SSY eligible —{" "}
+                  {marketData ? `${marketData.govtSchemes.ssy.rate}%` : "8.2%"}{" "}
+                  guaranteed + fully tax-free
                 </p>
               ) : (
                 <p className="text-xs text-orange-400">
@@ -515,8 +707,7 @@ export default function WealthAdvisorPage() {
           >
             {step === TOTAL_STEPS ? (
               <>
-                <Sparkles className="w-4 h-4" />
-                Generate Precise Plan
+                <Sparkles className="w-4 h-4" /> Generate Precise Plan
               </>
             ) : (
               <>
@@ -562,11 +753,50 @@ export default function WealthAdvisorPage() {
         </button>
       </div>
 
-      {/* Goal feasibility card — first thing user sees */}
-      {summary && <GoalProgressCard summary={summary} fmtC={fmtC} />}
+      {/* Live rates ticker on results too */}
+      <MarketTicker />
 
-      {/* Deployment summary */}
-      {summary && (
+      {/* View mode toggle */}
+      <div className="flex bg-white/5 rounded-xl p-1 print:hidden">
+        <button
+          onClick={() => setViewMode("cards")}
+          className={cn(
+            "flex-1 py-2 rounded-lg text-xs font-medium transition-all",
+            viewMode === "cards"
+              ? "bg-amber-500 text-black"
+              : "text-muted-foreground hover:text-foreground",
+          )}
+        >
+          📋 Action Cards
+        </button>
+        <button
+          onClick={() => setViewMode("report")}
+          className={cn(
+            "flex-1 py-2 rounded-lg text-xs font-medium transition-all",
+            viewMode === "report"
+              ? "bg-amber-500 text-black"
+              : "text-muted-foreground hover:text-foreground",
+          )}
+        >
+          📊 Full Report + Charts
+        </button>
+      </div>
+
+      {/* Full visual report */}
+      {viewMode === "report" && (
+        <InvestmentReport profile={profile} userName="You" />
+      )}
+
+      {/* Goal feasibility card — live rates pill above it */}
+      {viewMode === "cards" && summary && (
+        <>
+          <LiveRatesPill />
+          <GoalProgressCard summary={summary} fmtC={fmtC} />
+        </>
+      )}
+
+      {/* Summary stat boxes */}
+      {viewMode === "cards" && summary && (
         <div className="grid grid-cols-3 gap-3">
           <StatBox
             label="SIPs/month"
@@ -594,7 +824,7 @@ export default function WealthAdvisorPage() {
       )}
 
       {/* Surplus usage */}
-      {summary && summary.surplusRemaining > 0 && (
+      {viewMode === "cards" && summary && summary.surplusRemaining > 0 && (
         <div className="flex gap-2 p-3 rounded-xl bg-blue-500/8 border border-blue-500/20 text-xs text-blue-300">
           <Info className="w-4 h-4 shrink-0 mt-0.5" />
           <span>
@@ -604,7 +834,7 @@ export default function WealthAdvisorPage() {
         </div>
       )}
 
-      {summary && summary.remainingLumpSum > 0 && (
+      {viewMode === "cards" && summary && summary.remainingLumpSum > 0 && (
         <div className="flex gap-2 p-3 rounded-xl bg-blue-500/8 border border-blue-500/20 text-xs text-blue-300">
           <Info className="w-4 h-4 shrink-0 mt-0.5" />
           <span>
@@ -614,7 +844,7 @@ export default function WealthAdvisorPage() {
         </div>
       )}
 
-      {criticalCount > 0 && (
+      {viewMode === "cards" && criticalCount > 0 && (
         <div className="flex gap-2 p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-xs text-red-300">
           <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
           Complete {criticalCount} critical action{criticalCount > 1 ? "s" : ""}{" "}
@@ -622,189 +852,198 @@ export default function WealthAdvisorPage() {
         </div>
       )}
 
-      {/* Recommendations */}
-      <div className="space-y-3">
-        {visibleRecs.map((rec, i) => {
-          const cfg = PRIORITY_CONFIG[rec.priority];
-          const invCfg = INV_TYPE_CONFIG[rec.investmentType];
-          const InvIcon = invCfg.icon;
-          const isExp = expanded === rec.id;
-          return (
-            <motion.div
-              key={rec.id}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.04 }}
-              className={cn(
-                "rounded-2xl border overflow-hidden cursor-pointer",
-                cfg.bg,
-                cfg.border,
-              )}
-              onClick={() => setExpanded(isExp ? null : rec.id)}
-            >
-              <div className="p-4">
-                <div className="flex items-start gap-3">
-                  <span className="text-2xl shrink-0">{rec.emoji}</span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
-                      <span
-                        className={cn(
-                          "text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full border",
-                          cfg.labelColor,
-                          rec.priority === "critical"
-                            ? "border-red-500/30"
-                            : rec.priority === "high"
-                              ? "border-amber-400/30"
-                              : "border-blue-500/30",
-                        )}
-                      >
-                        {cfg.label}
-                      </span>
-                      <span className="text-[9px] text-muted-foreground/50">
-                        {CATEGORY_LABELS[rec.category]}
-                      </span>
-                      <span
-                        className={cn(
-                          "inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded-full",
-                          invCfg.color,
-                          invCfg.bg,
-                        )}
-                      >
-                        <InvIcon className="w-2.5 h-2.5" />
-                        {invCfg.label}
-                      </span>
-                    </div>
-                    <p className="text-sm font-bold leading-snug">
-                      {rec.title}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {rec.subtitle}
-                    </p>
-                    <div className="flex gap-3 mt-2 flex-wrap">
-                      {rec.monthlyAmount > 0 && (
-                        <span className="text-[10px] text-violet-400 font-medium">
-                          ₹{rec.monthlyAmount.toLocaleString()}/mo
+      {/* Recommendation cards */}
+      {viewMode === "cards" && (
+        <div className="space-y-3">
+          {visibleRecs.map((rec, i) => {
+            const cfg = PRIORITY_CONFIG[rec.priority];
+            const invCfg = INV_TYPE_CONFIG[rec.investmentType];
+            const InvIcon = invCfg.icon;
+            const isExp = expanded === rec.id;
+            return (
+              <motion.div
+                key={rec.id}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.04 }}
+                className={cn(
+                  "rounded-2xl border overflow-hidden cursor-pointer",
+                  cfg.bg,
+                  cfg.border,
+                )}
+                onClick={() => setExpanded(isExp ? null : rec.id)}
+              >
+                <div className="p-4">
+                  <div className="flex items-start gap-3">
+                    <span className="text-2xl shrink-0">{rec.emoji}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
+                        <span
+                          className={cn(
+                            "text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full border",
+                            cfg.labelColor,
+                            rec.priority === "critical"
+                              ? "border-red-500/30"
+                              : rec.priority === "high"
+                                ? "border-amber-400/30"
+                                : "border-blue-500/30",
+                          )}
+                        >
+                          {cfg.label}
                         </span>
-                      )}
-                      {rec.lumpSum && rec.lumpSum > 0 && (
-                        <span className="text-[10px] text-amber-400 font-medium">
-                          ₹{rec.lumpSum.toLocaleString()} lump sum
+                        <span className="text-[9px] text-muted-foreground/50">
+                          {CATEGORY_LABELS[rec.category]}
                         </span>
-                      )}
-                      {rec.taxSaving && (
-                        <span className="text-[10px] text-green-400 font-medium">
-                          saves ₹{rec.taxSaving.toLocaleString()}/yr tax
+                        <span
+                          className={cn(
+                            "inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded-full",
+                            invCfg.color,
+                            invCfg.bg,
+                          )}
+                        >
+                          <InvIcon className="w-2.5 h-2.5" />
+                          {invCfg.label}
                         </span>
-                      )}
-                    </div>
-                  </div>
-                  {isExp ? (
-                    <ChevronUp className="w-4 h-4 text-muted-foreground/40 shrink-0" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4 text-muted-foreground/40 shrink-0" />
-                  )}
-                </div>
-              </div>
-              <AnimatePresence>
-                {isExp && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    className="border-t border-white/8 p-4 space-y-4"
-                  >
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
-                      <Zap className="w-3 h-3 text-amber-400" />
-                      <span className="text-xs font-medium text-amber-400">
-                        {rec.urgency}
-                      </span>
-                    </div>
-                    <div>
-                      <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1.5">
-                        Why this is right for you
+                      </div>
+                      <p className="text-sm font-bold leading-snug">
+                        {rec.title}
                       </p>
-                      <p className="text-sm leading-relaxed">{rec.reasoning}</p>
-                    </div>
-                    <div className="p-3 rounded-xl bg-amber-400/8 border border-amber-400/20">
-                      <p className="text-[10px] text-amber-400 font-bold uppercase tracking-widest mb-1.5">
-                        Exactly what to do
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {rec.subtitle}
                       </p>
-                      <p className="text-sm leading-relaxed whitespace-pre-line">
-                        {rec.action}
-                      </p>
-                    </div>
-                    <div
-                      className="grid gap-3"
-                      style={{
-                        gridTemplateColumns: `repeat(${[rec.monthlyAmount > 0, rec.lumpSum && rec.lumpSum > 0, rec.taxSaving].filter(Boolean).length},1fr)`,
-                      }}
-                    >
-                      {rec.monthlyAmount > 0 && (
-                        <div className="p-3 rounded-xl bg-violet-500/8 border border-violet-500/20 text-center">
-                          <p className="text-[10px] text-violet-400">
-                            SIP / Month
-                          </p>
-                          <p className="text-lg font-bold">
-                            ₹{rec.monthlyAmount.toLocaleString()}
-                          </p>
-                        </div>
-                      )}
-                      {rec.lumpSum && rec.lumpSum > 0 && (
-                        <div className="p-3 rounded-xl bg-amber-500/8 border border-amber-400/20 text-center">
-                          <p className="text-[10px] text-amber-400">Lump Sum</p>
-                          <p className="text-lg font-bold text-amber-400">
-                            ₹{rec.lumpSum.toLocaleString()}
-                          </p>
-                        </div>
-                      )}
-                      {rec.taxSaving && (
-                        <div className="p-3 rounded-xl bg-green-500/8 border border-green-500/20 text-center">
-                          <p className="text-[10px] text-green-400">
-                            Tax saved/yr
-                          </p>
-                          <p className="text-lg font-bold text-green-400">
-                            ₹{rec.taxSaving.toLocaleString()}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-3 rounded-xl bg-emerald-500/8 border border-emerald-500/20">
-                      <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest mb-1">
-                        Expected outcome
-                      </p>
-                      <p className="text-sm">{rec.expectedOutcome}</p>
-                    </div>
-                    <div className="flex gap-2 p-3 rounded-xl bg-red-500/8 border border-red-500/20">
-                      <AlertTriangle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" />
-                      <p className="text-xs leading-relaxed">
-                        <span className="text-red-400 font-bold">Avoid: </span>
-                        {rec.avoidMistake}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-2">
-                        Where to do this
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {rec.platform.map((pl) => (
-                          <span
-                            key={pl}
-                            className="text-xs px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 font-medium"
-                          >
-                            {pl}
+                      <div className="flex gap-3 mt-2 flex-wrap">
+                        {rec.monthlyAmount > 0 && (
+                          <span className="text-[10px] text-violet-400 font-medium">
+                            ₹{rec.monthlyAmount.toLocaleString()}/mo
                           </span>
-                        ))}
+                        )}
+                        {rec.lumpSum && rec.lumpSum > 0 && (
+                          <span className="text-[10px] text-amber-400 font-medium">
+                            ₹{rec.lumpSum.toLocaleString()} lump sum
+                          </span>
+                        )}
+                        {rec.taxSaving && (
+                          <span className="text-[10px] text-green-400 font-medium">
+                            saves ₹{rec.taxSaving.toLocaleString()}/yr tax
+                          </span>
+                        )}
                       </div>
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          );
-        })}
-      </div>
+                    {isExp ? (
+                      <ChevronUp className="w-4 h-4 text-muted-foreground/40 shrink-0" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4 text-muted-foreground/40 shrink-0" />
+                    )}
+                  </div>
+                </div>
 
-      {recommendations.length > 5 && (
+                <AnimatePresence>
+                  {isExp && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="border-t border-white/8 p-4 space-y-4"
+                    >
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+                        <Zap className="w-3 h-3 text-amber-400" />
+                        <span className="text-xs font-medium text-amber-400">
+                          {rec.urgency}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1.5">
+                          Why this is right for you
+                        </p>
+                        <p className="text-sm leading-relaxed">
+                          {rec.reasoning}
+                        </p>
+                      </div>
+                      <div className="p-3 rounded-xl bg-amber-400/8 border border-amber-400/20">
+                        <p className="text-[10px] text-amber-400 font-bold uppercase tracking-widest mb-1.5">
+                          Exactly what to do
+                        </p>
+                        <p className="text-sm leading-relaxed whitespace-pre-line">
+                          {rec.action}
+                        </p>
+                      </div>
+                      <div
+                        className="grid gap-3"
+                        style={{
+                          gridTemplateColumns: `repeat(${[rec.monthlyAmount > 0, rec.lumpSum && rec.lumpSum > 0, rec.taxSaving].filter(Boolean).length}, 1fr)`,
+                        }}
+                      >
+                        {rec.monthlyAmount > 0 && (
+                          <div className="p-3 rounded-xl bg-violet-500/8 border border-violet-500/20 text-center">
+                            <p className="text-[10px] text-violet-400">
+                              SIP / Month
+                            </p>
+                            <p className="text-lg font-bold">
+                              ₹{rec.monthlyAmount.toLocaleString()}
+                            </p>
+                          </div>
+                        )}
+                        {rec.lumpSum && rec.lumpSum > 0 && (
+                          <div className="p-3 rounded-xl bg-amber-500/8 border border-amber-400/20 text-center">
+                            <p className="text-[10px] text-amber-400">
+                              Lump Sum
+                            </p>
+                            <p className="text-lg font-bold text-amber-400">
+                              ₹{rec.lumpSum.toLocaleString()}
+                            </p>
+                          </div>
+                        )}
+                        {rec.taxSaving && (
+                          <div className="p-3 rounded-xl bg-green-500/8 border border-green-500/20 text-center">
+                            <p className="text-[10px] text-green-400">
+                              Tax saved/yr
+                            </p>
+                            <p className="text-lg font-bold text-green-400">
+                              ₹{rec.taxSaving.toLocaleString()}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-3 rounded-xl bg-emerald-500/8 border border-emerald-500/20">
+                        <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest mb-1">
+                          Expected outcome
+                        </p>
+                        <p className="text-sm">{rec.expectedOutcome}</p>
+                      </div>
+                      <div className="flex gap-2 p-3 rounded-xl bg-red-500/8 border border-red-500/20">
+                        <AlertTriangle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" />
+                        <p className="text-xs leading-relaxed">
+                          <span className="text-red-400 font-bold">
+                            Avoid:{" "}
+                          </span>
+                          {rec.avoidMistake}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-2">
+                          Where to do this
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {rec.platform.map((pl) => (
+                            <span
+                              key={pl}
+                              className="text-xs px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 font-medium"
+                            >
+                              {pl}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            );
+          })}
+        </div>
+      )}
+
+      {viewMode === "cards" && recommendations.length > 5 && (
         <button
           onClick={() => setShowAll((s) => !s)}
           className="w-full py-3 rounded-xl border border-white/10 text-sm text-muted-foreground hover:text-foreground transition-all"
@@ -814,6 +1053,7 @@ export default function WealthAdvisorPage() {
             : `Show ${recommendations.length - 5} more recommendations`}
         </button>
       )}
+
       <p className="text-[10px] text-muted-foreground/40 text-center leading-relaxed pb-4">
         AI-generated from your inputs. Consult a SEBI-registered fee-only
         advisor for large decisions.
@@ -1017,7 +1257,7 @@ function GoalProgressCard({
         </p>
       </div>
 
-      {/* Equity risk warning */}
+      {/* Risk warning */}
       {f.riskWarning && (
         <div className="flex gap-2 p-3 rounded-xl bg-orange-500/8 border border-orange-500/20 text-xs text-orange-300">
           <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
@@ -1031,7 +1271,7 @@ function GoalProgressCard({
           <button
             onClick={(e) => {
               e.stopPropagation();
-              setShowAlts((s) => !s);
+              setShowAlts((v) => !v);
             }}
             className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground w-full text-left"
           >

@@ -22,6 +22,8 @@ export interface CreditCard {
   tier: string;
   network: "Visa" | "Mastercard" | "Amex" | "RuPay" | "Diners";
   tags: string[];
+  lifetimeFree: boolean;
+  monthlyRewardCap: string | number;
 
   // Core reward economics
   baseRewardRate: number; // effective cash-yield % on all spend
@@ -179,6 +181,8 @@ export const creditCards: CreditCard[] = (rawCards as any[]).map((c, index) => {
     tier: c.card_tier || "Standard",
     network: detectNetwork(c.card_name),
     tags: generateTags(c).length ? generateTags(c) : ["Standard"],
+    lifetimeFree: c.lifetimeFree ?? false, // Add this
+    monthlyRewardCap: c.monthlyRewardCap ?? "No Cap", // Fixes the card-vault/page.tsx error too
 
     baseRewardRate: clean(c.base_reward_rate),
     pointValue: clean(c.point_value) || 1,
@@ -588,6 +592,7 @@ export interface CardAudit {
   loungeValue: number;
   forexSavings: number;
   breakdown: Array<{ label: string; value: number; plus: boolean }>;
+  travelValue: number;
 }
 
 function calcLoungeValue(card: CreditCard, monthlyVisits: number): number {
@@ -695,6 +700,7 @@ export function calculateInDepthSavings(
       { label: "Lounge & Perks", value: Math.round(lv + fs), plus: true },
       { label: "Annual Fee + GST", value: Math.round(outflow), plus: false },
     ],
+    travelValue: 0, // <--- ADD THIS LINE (or your calculated travel variable
   };
 }
 

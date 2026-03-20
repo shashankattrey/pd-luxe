@@ -119,7 +119,6 @@ const SEVERITY_CONFIG: Record<
     bg: "bg-red-500/8",
     border: "border-red-500/25",
     label: "Critical",
-    label: "Critical",
     labelColor: "text-red-400",
   },
   warning: {
