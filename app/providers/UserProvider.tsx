@@ -33,7 +33,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch("/api/me", { credentials: "include" });
+        const res = await fetch(
+          "https://paisadekho-ai.paisadekhogroup.workers.dev/auth/me",
+          { credentials: "include" }, // important to include cookies
+        );
         if (!res.ok) return;
         const data = await res.json();
         setUser(data);
