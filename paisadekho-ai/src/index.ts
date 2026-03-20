@@ -157,24 +157,61 @@ export default {
     }
 
     // --- inside your fetch() handler ---
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        headers: {
+          "Access-Control-Allow-Origin": "https://pd-luxe.vercel.app",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      });
+    }
+
     if (url.pathname === "/auth/me") {
       try {
         const cookie = request.headers.get("cookie") || "";
         const match = cookie.match(/pd_session=([^;]+)/);
-        if (!match) return new Response("Unauthorized", { status: 401 });
+        if (!match) {
+          return new Response("Unauthorized", {
+            status: 401,
+            headers: {
+              "Access-Control-Allow-Origin": "https://pd-luxe.vercel.app",
+              "Access-Control-Allow-Credentials": "true",
+            },
+          });
+        }
 
-        const userId = match[1]; // either email (Google) or phone (Truecaller)
+        const userId = match[1];
         const user = await env.PD_USER_VAULT.get(`user:${userId}`, {
           type: "json",
         });
 
-        if (!user) return new Response("Not found", { status: 404 });
+        if (!user) {
+          return new Response("Not found", {
+            status: 404,
+            headers: {
+              "Access-Control-Allow-Origin": "https://pd-luxe.vercel.app",
+              "Access-Control-Allow-Credentials": "true",
+            },
+          });
+        }
 
         return new Response(JSON.stringify(user), {
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "https://pd-luxe.vercel.app",
+            "Access-Control-Allow-Credentials": "true",
+          },
         });
       } catch (err) {
-        return new Response("Error fetching user", { status: 500 });
+        return new Response("Error fetching user", {
+          status: 500,
+          headers: {
+            "Access-Control-Allow-Origin": "https://pd-luxe.vercel.app",
+            "Access-Control-Allow-Credentials": "true",
+          },
+        });
       }
     }
     // --- Default response ---
