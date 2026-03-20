@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Figtree, Playfair_Display } from "next/font/google"; // Swapped Inter for Figtree
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
+import Providers from "./providers";
 
 const figtree = Figtree({
   subsets: ["latin"],
@@ -41,7 +42,7 @@ export default function RootLayout({
       <body
         className={`${figtree.variable} ${playfair.variable} font-sans antialiased bg-background text-foreground`}
       >
-        {children}
+        <Providers>{children}</Providers>
         <Analytics />
       </body>
     </html>
