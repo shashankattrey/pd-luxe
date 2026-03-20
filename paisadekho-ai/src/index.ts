@@ -78,16 +78,15 @@ export default {
 
     // --- GOOGLE LOGIN: STEP 1: Redirect user to Google ---
     if (url.pathname === "/auth/google") {
-      const redirectUri = `${env.PROD_FRONTEND_URL}/auth/google/callback`;
-      const state = crypto.randomUUID(); // CSRF protection
+      // Use the Worker's own URL for the callback, not Vercel.
+      const workerCallbackUri = `${url.origin}/auth/google/callback`;
 
       const params = new URLSearchParams({
         client_id: env.GOOGLE_CLIENT_ID,
-        redirect_uri: redirectUri,
+        redirect_uri: workerCallbackUri,
         response_type: "code",
         scope: "openid email profile",
-        state,
-        access_type: "offline", // allows refresh tokens
+        access_type: "offline",
         prompt: "consent",
       });
 
@@ -101,7 +100,7 @@ export default {
     if (url.pathname === "/auth/google/callback") {
       try {
         const code = url.searchParams.get("code");
-        const state = url.searchParams.get("state");
+        const workerCallbackUri = `${url.origin}/auth/google/callback`;
 
         // Exchange code for token
         const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
@@ -111,13 +110,19 @@ export default {
             code: code || "",
             client_id: env.GOOGLE_CLIENT_ID,
             client_secret: env.GOOGLE_CLIENT_SECRET,
-            redirect_uri: `${env.PROD_FRONTEND_URL}/auth/google/callback`,
+            // CRITICAL: This MUST match the URI used in Step 1 exactly
+            redirect_uri: workerCallbackUri,
             grant_type: "authorization_code",
           }),
         });
 
-        if (!tokenRes.ok) throw new Error("Token exchange failed");
-        const tokenData = await tokenRes.json();
+        if (!tokenRes.ok) {
+          const errorData = await tokenRes.text();
+          console.error("Token Exchange Error:", errorData);
+          throw new Error("Token exchange failed");
+        }
+
+        const tokenData: any = await tokenRes.json();
 
         // Fetch user info
         const userRes = await fetch(
@@ -126,7 +131,7 @@ export default {
             headers: { Authorization: `Bearer ${tokenData.access_token}` },
           },
         );
-        const user = await userRes.json();
+        const user: any = await userRes.json();
 
         // Store user in KV
         await env.PD_USER_VAULT.put(
@@ -138,20 +143,40 @@ export default {
           }),
         );
 
-        // Set session cookie and redirect
+        // FINALLY: Send them to Vercel (pd-luxe.vercel.app/dashboard)
         return new Response(null, {
           status: 302,
           headers: {
             Location: `${env.PROD_FRONTEND_URL}/dashboard`,
-            "Set-Cookie": `pd_session=${user.email}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`,
+            "Set-Cookie": `pd_session=${user.email}; Path=/; Domain=vercel.app; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`,
           },
         });
       } catch (err) {
-        console.error(err);
-        return new Response("Unauthorized", { status: 401 });
+        return new Response(`Unauthorized: ${err}`, { status: 401 });
       }
     }
 
+    // --- inside your fetch() handler ---
+    if (url.pathname === "/auth/me") {
+      try {
+        const cookie = request.headers.get("cookie") || "";
+        const match = cookie.match(/pd_session=([^;]+)/);
+        if (!match) return new Response("Unauthorized", { status: 401 });
+
+        const userId = match[1]; // either email (Google) or phone (Truecaller)
+        const user = await env.PD_USER_VAULT.get(`user:${userId}`, {
+          type: "json",
+        });
+
+        if (!user) return new Response("Not found", { status: 404 });
+
+        return new Response(JSON.stringify(user), {
+          headers: { "Content-Type": "application/json" },
+        });
+      } catch (err) {
+        return new Response("Error fetching user", { status: 500 });
+      }
+    }
     // --- Default response ---
     return new Response("PaisaDekho AI Node Active", { status: 200 });
   },

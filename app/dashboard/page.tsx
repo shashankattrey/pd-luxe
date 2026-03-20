@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 // Data Imports
 import { creditCards } from "@/lib/credit-cards-data";
 import { mutualFunds } from "@/lib/mutual-funds-data"; // Using the dummy data created earlier
+import { useUser } from "@/context/UserContext"; // ✅ import the hook
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -32,6 +33,7 @@ const staggerContainer = {
 };
 
 export default function DashboardHome() {
+  const { user } = useUser(); // ✅ get user info from context
   // Card Logic
   const totalCards = creditCards.length;
   const devaluationCards = creditCards.filter((c: any) =>
@@ -52,7 +54,8 @@ export default function DashboardHome() {
       {/* 1. WELCOME SECTION */}
       <motion.div variants={fadeInUp}>
         <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-2">
-          Welcome back, <span className="text-amber-400">Elite Member</span>
+          Welcome back,{" "}
+          <span className="text-amber-400">{user?.name || "Elite Member"}</span>
         </h1>
         <p className="text-muted-foreground">
           Your unified wealth and credit intelligence for 2026
