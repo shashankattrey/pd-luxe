@@ -3,330 +3,395 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
+  Sparkles,
+  ArrowRight,
   CreditCard as CardIcon,
   TrendingUp,
-  Plane,
   AlertTriangle,
-  ArrowRight,
-  Sparkles,
+  Upload,
   Wallet,
-  Gift,
-  PieChart,
-  Activity,
-  RefreshCcw,
-  ShieldCheck,
+  BarChart3,
+  Bell,
+  ChevronRight,
+  Zap,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-// Data Imports
 import { creditCards } from "@/lib/credit-cards-data";
-import { mutualFunds } from "@/lib/mutual-funds-data"; // Using the dummy data created earlier
-import { useUser } from "@/context/UserContext"; // ✅ import the hook
+import { mutualFunds } from "@/lib/mutual-funds-data";
+import { useUser } from "@/context/UserContext";
 
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-};
+// ─── ANIMATION ───────────────────────────────────────────────────────────────
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.4, delay } },
+});
 
-const staggerContainer = {
-  animate: { transition: { staggerChildren: 0.1 } },
-};
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+// Devaluation alerts — real value from data, not a hardcoded number
+const devaluationAlerts = creditCards.filter((c: any) =>
+  c.notesTnc?.toLowerCase().includes("devaluation"),
+);
 
+// ─── PAGE ─────────────────────────────────────────────────────────────────────
 export default function DashboardHome() {
-  const { user } = useUser(); // ✅ get user info from context
-  // Card Logic
-  const totalCards = creditCards.length;
-  const devaluationCards = creditCards.filter((c: any) =>
-    c.notes_tnc?.toLowerCase().includes("devaluation"),
-  ).length;
+  const { user } = useUser();
 
-  // Wealth Logic
-  const totalSip = mutualFunds.reduce((sum, f) => sum + (f.sip_amount || 0), 0);
-  const avgReturn = "18.4"; // Example aggregate metric
+  const isNewUser = !user?.hasCompletedOnboarding;
 
   return (
-    <motion.div
-      initial="initial"
-      animate="animate"
-      variants={staggerContainer}
-      className="space-y-10 pb-10"
-    >
-      {/* 1. WELCOME SECTION */}
-      <motion.div variants={fadeInUp}>
-        <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-2">
-          Welcome back,{" "}
-          <span className="text-amber-400">{user?.name || "Elite Member"}</span>
+    <div className="max-w-2xl mx-auto space-y-8">
+      {/* ── GREETING ──────────────────────────────────────────────────── */}
+      <motion.div {...fadeUp(0)}>
+        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">
+          Good {getTimeOfDay()},
+        </p>
+        <h1 className="font-serif text-3xl font-bold text-foreground">
+          {user?.name ? (
+            <>
+              {user.name} <span className="text-amber-400">👋</span>
+            </>
+          ) : (
+            <span className="inline-block w-36 h-8 bg-white/10 rounded-lg animate-pulse align-middle" />
+          )}
         </h1>
-        <p className="text-muted-foreground">
-          Your unified wealth and credit intelligence for 2026
+        <p className="text-muted-foreground text-sm mt-1">
+          {isNewUser
+            ? "Let's set up your financial profile to get started."
+            : "Here's your financial snapshot for today."}
         </p>
       </motion.div>
 
-      {/* 2. UNIFIED STATS GRID */}
-      {/* <motion.div
-        variants={fadeInUp}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
-      >
-        <StatCard
-          icon={CardIcon}
-          label="Cards in Vault"
-          value={totalCards}
-          subtext="Premium Portfolio"
-          color="gold"
-        />
-        <StatCard
-          icon={RefreshCcw}
-          label="Monthly SIP"
-          value={`₹${totalSip.toLocaleString()}`}
-          subtext="Wealth Engine"
-          color="gold"
-        />
-        <StatCard
-          icon={TrendingUp}
-          label="Avg. Returns"
-          value={`${avgReturn}%`}
-          subtext="Portfolio CAGR"
-          color="gold"
-        />
-        <StatCard
-          icon={AlertTriangle}
-          label="Critical Alerts"
-          value={devaluationCards}
-          subtext="Policy Updates"
-          color="orange"
-        />
-      </motion.div> */}
+      {/* ── ONBOARDING BANNER — shown to new users ────────────────────── */}
+      {isNewUser && (
+        <motion.div {...fadeUp(0.05)}>
+          <Link href="/dashboard/advisor">
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/5 border border-amber-400/30 p-5 group cursor-pointer hover:border-amber-400/60 transition-all">
+              {/* Shimmer */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-400/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-amber-400/20 flex items-center justify-center shrink-0">
+                  <Sparkles className="w-6 h-6 text-amber-400" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-foreground">
+                    Get your personalised card + investment plan
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
+                    Upload your bank statement. Our AI analyses your spending
+                    and recommends the best credit cards and SIP allocations for
+                    you — in under 30 seconds.
+                  </p>
+                  <div className="flex items-center gap-4 mt-3">
+                    <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Upload className="w-3 h-3" /> Upload statement
+                    </span>
+                    <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Sparkles className="w-3 h-3" /> AI analysis
+                    </span>
+                    <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Zap className="w-3 h-3" /> Instant results
+                    </span>
+                  </div>
+                </div>
+                <ArrowRight className="w-5 h-5 text-amber-400 shrink-0 group-hover:translate-x-1 transition-transform mt-1" />
+              </div>
+            </div>
+          </Link>
+        </motion.div>
+      )}
 
-      {/* 3. CARD QUICK ACTIONS (Original) */}
-      <div className="space-y-4">
-        <h3 className="text-xs uppercase tracking-[0.2em] text-amber-400/60 font-bold ml-1">
-          Card Services
-        </h3>
-        <motion.div
-          variants={fadeInUp}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
-        >
-          <QuickActionCard
-            title="Find Your Perfect Card"
-            description="Ask Luxe Butler to find the best card for your spending profile."
+      {/* ── ALERTS — high value, always visible ─────────────────────── */}
+      {devaluationAlerts.length > 0 && (
+        <motion.div {...fadeUp(0.08)}>
+          <Link href="/dashboard/alerts">
+            <div className="flex items-center gap-3 p-4 rounded-xl bg-orange-500/10 border border-orange-500/20 hover:border-orange-500/40 transition-all cursor-pointer">
+              <AlertTriangle className="w-5 h-5 text-orange-400 shrink-0" />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-orange-300">
+                  {devaluationAlerts.length} card
+                  {devaluationAlerts.length > 1 ? "s" : ""} with 2026 policy
+                  changes
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5 truncate">
+                  {devaluationAlerts
+                    .slice(0, 2)
+                    .map((c: any) => c.name)
+                    .join(", ")}
+                  {devaluationAlerts.length > 2 &&
+                    ` +${devaluationAlerts.length - 2} more`}
+                </p>
+              </div>
+              <ChevronRight className="w-4 h-4 text-orange-400 shrink-0" />
+            </div>
+          </Link>
+        </motion.div>
+      )}
+
+      {/* ── QUICK ACTIONS — 2×2 grid ─────────────────────────────────── */}
+      <motion.div {...fadeUp(0.1)}>
+        <SectionLabel>What do you want to do?</SectionLabel>
+        <div className="grid grid-cols-2 gap-3">
+          <ActionTile
             icon={Sparkles}
+            title="Find best card"
+            subtitle="For your spending"
             href="/dashboard/advisor"
-            cta="Start Analysis"
+            accent="amber"
           />
-          <QuickActionCard
-            title="Explore Card Vault"
-            description="Browse all 93 premium credit cards with detailed rewards."
-            icon={Wallet}
-            href="/dashboard/card-vault"
-            cta="View Cards"
-          />
-          <QuickActionCard
-            title="Compare Cards"
-            description="Side-by-side comparison of forex rates and reward units."
-            icon={Gift}
-            href="/dashboard/compare"
-            cta="Compare Now"
-          />
-        </motion.div>
-      </div>
-
-      {/* 4. WEALTH QUICK ACTIONS (New) */}
-      <div className="space-y-4">
-        <h3 className="text-xs uppercase tracking-[0.2em] text-emerald-500/60 font-bold ml-1">
-          Wealth Services
-        </h3>
-        <motion.div
-          variants={fadeInUp}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
-        >
-          <QuickActionCard
-            title="Luxe Wealth Plan"
-            description="Generate a custom SIP roadmap based on your financial goals."
-            icon={Activity}
+          <ActionTile
+            icon={TrendingUp}
+            title="Plan my SIP"
+            subtitle="Investment advice"
             href="/dashboard/wealth-advisor"
-            cta="Plan Wealth"
-            theme="emerald"
+            accent="emerald"
           />
-          <QuickActionCard
-            title="Fund Explorer"
-            description="Analyze 500+ Top rated Direct Mutual Funds with zero commission."
-            icon={PieChart}
-            href="/dashboard/funds-vault"
-            cta="Explore Funds"
-            theme="emerald"
+          <ActionTile
+            icon={BarChart3}
+            title="Compare cards"
+            subtitle="Side by side"
+            href="/dashboard/compare"
+            accent="blue"
           />
-          <QuickActionCard
-            title="Risk Profiler"
-            description="Understand your risk appetite for Small-cap vs Large-cap allocation."
-            icon={ShieldCheck}
-            href="/dashboard/risk-profiler"
-            cta="Test Profile"
-            theme="emerald"
+          <ActionTile
+            icon={Wallet}
+            title="Explore funds"
+            subtitle="500+ direct funds"
+            href="/dashboard/funds"
+            accent="purple"
           />
-        </motion.div>
-      </div>
-
-      {/* 5. FEATURED CARDS */}
-      <motion.div variants={fadeInUp}>
-        <SectionHeader title="Featured Cards" href="/dashboard/card-vault" />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {creditCards.slice(0, 3).map((card: any, index: number) => (
-            <FeaturedCardTile key={index} card={card} index={index} />
-          ))}
         </div>
       </motion.div>
 
-      {/* 6. FEATURED FUNDS */}
-      <motion.div variants={fadeInUp}>
+      {/* ── TOP CARDS (3, profile-ranked) ─────────────────────────────── */}
+      <motion.div {...fadeUp(0.15)}>
         <SectionHeader
-          title="Top Performing Funds"
-          href="/dashboard/funds"
-          color="text-emerald-500"
+          title="Top Cards Right Now"
+          subtitle="Ranked by 2026 value"
+          href="/dashboard/explore"
         />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {mutualFunds.slice(0, 3).map((fund: any, index: number) => (
-            <FeaturedFundTile key={index} fund={fund} index={index} />
-          ))}
+        <div className="space-y-3">
+          {/* Sort by base reward rate × point value as a simple proxy for value */}
+          {[...creditCards]
+            .sort(
+              (a: any, b: any) =>
+                b.baseRewardRate * b.pointValue -
+                a.baseRewardRate * a.pointValue,
+            )
+            .slice(0, 3)
+            .map((card: any, i: number) => (
+              <CardRow key={card.id ?? i} card={card} rank={i + 1} />
+            ))}
         </div>
       </motion.div>
-    </motion.div>
+
+      {/* ── TOP FUNDS (3, by 3-year return) ──────────────────────────── */}
+      <motion.div {...fadeUp(0.2)}>
+        <SectionHeader
+          title="Top Funds by 3Y Returns"
+          subtitle="Direct, zero-commission"
+          href="/dashboard/funds"
+          accentColor="text-emerald-400"
+        />
+        <div className="space-y-3">
+          {[...mutualFunds]
+            .sort(
+              (a: any, b: any) =>
+                parseFloat(b.three_year_return || b.cagr_3y || "0") -
+                parseFloat(a.three_year_return || a.cagr_3y || "0"),
+            )
+            .slice(0, 3)
+            .map((fund: any, i: number) => (
+              <FundRow key={fund.fund_name ?? i} fund={fund} rank={i + 1} />
+            ))}
+        </div>
+      </motion.div>
+    </div>
   );
 }
 
-// --- SUB-COMPONENTS ---
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
 
-function SectionHeader({ title, href, color = "text-amber-400" }: any) {
+function getTimeOfDay() {
+  const h = new Date().getHours();
+  if (h < 12) return "morning";
+  if (h < 17) return "afternoon";
+  return "evening";
+}
+
+// ─── SUB-COMPONENTS ───────────────────────────────────────────────────────────
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center justify-between mb-6">
-      <h2 className={`font-serif text-2xl font-semibold ${color}`}>{title}</h2>
+    <p className="text-xs uppercase tracking-widest text-muted-foreground/60 font-bold mb-3">
+      {children}
+    </p>
+  );
+}
+
+function SectionHeader({
+  title,
+  subtitle,
+  href,
+  accentColor = "text-amber-400",
+}: {
+  title: string;
+  subtitle: string;
+  href: string;
+  accentColor?: string;
+}) {
+  return (
+    <div className="flex items-end justify-between mb-4">
+      <div>
+        <h2 className={`font-serif text-lg font-semibold ${accentColor}`}>
+          {title}
+        </h2>
+        <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p>
+      </div>
       <Link href={href}>
-        <Button variant="ghost" className={`${color} hover:bg-white/5`}>
-          View All <ArrowRight className="w-4 h-4 ml-2" />
-        </Button>
+        <button className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors">
+          See all <ArrowRight className="w-3 h-3" />
+        </button>
       </Link>
     </div>
   );
 }
 
-function StatCard({ icon: Icon, label, value, subtext, color }: any) {
-  const colorClasses = {
-    gold: "bg-gold/20 text-amber-400",
-    orange: "bg-[#FF8C00]/20 text-[#FF8C00]",
-  };
-  return (
-    <div className="glass-gold rounded-2xl p-6 hover-shine border border-gold/10">
-      <div
-        className={`w-10 h-10 rounded-xl ${colorClasses[color as keyof typeof colorClasses]} flex items-center justify-center mb-4`}
-      >
-        <img src="/favicon.ico" alt="Logo" className="w-10 h-10 rounded-lg" />
-      </div>
-      <p className="text-muted-foreground text-xs mb-1 uppercase tracking-wider">
-        {label}
-      </p>
-      <p className="font-serif text-3xl font-bold text-foreground mb-1">
-        {value}
-      </p>
-      <p className="text-muted-foreground text-[10px]">{subtext}</p>
-    </div>
-  );
-}
-
-function QuickActionCard({
-  title,
-  description,
+function ActionTile({
   icon: Icon,
+  title,
+  subtitle,
   href,
-  cta,
-  theme = "gold",
-}: any) {
-  const isEmerald = theme === "emerald";
+  accent,
+}: {
+  icon: React.ElementType;
+  title: string;
+  subtitle: string;
+  href: string;
+  accent: "amber" | "emerald" | "blue" | "purple";
+}) {
+  const accentMap = {
+    amber: {
+      bg: "bg-amber-500/10",
+      icon: "text-amber-400",
+      border: "hover:border-amber-400/30",
+    },
+    emerald: {
+      bg: "bg-emerald-500/10",
+      icon: "text-emerald-400",
+      border: "hover:border-emerald-400/30",
+    },
+    blue: {
+      bg: "bg-blue-500/10",
+      icon: "text-blue-400",
+      border: "hover:border-blue-400/30",
+    },
+    purple: {
+      bg: "bg-purple-500/10",
+      icon: "text-purple-400",
+      border: "hover:border-purple-400/30",
+    },
+  };
+  const a = accentMap[accent];
+
   return (
     <Link href={href}>
       <div
-        className={`glass-gold rounded-2xl p-6 hover-shine h-full group cursor-pointer transition-all border border-gold/10 ${isEmerald ? "hover:border-emerald-500/40" : "hover:border-gold/40"}`}
+        className={cn(
+          "p-4 rounded-2xl bg-white/3 border border-white/8 cursor-pointer transition-all group",
+          a.border,
+        )}
       >
         <div
-          className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors ${isEmerald ? "bg-emerald-500/20 text-emerald-500" : "bg-gold/20 text-amber-400"}`}
+          className={cn(
+            "w-9 h-9 rounded-xl flex items-center justify-center mb-3",
+            a.bg,
+          )}
         >
-          <Icon className="w-6 h-6" />
+          <Icon
+            className={cn("w-4.5 h-4.5", a.icon)}
+            style={{ width: 18, height: 18 }}
+          />
         </div>
-        <h3 className="font-serif text-lg font-semibold text-foreground mb-2">
+        <p className="text-sm font-semibold text-foreground leading-tight">
           {title}
-        </h3>
-        <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
-          {description}
         </p>
-        <span
-          className={`inline-flex items-center text-sm font-medium ${isEmerald ? "text-emerald-500" : "text-amber-400"}`}
-        >
-          {cta}{" "}
-          <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-        </span>
+        <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p>
       </div>
     </Link>
   );
 }
 
-function FeaturedCardTile({ card, index }: any) {
+function CardRow({ card, rank }: { card: any; rank: number }) {
+  const effectiveRate = (card.baseRewardRate * card.pointValue).toFixed(1);
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      className="glass-gold rounded-2xl overflow-hidden hover-shine border border-gold/10"
-    >
-      <div className="h-32 bg-gradient-to-br from-neutral-900 to-neutral-800 p-4 relative">
-        <p className="text-amber-400 text-[10px] uppercase tracking-widest">
-          {card.issuer}
-        </p>
-        <p className="text-white font-serif font-bold text-sm">
-          {card.card_name}
-        </p>
-        <CardIcon className="absolute bottom-4 right-4 w-6 h-6 text-white/10" />
-      </div>
-      <div className="p-4 bg-black/20 grid grid-cols-2 gap-3 text-xs">
-        <div>
-          <p className="text-muted-foreground text-[10px] uppercase">Reward</p>
-          <p className="font-mono font-bold">{card.base_reward_rate}</p>
+    <Link href={`/dashboard/explore?card=${card.id}`}>
+      <div className="flex items-center gap-3 p-3.5 rounded-xl bg-white/3 border border-white/8 hover:border-amber-400/20 transition-all cursor-pointer group">
+        {/* Rank */}
+        <span className="text-xs font-bold text-muted-foreground/40 w-4 shrink-0 text-center">
+          {rank}
+        </span>
+        {/* Card chip colour swatch */}
+        <div
+          className={cn(
+            "w-10 h-7 rounded-md shrink-0",
+            card.imageGradient
+              ? `bg-gradient-to-br ${card.imageGradient}`
+              : "bg-gradient-to-br from-zinc-700 to-zinc-900",
+          )}
+        />
+        {/* Name + bank */}
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-medium text-foreground truncate">
+            {card.name}
+          </p>
+          <p className="text-xs text-muted-foreground">{card.bank}</p>
         </div>
-        <div>
-          <p className="text-muted-foreground text-[10px] uppercase">Fee</p>
-          <p className="font-mono font-bold">₹{card.annual_fee}</p>
+        {/* Rate + fee */}
+        <div className="text-right shrink-0">
+          <p className="text-sm font-bold text-amber-400">{effectiveRate}%</p>
+          <p className="text-[10px] text-muted-foreground">
+            {card.annualFee === 0
+              ? "Free"
+              : `₹${card.annualFee.toLocaleString()}`}
+          </p>
         </div>
+        <ChevronRight className="w-4 h-4 text-muted-foreground/30 group-hover:text-amber-400 transition-colors shrink-0" />
       </div>
-    </motion.div>
+    </Link>
   );
 }
 
-function FeaturedFundTile({ fund, index }: any) {
+function FundRow({ fund, rank }: { fund: any; rank: number }) {
+  const name = fund.fund_name ?? fund.name ?? "—";
+  const cat = fund.category ?? fund.type ?? "Fund";
+  const cagr = fund.three_year_return ?? fund.cagr_3y ?? "—";
+  const minSip = fund.min_sip ?? fund.sip_min ?? "—";
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      className="glass-gold rounded-2xl overflow-hidden hover-shine border border-gold/10"
-    >
-      <div className="h-32 bg-gradient-to-br from-emerald-950 to-neutral-900 p-4 relative">
-        <p className="text-emerald-400 text-[10px] uppercase tracking-widest">
-          {fund.category}
-        </p>
-        <p className="text-white font-serif font-bold text-sm">
-          {fund.fund_name}
-        </p>
-        <TrendingUp className="absolute bottom-4 right-4 w-6 h-6 text-white/10" />
-      </div>
-      <div className="p-4 bg-black/20 grid grid-cols-2 gap-3 text-xs">
-        <div>
-          <p className="text-muted-foreground text-[10px] uppercase">3Y CAGR</p>
-          <p className="text-emerald-400 font-mono font-bold">
-            {fund.three_year_return}%
+    <Link href="/dashboard/funds">
+      <div className="flex items-center gap-3 p-3.5 rounded-xl bg-white/3 border border-white/8 hover:border-emerald-400/20 transition-all cursor-pointer group">
+        <span className="text-xs font-bold text-muted-foreground/40 w-4 shrink-0 text-center">
+          {rank}
+        </span>
+        {/* Green circle icon */}
+        <div className="w-10 h-7 rounded-md bg-gradient-to-br from-emerald-800 to-emerald-950 flex items-center justify-center shrink-0">
+          <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-medium text-foreground truncate">{name}</p>
+          <p className="text-xs text-muted-foreground">{cat}</p>
+        </div>
+        <div className="text-right shrink-0">
+          <p className="text-sm font-bold text-emerald-400">{cagr}%</p>
+          <p className="text-[10px] text-muted-foreground">
+            {typeof minSip === "number"
+              ? `₹${minSip.toLocaleString()} SIP`
+              : `₹${minSip} SIP`}
           </p>
         </div>
-        <div>
-          <p className="text-muted-foreground text-[10px] uppercase">Min SIP</p>
-          <p className="font-mono font-bold">₹{fund.min_sip}</p>
-        </div>
+        <ChevronRight className="w-4 h-4 text-muted-foreground/30 group-hover:text-emerald-400 transition-colors shrink-0" />
       </div>
-    </motion.div>
+    </Link>
   );
 }
