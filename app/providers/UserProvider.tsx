@@ -16,7 +16,9 @@ interface User {
 
 interface UserContextType {
   user: User | null;
+
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  loading: boolean; // ✅ Add this to the interface
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -53,9 +55,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   return (
     <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
-      <UserContext.Provider value={{ user, setUser }}>
-        {/* Prevent children from rendering until we know the auth status */}
-        {!loading ? children : <div className="loading-screen">Loading...</div>}
+      <UserContext.Provider value={{ user, setUser, loading }}>
+        {!loading ? (
+          children
+        ) : (
+          <div className="h-screen w-full flex items-center justify-center bg-black text-amber-400 font-serif italic">
+            Initializing PaisaDekho Luxe...
+          </div>
+        )}
       </UserContext.Provider>
     </GoogleOAuthProvider>
   );

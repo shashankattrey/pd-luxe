@@ -39,11 +39,12 @@ export default function RootLayout({
       <body
         className={`${figtree.variable} ${playfair.variable} font-sans antialiased bg-background text-foreground`}
       >
-        <UserProvider>
-          <ClientOnly>
-            {children} {/* All dashboard content will render client-side */}
-          </ClientOnly>
-        </UserProvider>
+        {/* ClientOnly wraps everything that uses hooks or browser APIs */}
+        <ClientOnly>
+          <UserProvider>
+            {children} {/* All dashboard content can safely use useUser */}
+          </UserProvider>
+        </ClientOnly>
         <Analytics />
       </body>
     </html>
