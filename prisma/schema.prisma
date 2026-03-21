@@ -1,0 +1,27 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model MutualFund {
+  schemeCode  Int      @id
+  schemeName  String
+  amcName     String
+  category    String
+  nav         Float // Current NAV
+  navDate     String
+  nav1y       Float? // Raw NAV from ~1 year ago
+  nav3y       Float? // Raw NAV from ~3 years ago
+  nav5y       Float? // Raw NAV from ~5 years ago
+  riskLevel   String
+  lastUpdated DateTime @default(now())
+  // We remove the index on threeYear since it's no longer a stored column
+
+  @@index([category])
+}

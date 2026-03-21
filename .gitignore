@@ -47,3 +47,5 @@ dist/
 
 # Ensure sub-directory node_modules are also ignored
 **/node_modules/
+
+/lib/generated/prisma
