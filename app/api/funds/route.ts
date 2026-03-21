@@ -50,7 +50,7 @@ export async function GET(req: Request) {
         : null;
 
     // 4. Map and Calculate Returns
-    const calculatedFunds = funds.map((fund) => {
+    const calculatedFunds = funds.map((fund: any) => {
       const returns = {
         oneYear: calcAbs(fund.nav, fund.nav1y),
         threeYear: calcCAGR(fund.nav, fund.nav3y, 3),
