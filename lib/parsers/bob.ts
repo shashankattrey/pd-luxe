@@ -314,7 +314,7 @@ function extractMeta(allPageTexts: any[][]): BOBMeta {
   // Fallback: regex scan
   if (!accountHolder) {
     const m = fullText.match(
-      /(MR\.?|MRS\.?|MS\.?|DR\.?|SHRI\.?|SMT\.?)\s+([A-Z][A-Z\s\.]{2,40?)(?=[^A-Z])/i,
+      /(MR\.?|MRS\.?|MS\.?|DR\.?|SHRI\.?|SMT\.?)\s+([A-Z][A-Z\s\.]{2,40})(?=[^A-Z])/i,
     );
     if (m && !notAName.test(m[0])) accountHolder = m[0].trim();
   }

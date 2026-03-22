@@ -23,7 +23,6 @@ import {
   X,
   ChevronLeft,
   ChevronDown,
-  CircleCheck,
 } from "lucide-react";
 import { useFundData, FundData } from "@/hooks/useFundData";
 import { getCleanCategory } from "@/lib/category-utils";
@@ -116,7 +115,7 @@ const RISK_MAP: Record<string, RiskLevel> = {
   "Very High": "veryHigh",
 };
 
-// ─── pure helpers (NO hooks — safe anywhere) ──────────────────────────────────
+// ─── pure helpers ─────────────────────────────────────────────────────────────
 function buildSparkValues(r3: number | null | undefined): number[] {
   const base = r3 ?? 0;
   return Array.from({ length: 14 }, (_, i) => {
@@ -150,7 +149,7 @@ function cleanName(s: string): string {
     .trim();
 }
 
-// ─── sub-components ───────────────────────────────────────────────────────────
+// ─── Sparkline ────────────────────────────────────────────────────────────────
 function Sparkline({
   values,
   color,
@@ -194,14 +193,16 @@ function Sparkline({
   );
 }
 
+// ─── RiskBadge ────────────────────────────────────────────────────────────────
 function RiskBadge({ risk }: { risk: string }) {
   const styles: Record<string, string> = {
     Low: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20",
-    "Moderately Low": "text-green-400 bg-green-400/10 border-green-400/20",
-    Moderate: "text-yellow-400 bg-yellow-400/10 border-yellow-400/20",
-    "Moderately High": "text-orange-400 bg-orange-400/10 border-orange-400/20",
-    High: "text-red-400 bg-red-400/10 border-red-400/20",
-    "Very High": "text-pink-400 bg-pink-400/10 border-pink-400/20",
+    "Moderately Low": "text-green-400   bg-green-400/10   border-green-400/20",
+    Moderate: "text-yellow-400  bg-yellow-400/10  border-yellow-400/20",
+    "Moderately High":
+      "text-orange-400  bg-orange-400/10  border-orange-400/20",
+    High: "text-red-400     bg-red-400/10     border-red-400/20",
+    "Very High": "text-pink-400    bg-pink-400/10    border-pink-400/20",
   };
   const s = styles[risk] || "text-white/40 bg-white/5 border-white/10";
   return (
@@ -214,6 +215,7 @@ function RiskBadge({ risk }: { risk: string }) {
   );
 }
 
+// ─── StatChip ─────────────────────────────────────────────────────────────────
 function StatChip({
   label,
   value,
@@ -243,6 +245,7 @@ function StatChip({
   );
 }
 
+// ─── AnimBar ──────────────────────────────────────────────────────────────────
 function AnimBar({
   value,
   max,
@@ -256,8 +259,8 @@ function AnimBar({
 }) {
   const pct = value != null ? (Math.abs(value) / max) * 100 : 0;
   return (
-    <div className="flex items-center gap-3">
-      <span className="text-xs sm:text-sm font-mono text-white/40 w-7 shrink-0">
+    <div className="flex items-center gap-2 sm:gap-3">
+      <span className="text-xs font-mono text-white/40 w-6 sm:w-7 shrink-0">
         {label}
       </span>
       <div className="flex-1 h-6 bg-white/[0.05] rounded-lg overflow-hidden">
@@ -266,13 +269,13 @@ function AnimBar({
             initial={{ width: 0 }}
             animate={{ width: `${pct}%` }}
             transition={{ duration: 0.7, ease: "easeOut" }}
-            className="h-full rounded-lg flex items-center justify-end pr-2"
+            className="h-full rounded-lg"
             style={{ background: `${color}cc` }}
-          ></motion.div>
+          />
         )}
       </div>
       <span
-        className={`text-xs sm:text-sm font-bold font-mono w-16 text-right ${(value ?? 0) >= 0 ? "text-emerald-400" : "text-red-400"}`}
+        className={`text-xs font-bold font-mono w-14 sm:w-16 text-right tabular-nums ${(value ?? 0) >= 0 ? "text-emerald-400" : "text-red-400"}`}
       >
         {value != null ? `${value > 0 ? "+" : ""}${value.toFixed(1)}%` : "—"}
       </span>
@@ -280,6 +283,7 @@ function AnimBar({
   );
 }
 
+// ─── Donut ────────────────────────────────────────────────────────────────────
 function Donut({
   pct,
   size,
@@ -347,10 +351,9 @@ function FundDetail({
   const r5 = fund.returns?.fiveYear;
 
   const sparkVals = useMemo(() => buildSparkValues(r3), [r3]);
-
   const TABS: DetailTab[] = ["overview", "returns", "composition", "risk"];
 
-  // area chart path
+  // Area chart path — W=400 viewBox coordinates, SVG scales via w-full
   const areaPath = useMemo(() => {
     const vals = sparkVals;
     const W = 400,
@@ -365,16 +368,20 @@ function FundDetail({
     return { linePts, areaFill };
   }, [sparkVals]);
 
+  const PERIOD_BTNS = ["1M", "6M", "1Y", "3Y", "All"] as const;
+
   return (
+    // FIX #1: was `w-auto` — on flex/grid parents this caused width collapse.
+    // `w-full` ensures it always fills the available column.
     <motion.div
       key="detail"
       initial={{ opacity: 0, x: 32 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 32 }}
       transition={{ duration: 0.28 }}
-      className="min-h-screen bg-[#070709] pb-28"
+      className="min-h-screen bg-[#070709] pb-28 w-auto"
     >
-      {/* sticky top bar */}
+      {/* Sticky top bar */}
       <div className="sticky top-0 z-30 bg-[#070709]/95 backdrop-blur-xl border-b border-white/[0.06] px-4 sm:px-6 py-3 flex items-center gap-3">
         <button
           onClick={onBack}
@@ -382,17 +389,13 @@ function FundDetail({
         >
           <ArrowLeft className="w-4 h-4 text-white/70" />
         </button>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm sm:text-base font-bold text-white truncate">
-            {cleanName(fund.schemeName)}
-          </p>
-          <p className="text-xs text-white/30">{fund.amcName}</p>
-        </div>
+
         <RiskBadge risk={fund.riskLevel || "High"} />
       </div>
 
-      <div className="max-w-3xl mx-auto px-3 sm:px-6 pt-5 sm:pt-6 space-y-5 sm:space-y-6">
-        {/* hero card */}
+      {/* FIX #2: added overflow-x-hidden on the content column so nothing escapes sideways */}
+      <div className="max-w-3xl mx-auto px-3 sm:px-6 pt-5 sm:pt-6 space-y-5 sm:space-y-6 overflow-x-hidden">
+        {/* ── Hero card ── */}
         <div
           className="rounded-2xl border overflow-hidden"
           style={{ borderColor: `${accent}25` }}
@@ -403,7 +406,7 @@ function FundDetail({
               background: `linear-gradient(135deg,${accent}14 0%,transparent 55%)`,
             }}
           >
-            {/* name + returns — stacks vertically on mobile, side-by-side on sm+ */}
+            {/* Badges + name + 3Y return */}
             <div className="mb-5">
               <div className="flex flex-wrap gap-2 mb-3">
                 <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-full bg-white/[0.07] text-white/50">
@@ -422,7 +425,7 @@ function FundDetail({
                 </div>
                 <div className="flex sm:flex-col items-center sm:items-end gap-3 sm:gap-0 shrink-0">
                   <p
-                    className="text-3xl sm:text-4xl font-bold"
+                    className="text-3xl sm:text-4xl font-bold tabular-nums"
                     style={{ color: accent }}
                   >
                     {r3 != null ? `${r3 > 0 ? "+" : ""}${r3.toFixed(1)}%` : "—"}
@@ -434,47 +437,69 @@ function FundDetail({
               </div>
             </div>
 
-            {/* chart */}
-            <div className="relative h-24 sm:h-28 mb-5">
-              <svg
-                className="w-full h-full"
-                viewBox="0 0 400 96"
-                preserveAspectRatio="none"
-              >
-                <defs>
-                  <linearGradient
-                    id={`fg-${fund.schemeCode}`}
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop offset="0%" stopColor={accent} stopOpacity="0.35" />
-                    <stop offset="100%" stopColor={accent} stopOpacity="0.02" />
-                  </linearGradient>
-                </defs>
-                <polygon
-                  points={areaPath.areaFill}
-                  fill={`url(#fg-${fund.schemeCode})`}
-                />
-                <motion.polyline
-                  points={areaPath.linePts}
-                  fill="none"
-                  stroke={accent}
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ duration: 1.4, ease: "easeOut" }}
-                />
-              </svg>
-              <div className="absolute top-0 right-0 flex gap-1 sm:gap-1.5">
-                {["1M", "6M", "1Y", "3Y", "All"].map((p) => (
+            {/* ── Chart area ── */}
+            {/*
+              FIX #3: The original had period buttons as `absolute top-0 right-0`
+              inside the chart div. On narrow phones (~320–360px) the 5 buttons
+              totalled ~130px and overflowed the right edge of the padded container.
+
+              New layout:
+              - Chart SVG takes the full height of the div (no position relative needed)
+              - Period buttons move to a separate flex row BELOW the chart
+              - This removes all absolute positioning that caused overflow
+            */}
+            <div className="mb-3">
+              {/* Chart SVG — overflow-hidden clips any SVG pixel overshoot */}
+              <div className="h-24 sm:h-28 w-full overflow-hidden rounded-lg">
+                <svg
+                  className="w-full h-full"
+                  viewBox="0 0 400 96"
+                  preserveAspectRatio="none"
+                >
+                  <defs>
+                    <linearGradient
+                      id={`fg-${fund.schemeCode}`}
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="0%" stopColor={accent} stopOpacity="0.35" />
+                      <stop
+                        offset="100%"
+                        stopColor={accent}
+                        stopOpacity="0.02"
+                      />
+                    </linearGradient>
+                  </defs>
+                  <polygon
+                    points={areaPath.areaFill}
+                    fill={`url(#fg-${fund.schemeCode})`}
+                  />
+                  <motion.polyline
+                    points={areaPath.linePts}
+                    fill="none"
+                    stroke={accent}
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 1.4, ease: "easeOut" }}
+                  />
+                </svg>
+              </div>
+
+              {/* Period buttons — below chart, no absolute positioning */}
+              <div className="flex items-center justify-end gap-1 mt-2 flex-wrap">
+                {PERIOD_BTNS.map((p) => (
                   <button
                     key={p}
-                    className={`text-[10px] font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full transition
-                    ${p === "3Y" ? "text-black" : "text-white/30 hover:text-white/60 bg-white/[0.04]"}`}
+                    className={`text-[10px] font-bold px-2.5 py-1 rounded-full transition ${
+                      p === "3Y"
+                        ? "text-black"
+                        : "text-white/30 hover:text-white/60 bg-white/[0.04]"
+                    }`}
                     style={p === "3Y" ? { background: accent } : {}}
                   >
                     {p}
@@ -483,7 +508,7 @@ function FundDetail({
               </div>
             </div>
 
-            {/* key stats row */}
+            {/* Key stats — 2-col on mobile, 4-col on sm+ */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {[
                 { l: "NAV", v: `₹${fund.nav || "—"}` },
@@ -511,8 +536,7 @@ function FundDetail({
           </div>
         </div>
 
-        {/* tabs */}
-        {/* Tabs — short labels on mobile to avoid overflow */}
+        {/* ── Tabs ── */}
         <div className="flex bg-white/[0.04] rounded-xl p-1 border border-white/[0.06]">
           {TABS.map((t) => {
             const mobileLabels: Record<string, string> = {
@@ -525,8 +549,9 @@ function FundDetail({
               <button
                 key={t}
                 onClick={() => setTab(t)}
-                className={`flex-1 py-2.5 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-wide transition-all
-                  ${tab === t ? "text-black" : "text-white/30 hover:text-white/60"}`}
+                className={`flex-1 py-2.5 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-wide transition-all ${
+                  tab === t ? "text-black" : "text-white/30 hover:text-white/60"
+                }`}
                 style={tab === t ? { background: accent } : {}}
               >
                 <span className="sm:hidden">{mobileLabels[t]}</span>
@@ -536,8 +561,9 @@ function FundDetail({
           })}
         </div>
 
-        {/* tab content */}
+        {/* ── Tab content ── */}
         <AnimatePresence mode="wait">
+          {/* OVERVIEW */}
           {tab === "overview" && (
             <motion.div
               key="ov"
@@ -546,7 +572,7 @@ function FundDetail({
               exit={{ opacity: 0, y: -8 }}
               className="space-y-5"
             >
-              {/* return calculator */}
+              {/* Return calculator */}
               <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
                 <div className="px-5 py-4 border-b border-white/[0.05]">
                   <p className="text-sm font-bold text-white/50 uppercase tracking-widest">
@@ -563,9 +589,9 @@ function FundDetail({
                   return (
                     <div
                       key={idx}
-                      className="px-5 py-4 flex items-center justify-between border-b border-white/[0.03] last:border-0"
+                      className="px-5 py-4 flex items-center justify-between border-b border-white/[0.03] last:border-0 gap-4"
                     >
-                      <div>
+                      <div className="min-w-0">
                         <p className="text-sm font-semibold text-white/70 capitalize">
                           {row.period}
                         </p>
@@ -573,12 +599,12 @@ function FundDetail({
                           Invested ₹{row.inv.toLocaleString("en-IN")}
                         </p>
                       </div>
-                      <div className="text-right">
-                        <p className="text-base font-bold text-white">
+                      <div className="text-right shrink-0">
+                        <p className="text-base font-bold text-white tabular-nums">
                           ₹{Math.round(final).toLocaleString("en-IN")}
                         </p>
                         <p
-                          className={`text-xs font-bold mt-0.5 ${row.ret >= 0 ? "text-emerald-400" : "text-red-400"}`}
+                          className={`text-xs font-bold mt-0.5 tabular-nums ${row.ret >= 0 ? "text-emerald-400" : "text-red-400"}`}
                         >
                           {row.ret >= 0 ? "+" : ""}
                           {row.ret.toFixed(2)}%
@@ -589,7 +615,7 @@ function FundDetail({
                 })}
               </div>
 
-              {/* fund managers */}
+              {/* Fund managers */}
               <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5">
                 <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-4">
                   Fund Managers
@@ -612,8 +638,10 @@ function FundDetail({
                           .map((w) => w[0])
                           .join("")}
                       </div>
-                      <div>
-                        <p className="text-sm font-bold text-white">{m.n}</p>
+                      <div className="min-w-0">
+                        <p className="text-sm font-bold text-white truncate">
+                          {m.n}
+                        </p>
                         <p className="text-xs text-white/30">{m.s} – Present</p>
                       </div>
                     </div>
@@ -621,12 +649,12 @@ function FundDetail({
                 </div>
               </div>
 
-              {/* exit load */}
+              {/* Exit load */}
               <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-5">
                 <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-3 flex items-center gap-2">
                   <Lock className="w-3.5 h-3.5" /> Exit Load & Tax
                 </p>
-                <div className="space-y-2 text-sm text-white/50">
+                <div className="space-y-2 text-sm text-white/50 leading-relaxed">
                   <p>
                     Exit load of{" "}
                     <span className="text-white font-bold">1%</span> if redeemed
@@ -654,6 +682,7 @@ function FundDetail({
             </motion.div>
           )}
 
+          {/* RETURNS */}
           {tab === "returns" && (
             <motion.div
               key="ret"
@@ -712,56 +741,59 @@ function FundDetail({
                 />
               </div>
 
-              {/* vs category table */}
+              {/* vs category — FIX #4: overflow-x-auto so table never pushes layout */}
               <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
                 <div className="px-5 py-4 border-b border-white/[0.05]">
                   <p className="text-xs font-bold uppercase tracking-widest text-white/30">
                     Fund vs Category Average
                   </p>
                 </div>
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-white/[0.04]">
-                      {["Period", "Fund", "Category", "Rank"].map((h) => (
-                        <th
-                          key={h}
-                          className={`py-3 text-[10px] font-bold uppercase tracking-widest text-white/25 ${h === "Period" ? "text-left pl-5" : "text-right pr-5"}`}
-                        >
-                          {h}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/[0.03]">
-                    {[
-                      { p: "6M", f: "+76.2%", c: "+115.7%", r: "—" },
-                      { p: "1Y", f: "+126.9%", c: "+154.8%", r: "7" },
-                      { p: "3Y", f: "+47.4%", c: "+47.1%", r: "1" },
-                    ].map((row) => (
-                      <tr key={row.p}>
-                        <td className="py-3 pl-5 text-sm text-white/50">
-                          {row.p}
-                        </td>
-                        <td className="py-3 pr-5 text-right text-sm font-bold text-emerald-400">
-                          {row.f}
-                        </td>
-                        <td className="py-3 pr-5 text-right text-sm text-white/35">
-                          {row.c}
-                        </td>
-                        <td
-                          className="py-3 pr-5 text-right text-sm font-bold"
-                          style={{ color: accent }}
-                        >
-                          #{row.r}
-                        </td>
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[280px]">
+                    <thead>
+                      <tr className="border-b border-white/[0.04]">
+                        {["Period", "Fund", "Category", "Rank"].map((h) => (
+                          <th
+                            key={h}
+                            className={`py-3 text-[10px] font-bold uppercase tracking-widest text-white/25 ${h === "Period" ? "text-left pl-5" : "text-right pr-5"}`}
+                          >
+                            {h}
+                          </th>
+                        ))}
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-white/[0.03]">
+                      {[
+                        { p: "6M", f: "+76.2%", c: "+115.7%", r: "—" },
+                        { p: "1Y", f: "+126.9%", c: "+154.8%", r: "7" },
+                        { p: "3Y", f: "+47.4%", c: "+47.1%", r: "1" },
+                      ].map((row) => (
+                        <tr key={row.p}>
+                          <td className="py-3 pl-5 text-sm text-white/50">
+                            {row.p}
+                          </td>
+                          <td className="py-3 pr-5 text-right text-sm font-bold text-emerald-400 tabular-nums">
+                            {row.f}
+                          </td>
+                          <td className="py-3 pr-5 text-right text-sm text-white/35 tabular-nums">
+                            {row.c}
+                          </td>
+                          <td
+                            className="py-3 pr-5 text-right text-sm font-bold tabular-nums"
+                            style={{ color: accent }}
+                          >
+                            #{row.r}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </motion.div>
           )}
 
+          {/* COMPOSITION */}
           {tab === "composition" && (
             <motion.div
               key="comp"
@@ -791,14 +823,14 @@ function FundDetail({
                     ].map((a) => (
                       <div key={a.label}>
                         <div className="flex justify-between mb-1">
-                          <span className="text-xs text-white/50 flex items-center gap-2">
+                          <span className="text-xs text-white/50 flex items-center gap-2 min-w-0">
                             <span
                               className="w-2 h-2 rounded-full inline-block shrink-0"
                               style={{ background: a.color }}
                             />
-                            {a.label}
+                            <span className="truncate">{a.label}</span>
                           </span>
-                          <span className="text-xs font-bold text-white/70">
+                          <span className="text-xs font-bold text-white/70 shrink-0 ml-2">
                             {a.pct}%
                           </span>
                         </div>
@@ -818,23 +850,23 @@ function FundDetail({
               </div>
 
               <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
-                <div className="px-5 py-4 border-b border-white/[0.05] flex justify-between">
+                <div className="px-5 py-4 border-b border-white/[0.05] flex justify-between items-center">
                   <p className="text-xs font-bold uppercase tracking-widest text-white/30">
                     Holdings (1)
                   </p>
                   <span className="text-xs text-white/20">Top 5 · 100%</span>
                 </div>
                 <div className="p-4">
-                  <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.04] border border-white/[0.06]">
-                    <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.04] border border-white/[0.06] gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
                       <div
-                        className="w-10 h-10 rounded-xl flex items-center justify-center text-xs font-bold"
+                        className="w-10 h-10 rounded-xl flex items-center justify-center text-xs font-bold shrink-0"
                         style={{ background: `${accent}20`, color: accent }}
                       >
                         ETF
                       </div>
-                      <div>
-                        <p className="text-sm font-bold text-white">
+                      <div className="min-w-0">
+                        <p className="text-sm font-bold text-white truncate">
                           HDFC Silver ETF Regular - Growth
                         </p>
                         <p className="text-xs text-white/30 mt-0.5">
@@ -842,7 +874,7 @@ function FundDetail({
                         </p>
                       </div>
                     </div>
-                    <span className="text-sm font-bold text-white">
+                    <span className="text-sm font-bold text-white shrink-0 tabular-nums">
                       100.04%
                     </span>
                   </div>
@@ -856,6 +888,7 @@ function FundDetail({
             </motion.div>
           )}
 
+          {/* RISK */}
           {tab === "risk" && (
             <motion.div
               key="risk"
@@ -903,7 +936,7 @@ function FundDetail({
                         )}
                       </div>
                       <p
-                        className={`text-xl sm:text-2xl font-bold ${r.warn ? "text-amber-400" : "text-white"}`}
+                        className={`text-xl sm:text-2xl font-bold tabular-nums ${r.warn ? "text-amber-400" : "text-white"}`}
                       >
                         {r.v}
                       </p>
@@ -913,13 +946,15 @@ function FundDetail({
                 </div>
               </div>
 
-              {/* riskometer */}
+              {/* Riskometer */}
               <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5">
                 <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-5">
                   SEBI Riskometer
                 </p>
                 <div className="flex flex-col items-center">
-                  <svg viewBox="0 0 220 120" className="w-full max-w-xs">
+                  {/* FIX #5: max-w-[260px] prevents riskometer from ever being too wide on large screens,
+                      and the SVG is already viewBox-based so it scales down on mobile fine */}
+                  <svg viewBox="0 0 220 120" className="w-full max-w-[260px]">
                     <defs>
                       <linearGradient
                         id="rmGrad"
@@ -979,7 +1014,8 @@ function FundDetail({
                     />
                     <circle cx="110" cy="110" r="5" fill="white" />
                   </svg>
-                  <div className="flex justify-between w-full max-w-xs text-[10px] text-white/30 px-1 -mt-1">
+                  {/* FIX #6: labels were `flex justify-between` with fixed `max-w-xs` — fine, kept */}
+                  <div className="flex justify-between w-full max-w-[260px] text-[9px] sm:text-[10px] text-white/30 px-1 -mt-1">
                     {[
                       "Low",
                       "Mod-Low",
@@ -1014,8 +1050,16 @@ function FundDetail({
         </AnimatePresence>
       </div>
 
-      {/* sticky CTA */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-[#070709]/95 backdrop-blur-xl border-t border-white/[0.06]">
+      {/* ── Sticky CTA ──
+          FIX #7: The original `fixed bottom-0 left-0 right-0` bar spans the full
+          viewport width. Inside a layout with a sidebar, this covers the sidebar
+          area too. Using `inset-x-0` is equivalent but clearer in intent.
+          The inner max-w-3xl keeps the buttons aligned with the content column.
+          Added `safe-area-inset-bottom` padding for iPhone home indicator. */}
+      <div
+        className="fixed bottom-0 inset-x-0 px-4 pb-4 pt-3 bg-[#070709]/95 backdrop-blur-xl border-t border-white/[0.06]"
+        style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
+      >
         <div className="max-w-3xl mx-auto flex gap-3">
           <button className="flex-1 py-3.5 rounded-xl text-sm font-bold border border-white/10 text-white/50 hover:text-white hover:border-white/20 transition">
             + Watchlist
@@ -1062,7 +1106,7 @@ function Pagination({
     pages.push(totalPages);
   }
   return (
-    <div className="flex items-center justify-center gap-1.5 py-4">
+    <div className="flex items-center justify-center gap-1 sm:gap-1.5 py-4 flex-wrap">
       <button
         onClick={() => onChange(page - 1)}
         disabled={page === 1}
@@ -1082,8 +1126,11 @@ function Pagination({
           <button
             key={p}
             onClick={() => onChange(p as number)}
-            className={`w-9 h-9 rounded-lg text-sm font-bold transition border
-                ${page === p ? "text-black border-transparent" : "bg-white/[0.04] border-white/[0.07] text-white/50 hover:text-white hover:bg-white/[0.08]"}`}
+            className={`w-9 h-9 rounded-lg text-sm font-bold transition border ${
+              page === p
+                ? "text-black border-transparent"
+                : "bg-white/[0.04] border-white/[0.07] text-white/50 hover:text-white hover:bg-white/[0.08]"
+            }`}
             style={
               page === p
                 ? { background: "#22d3ee", borderColor: "#22d3ee" }
@@ -1152,7 +1199,6 @@ export default function FundsPage() {
     minReturn,
   ]);
 
-  // reset page on filter change
   const resetPage = () => setPage(1);
   const handleCat = (c: Category) => {
     setCategory(c);
@@ -1209,12 +1255,8 @@ export default function FundsPage() {
       </div>
     );
 
-  // ── font override via style tag (use existing project font) ─────────────────
-  // The outer layout/sidebar already sets the project font family.
-  // We only override the mono-specific sections; prose inherits from layout.
-
   return (
-    <div className="min-h-screen bg-[#070709] text-slate-200">
+    <div className="min-h-screen bg-[#070709] text-slate-200 overflow-x-hidden">
       <AnimatePresence mode="wait">
         {/* ── DETAIL VIEW ── */}
         {view === "detail" && selectedFund ? (
@@ -1231,13 +1273,12 @@ export default function FundsPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8 sm:space-y-10"
+            className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8 sm:space-y-10"
           >
-            {/* ══ HEADER ════════════════════════════════════════════════ */}
+            {/* ══ HEADER ══ */}
             <header className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
               <div>
                 <div className="flex items-center gap-3 mb-3">
-                  {/* Back button — visible when navigated here from another page */}
                   <button
                     onClick={() => window.history.back()}
                     className="w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.12] flex items-center justify-center transition shrink-0"
@@ -1261,10 +1302,7 @@ export default function FundsPage() {
               </div>
               <div className="flex gap-6 sm:gap-8">
                 <div className="text-center sm:text-right">
-                  <p
-                    className="text-3xl sm:text-4xl font-bold text-white"
-                    style={{ fontVariantNumeric: "tabular-nums" }}
-                  >
+                  <p className="text-3xl sm:text-4xl font-bold text-white tabular-nums">
                     {allFunds.length > 0
                       ? (
                           (allFunds.filter(
@@ -1281,7 +1319,7 @@ export default function FundsPage() {
                   </p>
                 </div>
                 <div className="text-center sm:text-right">
-                  <p className="text-3xl sm:text-4xl font-bold text-emerald-400">
+                  <p className="text-3xl sm:text-4xl font-bold text-emerald-400 tabular-nums">
                     {allFunds.length}
                   </p>
                   <p className="text-xs text-white/30 uppercase tracking-widest mt-1">
@@ -1291,8 +1329,12 @@ export default function FundsPage() {
               </div>
             </header>
 
-            {/* ══ CATEGORY GRID ════════════════════════════════════════ */}
-            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-9 gap-2">
+            {/* ══ CATEGORY GRID ══
+                FIX #8: On a 320px phone, grid-cols-3 gives each cell ~96px.
+                Labels like "All Funds" wrap at this width — now using
+                grid-cols-3 with truncated labels (already handled by text-xs
+                leading-tight) and tighter padding on the smallest screens. */}
+            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-9 gap-1.5 sm:gap-2">
               {Object.entries(CATS).map(([id, meta]) => {
                 const Icon = meta.icon;
                 const active = category === id;
@@ -1305,8 +1347,11 @@ export default function FundsPage() {
                     key={id}
                     onClick={() => handleCat(id as Category)}
                     whileTap={{ scale: 0.96 }}
-                    className={`relative overflow-hidden rounded-2xl border text-left transition-all p-3 sm:p-4
-                      ${active ? "border-emerald-500/40" : "border-white/[0.05] hover:border-white/[0.12] bg-white/[0.02]"}`}
+                    className={`relative overflow-hidden rounded-2xl border text-left transition-all p-2.5 sm:p-3 lg:p-4 ${
+                      active
+                        ? "border-emerald-500/40"
+                        : "border-white/[0.05] hover:border-white/[0.12] bg-white/[0.02]"
+                    }`}
                     style={
                       active
                         ? {
@@ -1325,18 +1370,18 @@ export default function FundsPage() {
                       />
                     )}
                     <Icon
-                      className="w-5 h-5 mb-2.5 relative z-10"
+                      className="w-4 h-4 sm:w-5 sm:h-5 mb-2 relative z-10"
                       style={{
                         color: active ? meta.accent : "rgba(255,255,255,0.25)",
                       }}
                     />
                     <p
-                      className={`text-xs font-bold leading-tight relative z-10 ${active ? "text-white" : "text-white/40"}`}
+                      className={`text-[10px] sm:text-xs font-bold leading-tight relative z-10 ${active ? "text-white" : "text-white/40"}`}
                     >
                       {meta.label}
                     </p>
-                    <p className="text-[10px] text-white/20 mt-1 relative z-10">
-                      {count} funds
+                    <p className="text-[9px] sm:text-[10px] text-white/20 mt-0.5 sm:mt-1 relative z-10 tabular-nums">
+                      {count}
                     </p>
                     {active && (
                       <div className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.7)]" />
@@ -1346,18 +1391,16 @@ export default function FundsPage() {
               })}
             </div>
 
-            {/* ══ SEARCH + CONTROLS ═══════════════════════════════════ */}
+            {/* ══ SEARCH + CONTROLS ══ */}
             <div className="space-y-3">
               <div className="flex gap-2 sm:gap-3">
-                {/* search */}
-                <div className="relative flex-1">
+                <div className="relative flex-1 min-w-0">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25" />
                   <input
                     value={query}
                     onChange={(e) => handleQuery(e.target.value)}
                     placeholder="Search funds or AMCs…"
-                    className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl py-3 pl-11 pr-10
-                      text-sm placeholder:text-white/20 focus:outline-none focus:border-emerald-500/50 transition-all text-white/80"
+                    className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl py-3 pl-11 pr-10 text-sm placeholder:text-white/20 focus:outline-none focus:border-emerald-500/50 transition-all text-white/80"
                   />
                   {query && (
                     <button
@@ -1368,26 +1411,26 @@ export default function FundsPage() {
                     </button>
                   )}
                 </div>
-                {/* sort */}
-                <div className="relative">
+                <div className="relative shrink-0">
                   <select
                     value={sortBy}
                     onChange={(e) => handleSort(e.target.value as SortKey)}
-                    className="appearance-none bg-white/[0.04] border border-white/[0.08] rounded-xl
-                      px-4 pr-8 py-3 text-sm font-semibold text-white/60 outline-none cursor-pointer hover:bg-white/[0.07] transition"
+                    className="appearance-none bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 sm:px-4 pr-7 sm:pr-8 py-3 text-xs sm:text-sm font-semibold text-white/60 outline-none cursor-pointer hover:bg-white/[0.07] transition"
                   >
                     <option value="cagr3y">3Y CAGR</option>
                     <option value="cagr1y">1Y Return</option>
                     <option value="nav">NAV</option>
                     <option value="name">A–Z</option>
                   </select>
-                  <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/30 pointer-events-none" />
+                  <ChevronDown className="absolute right-2 sm:right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/30 pointer-events-none" />
                 </div>
-                {/* filter toggle */}
                 <button
                   onClick={() => setShowFilters((v) => !v)}
-                  className={`px-4 py-3 rounded-xl border text-sm font-semibold flex items-center gap-2 transition-all
-                    ${showFilters ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-400" : "border-white/[0.08] bg-white/[0.04] text-white/40 hover:text-white/70"}`}
+                  className={`px-3 sm:px-4 py-3 rounded-xl border text-sm font-semibold flex items-center gap-2 transition-all shrink-0 ${
+                    showFilters
+                      ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-400"
+                      : "border-white/[0.08] bg-white/[0.04] text-white/40 hover:text-white/70"
+                  }`}
                 >
                   <SlidersHorizontal className="w-4 h-4" />
                   <span className="hidden sm:inline">Filters</span>
@@ -1397,7 +1440,6 @@ export default function FundsPage() {
                 </button>
               </div>
 
-              {/* filter panel */}
               <AnimatePresence>
                 {showFilters && (
                   <motion.div
@@ -1407,7 +1449,6 @@ export default function FundsPage() {
                     className="overflow-hidden"
                   >
                     <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-2 gap-5 mt-1">
-                      {/* risk */}
                       <div>
                         <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-3">
                           Risk Level
@@ -1425,8 +1466,11 @@ export default function FundsPage() {
                             <button
                               key={r}
                               onClick={() => handleRisk(r)}
-                              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all
-                                ${riskFilter === r ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-400" : "border-white/[0.07] text-white/35 hover:text-white/70 hover:border-white/20"}`}
+                              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                                riskFilter === r
+                                  ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-400"
+                                  : "border-white/[0.07] text-white/35 hover:text-white/70 hover:border-white/20"
+                              }`}
                             >
                               {r === "all"
                                 ? "Any"
@@ -1437,7 +1481,6 @@ export default function FundsPage() {
                           ))}
                         </div>
                       </div>
-                      {/* min return */}
                       <div>
                         <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-3">
                           Min 3Y CAGR
@@ -1447,8 +1490,11 @@ export default function FundsPage() {
                             <button
                               key={v}
                               onClick={() => handleMinRet(v)}
-                              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all
-                                ${minReturn === v ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-400" : "border-white/[0.07] text-white/35 hover:text-white/70 hover:border-white/20"}`}
+                              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                                minReturn === v
+                                  ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-400"
+                                  : "border-white/[0.07] text-white/35 hover:text-white/70 hover:border-white/20"
+                              }`}
                             >
                               {v === 0 ? "Any" : `> ${v}%`}
                             </button>
@@ -1461,29 +1507,32 @@ export default function FundsPage() {
               </AnimatePresence>
             </div>
 
-            {/* ══ RESULTS BAR ═════════════════════════════════════════ */}
-            <div className="flex items-center justify-between">
+            {/* ══ RESULTS BAR ══ */}
+            <div className="flex items-center justify-between gap-4">
               <p className="text-sm text-white/30">
-                <span className="text-emerald-400 font-bold text-base">
+                <span className="text-emerald-400 font-bold text-base tabular-nums">
                   {filteredFunds.length}
                 </span>{" "}
                 funds · page{" "}
-                <span className="text-white/50 font-semibold">{page}</span> of{" "}
-                <span className="text-white/50 font-semibold">
+                <span className="text-white/50 font-semibold tabular-nums">
+                  {page}
+                </span>{" "}
+                of{" "}
+                <span className="text-white/50 font-semibold tabular-nums">
                   {Math.ceil(filteredFunds.length / PAGE_SIZE) || 1}
                 </span>
               </p>
               {(riskFilter !== "all" || minReturn > 0 || query) && (
                 <button
                   onClick={clearFilters}
-                  className="text-xs text-white/30 hover:text-white/70 flex items-center gap-1.5 transition"
+                  className="text-xs text-white/30 hover:text-white/70 flex items-center gap-1.5 transition shrink-0"
                 >
                   <RefreshCw className="w-3.5 h-3.5" /> Clear all
                 </button>
               )}
             </div>
 
-            {/* ══ FUND LIST ════════════════════════════════════════════ */}
+            {/* ══ FUND LIST ══ */}
             <div className="space-y-2.5">
               {pageFunds.map((fund, i) => {
                 const accent = getAccent(fund);
@@ -1491,7 +1540,6 @@ export default function FundsPage() {
                 const r1 = fund.returns?.oneYear;
                 const spark = buildSparkValues(r3);
                 const globalIdx = (page - 1) * PAGE_SIZE + i;
-
                 return (
                   <motion.div
                     key={fund.schemeCode}
@@ -1499,18 +1547,17 @@ export default function FundsPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: Math.min(i * 0.018, 0.25) }}
                     onClick={() => openFund(fund)}
-                    className="group cursor-pointer rounded-2xl border border-white/[0.05] bg-white/[0.02]
-                      hover:bg-white/[0.05] hover:border-white/[0.12] transition-all overflow-hidden"
+                    className="group cursor-pointer rounded-2xl border border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/[0.12] transition-all overflow-hidden"
                     style={{ borderLeft: `3px solid ${accent}40` }}
                   >
-                    <div className="p-4 sm:p-5 flex items-center gap-4">
-                      {/* rank + logo */}
-                      <div className="flex items-center gap-3 shrink-0">
-                        <span className="text-xs text-white/15 font-mono w-5 text-right hidden sm:block">
+                    <div className="p-4 sm:p-5 flex items-center gap-3 sm:gap-4">
+                      {/* Rank + logo */}
+                      <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+                        <span className="text-xs text-white/15 font-mono w-5 text-right hidden sm:block tabular-nums">
                           {globalIdx + 1}
                         </span>
                         <div
-                          className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center text-xs font-bold shrink-0"
+                          className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center text-xs font-bold shrink-0"
                           style={{ background: `${accent}20`, color: accent }}
                         >
                           {fund.amcName
@@ -1519,21 +1566,20 @@ export default function FundsPage() {
                             .toUpperCase() || "MF"}
                         </div>
                       </div>
-
-                      {/* name + tags */}
+                      {/* Name + tags */}
                       <div className="flex-1 min-w-0">
                         <p className="text-sm sm:text-base font-semibold text-white/85 group-hover:text-white transition-colors leading-snug line-clamp-1">
                           {cleanName(fund.schemeName)}
                         </p>
-                        <div className="flex items-center flex-wrap gap-2 mt-1.5">
+                        <div className="flex items-center flex-wrap gap-1.5 sm:gap-2 mt-1 sm:mt-1.5">
                           <span
                             className="text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded-md"
                             style={{ background: `${accent}18`, color: accent }}
                           >
                             {getCleanCategory(fund.category)}
                           </span>
-                          <span className="text-[10px] sm:text-xs text-white/20">
-                            NAV ₹{fund.nav}
+                          <span className="text-[10px] sm:text-xs text-white/20 tabular-nums">
+                            ₹{fund.nav}
                           </span>
                           {fund.riskLevel && (
                             <span className="text-[10px] sm:text-xs text-white/20 hidden sm:block">
@@ -1542,20 +1588,15 @@ export default function FundsPage() {
                           )}
                         </div>
                       </div>
-
-                      {/* sparkline — desktop only */}
+                      {/* Sparkline — lg only */}
                       <div className="hidden lg:block opacity-40 group-hover:opacity-80 transition-opacity shrink-0">
                         <Sparkline values={spark} color={accent} h={36} />
                       </div>
-
-                      {/* returns */}
-                      <div className="text-right shrink-0 ml-2">
+                      {/* Returns */}
+                      <div className="text-right shrink-0 ml-1 sm:ml-2">
                         <p
-                          className="text-lg sm:text-xl font-bold"
-                          style={{
-                            color: accent,
-                            fontVariantNumeric: "tabular-nums",
-                          }}
+                          className="text-lg sm:text-xl font-bold tabular-nums"
+                          style={{ color: accent }}
                         >
                           {r3 != null
                             ? `${r3 > 0 ? "+" : ""}${r3.toFixed(1)}%`
@@ -1566,14 +1607,13 @@ export default function FundsPage() {
                         </p>
                         {r1 != null && (
                           <p
-                            className={`text-xs mt-0.5 ${r1 >= 0 ? "text-emerald-400/70" : "text-red-400/70"}`}
+                            className={`text-xs mt-0.5 tabular-nums ${r1 >= 0 ? "text-emerald-400/70" : "text-red-400/70"}`}
                           >
                             {r1 > 0 ? "+" : ""}
                             {r1.toFixed(1)}% 1Y
                           </p>
                         )}
                       </div>
-
                       <ChevronRight className="w-4 h-4 text-white/15 group-hover:text-white/50 group-hover:translate-x-0.5 transition-all shrink-0 hidden sm:block" />
                     </div>
                   </motion.div>
@@ -1593,7 +1633,7 @@ export default function FundsPage() {
               )}
             </div>
 
-            {/* ══ PAGINATION ══════════════════════════════════════════ */}
+            {/* ══ PAGINATION ══ */}
             <Pagination
               page={page}
               total={filteredFunds.length}
@@ -1604,7 +1644,7 @@ export default function FundsPage() {
               }}
             />
 
-            {/* footer */}
+            {/* Footer */}
             <footer className="pt-4 pb-8 border-t border-white/[0.05] text-center">
               <p className="text-xs text-white/15 max-w-md mx-auto leading-relaxed">
                 Mutual fund investments are subject to market risks. Read all

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Bot,
@@ -20,20 +20,17 @@ import {
   TrendingUp,
   FileText,
   ClipboardList,
-  ChevronDown,
-  ChevronUp,
-  Lightbulb,
   AlertCircle,
   Wallet,
-  BadgeAlert,
   Star,
   Lock,
   Receipt,
-  CreditCard,
   Info,
   ArrowUpRight,
   CircleCheck,
   TriangleAlert,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,18 +38,17 @@ import {
   calculateInDepthSavings,
   recommendFromStatement,
   getMerchantRate,
-  NON_REWARDABLE,
   rankCards,
   deriveMaxFee,
   type CreditCard as CardType,
   type SpendProfile,
   type StatementRecommendation,
-  type TransactionInsight,
 } from "@/lib/credit-cards-data";
 import MoneySlider from "@/components/ui/moneyslider";
 import StatementUpload from "@/components/StatementUpload";
 
-// ─────────────────────────────────────────────────────────────
+// ─── Types ────────────────────────────────────────────────────────────────────
+
 type Step =
   | "landing"
   | "income"
@@ -63,7 +59,7 @@ type Step =
 type InputMode = "statement" | "questionnaire" | null;
 
 interface UserProfile {
-  income: number; // annual ₹
+  income: number;
   monthlySpend: number;
   categories: string[];
   priorities: string[];
@@ -78,6 +74,14 @@ const defaultProfile: UserProfile = {
   priorities: [],
   travelFrequency: "rare",
   maxAnnualFee: 50000,
+};
+
+// Each wizard step has a distinct accent color
+const STEP_COLORS: Record<string, string> = {
+  income: "#f59e0b",
+  spending: "#10b981",
+  travel: "#38bdf8",
+  priorities: "#a78bfa",
 };
 
 const MERCHANT_META: Record<
@@ -164,9 +168,50 @@ const MERCHANT_META: Record<
   },
 };
 
-// ─────────────────────────────────────────────────────────────
-// ROOT
-// ─────────────────────────────────────────────────────────────
+// Rank visual system: #1=gold, #2=silver, #3=bronze, rest=neutral
+const RANK_STYLES = [
+  {
+    badge: "bg-amber-400 text-black",
+    border: "border-amber-400/35",
+    bg: "from-amber-400/8 to-transparent",
+    label: "★ Best Match",
+  },
+  {
+    badge: "bg-slate-600 text-slate-100",
+    border: "border-slate-500/30",
+    bg: "from-slate-500/6 to-transparent",
+    label: "#2 Runner-up",
+  },
+  {
+    badge: "bg-amber-900/70 text-amber-200",
+    border: "border-amber-700/25",
+    bg: "from-amber-900/8 to-transparent",
+    label: "#3",
+  },
+  {
+    badge: "bg-white/10 text-white/50",
+    border: "border-white/8",
+    bg: "from-white/[0.02] to-transparent",
+    label: "#4",
+  },
+  {
+    badge: "bg-white/8 text-white/40",
+    border: "border-white/6",
+    bg: "",
+    label: "#5",
+  },
+];
+
+// Rate → color: high=green, mid=amber, low=red
+function rateColor(rate: number): string {
+  if (rate >= 10) return "#10b981";
+  if (rate >= 5) return "#f59e0b";
+  if (rate >= 2) return "#fb923c";
+  return "#ef4444";
+}
+
+// ─── ROOT ─────────────────────────────────────────────────────────────────────
+
 export default function AIAdvisorPage() {
   const [step, setStep] = useState<Step>("landing");
   const [profile, setProfile] = useState<UserProfile>(defaultProfile);
@@ -179,7 +224,6 @@ export default function AIAdvisorPage() {
     useState<StatementRecommendation | null>(null);
   const [activeSpend, setActiveSpend] = useState<SpendProfile | null>(null);
 
-  // ── Statement path ─────────────────────────────────────────
   const handleStatementParsed = (parsedData: any) => {
     const txns = (parsedData.transactions ?? []).map((t: any) => ({
       date: t.date ?? "",
@@ -189,22 +233,18 @@ export default function AIAdvisorPage() {
       category: t.category ?? "other",
       balance: t.balance ?? null,
     }));
-
     setSheetOpen(false);
     setIsAnalyzing(true);
     setStep("results");
-
     setTimeout(() => {
       const result = recommendFromStatement(txns, undefined, null);
       setStatementResult(result);
       setActiveSpend(result.analysis.spendProfile);
-
       const cats: string[] = [];
       if (result.analysis.spendProfile.food > 0) cats.push("dining");
       if (result.analysis.spendProfile.shopping > 0) cats.push("shopping");
       if (result.analysis.spendProfile.travel > 0) cats.push("travel");
       if (result.analysis.spendProfile.fuel > 0) cats.push("fuel");
-
       setProfile({
         ...defaultProfile,
         monthlySpend: Math.round(parsedData.summary?.total_debits ?? 0),
@@ -218,7 +258,6 @@ export default function AIAdvisorPage() {
     }, 1400);
   };
 
-  // ── Questionnaire path ─────────────────────────────────────
   const handleIncomeSubmit = (income: number) => {
     setProfile((p) => ({ ...p, income }));
     setStep("spending");
@@ -249,9 +288,9 @@ export default function AIAdvisorPage() {
         utilities: monthly * 0.1,
         rent: monthly * 0.15,
         other: monthly * 0.05,
+        grocery: updated.categories.includes("grocery") ? monthly * 0.15 : 0,
       };
       setActiveSpend(sp);
-
       const maxFee = deriveMaxFee(monthly);
       const catKeyword = updated.categories.includes("dining")
         ? "food"
@@ -262,7 +301,6 @@ export default function AIAdvisorPage() {
             : updated.categories.includes("fuel")
               ? "fuel"
               : "general";
-
       const eligible = creditCards.filter(
         (c) =>
           (updated.income === 0 ||
@@ -291,10 +329,7 @@ export default function AIAdvisorPage() {
     setActiveSpend(null);
   };
 
-  const isResultsStep = step === "results";
-
-  // ── Layout: results page is a completely separate full-screen UI ──────
-  if (isResultsStep) {
+  if (step === "results")
     return (
       <ResultsPage
         recommendations={recommendations}
@@ -308,33 +343,50 @@ export default function AIAdvisorPage() {
         onCloseCard={() => setSelectedCard(null)}
       />
     );
-  }
 
-  // ── Non-results: wizard layout ────────────────────────────────────────
   return (
-    <div className="w-full max-w-md mx-auto px-4 py-10 min-h-screen">
-      {/* Header — only on landing/wizard */}
+    <div className="w-full max-w-md mx-auto px-4 py-10 min-h-screen relative">
+      {/* Ambient glows */}
+      <div
+        className="pointer-events-none fixed inset-0 overflow-hidden"
+        aria-hidden
+      >
+        <div
+          className="absolute -top-32 -right-32 w-80 h-80 rounded-full blur-3xl"
+          style={{ background: "rgba(245,158,11,0.05)" }}
+        />
+        <div
+          className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full blur-3xl"
+          style={{ background: "rgba(16,185,129,0.04)" }}
+        />
+      </div>
+
+      {/* Header */}
       <motion.div
         className="text-center mb-10"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <div className="w-16 h-16 rounded-[1.5rem] bg-amber-400/10 border border-amber-400/20 flex items-center justify-center mx-auto mb-5">
-          <Bot className="w-8 h-8 text-amber-400" />
+        {/* Bot icon with pulsing live ring */}
+        <div className="relative w-16 h-16 mx-auto mb-5">
+          <div className="absolute inset-0 rounded-[1.5rem] border border-amber-400/20 animate-ping opacity-25" />
+          <div className="w-16 h-16 rounded-[1.5rem] bg-amber-400/10 border border-amber-400/20 flex items-center justify-center relative">
+            <Bot className="w-8 h-8 text-amber-400" />
+          </div>
         </div>
-        <h1 className="font-serif text-3xl font-bold mb-2">AI Card Advisor</h1>
-        <p className="text-sm text-muted-foreground max-w-xs mx-auto">
+        <h1 className="font-serif text-3xl font-bold mb-2 tracking-tight">
+          AI Card Advisor
+        </h1>
+        <p className="text-sm text-muted-foreground max-w-xs mx-auto leading-relaxed">
           The PaisaDekho engine audits rewards, GST, caps and card policies to
           maximise your wallet.
         </p>
       </motion.div>
 
-      {/* Stepper — only for questionnaire */}
       {inputMode === "questionnaire" && step !== "landing" && (
         <StepBar step={step} />
       )}
 
-      {/* Step content */}
       <AnimatePresence mode="wait">
         {(step === "landing" || step === "income") && !inputMode && (
           <LandingStep
@@ -372,7 +424,6 @@ export default function AIAdvisorPage() {
         )}
       </AnimatePresence>
 
-      {/* Upload bottom sheet */}
       <AnimatePresence>
         {sheetOpen && (
           <>
@@ -399,7 +450,7 @@ export default function AIAdvisorPage() {
               <div
                 className="px-5 pt-4 pb-10 max-w-lg mx-auto"
                 style={{
-                  paddingBottom: "max(2.5rem, env(safe-area-inset-bottom))",
+                  paddingBottom: "max(2.5rem,env(safe-area-inset-bottom))",
                 }}
               >
                 <div className="flex items-center justify-between mb-6">
@@ -429,36 +480,115 @@ export default function AIAdvisorPage() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// STEP BAR
-// ─────────────────────────────────────────────────────────────
-const STEPS: Step[] = ["income", "spending", "travel", "priorities", "results"];
+// ─── STEP BAR — circular with per-step colors ─────────────────────────────────
+
+const STEP_LIST: Step[] = [
+  "income",
+  "spending",
+  "travel",
+  "priorities",
+  "results",
+];
+const STEP_LABELS = ["Income", "Spending", "Travel", "Priorities"];
+
 function StepBar({ step }: { step: Step }) {
-  const idx = STEPS.indexOf(step);
+  const idx = STEP_LIST.indexOf(step);
   return (
-    <div className="flex items-center justify-center gap-1.5 mb-8">
-      {STEPS.slice(0, 4).map((s, i) => (
-        <div key={s} className="flex items-center gap-1.5">
-          <div
-            className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold transition-all
-            ${idx === i ? "bg-amber-400 text-black" : idx > i ? "bg-amber-400/20 text-amber-400" : "bg-white/5 text-white/30"}`}
-          >
-            {idx > i ? <CheckCircle2 className="w-3.5 h-3.5" /> : i + 1}
+    <div className="flex items-start justify-center gap-0 mb-8">
+      {STEP_LABELS.map((label, i) => {
+        const done = idx > i;
+        const active = idx === i;
+        const color = Object.values(STEP_COLORS)[i];
+        return (
+          <div key={label} className="flex items-center">
+            <div className="flex flex-col items-center gap-1">
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300"
+                style={
+                  active
+                    ? {
+                        background: color,
+                        color: "#000",
+                        boxShadow: `0 0 12px ${color}50`,
+                      }
+                    : done
+                      ? { background: `${color}20`, color }
+                      : {
+                          background: "rgba(255,255,255,0.06)",
+                          color: "rgba(255,255,255,0.3)",
+                        }
+                }
+              >
+                {done ? <CircleCheck className="w-3.5 h-3.5" /> : i + 1}
+              </div>
+              <span
+                className="text-[9px] font-medium"
+                style={{ color: active ? color : "rgba(255,255,255,0.3)" }}
+              >
+                {label}
+              </span>
+            </div>
+            {i < 3 && (
+              <div
+                className="w-8 h-px mt-[-12px] mx-1 rounded-full"
+                style={{
+                  background: done ? `${color}50` : "rgba(255,255,255,0.08)",
+                }}
+              />
+            )}
           </div>
-          {i < 3 && (
-            <div
-              className={`w-6 h-px ${idx > i ? "bg-amber-400/40" : "bg-white/10"}`}
-            />
-          )}
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// LANDING STEP
-// ─────────────────────────────────────────────────────────────
+// ─── WIZARD CARD — per-step color identity ────────────────────────────────────
+
+function WizardCard({
+  step,
+  children,
+}: {
+  step: Step;
+  children: React.ReactNode;
+}) {
+  const color = STEP_COLORS[step] ?? "#f59e0b";
+  return (
+    <div
+      className="rounded-3xl border border-white/10 overflow-hidden relative"
+      style={{ background: "rgba(0,0,0,0.3)" }}
+    >
+      <div
+        className="h-0.5"
+        style={{
+          background: `linear-gradient(90deg,${color},${color}44,transparent)`,
+        }}
+      />
+      <div
+        className="absolute top-0 left-0 right-0 h-32 pointer-events-none"
+        style={{
+          background: `radial-gradient(ellipse 80% 60% at 50% 0%,${color}10,transparent)`,
+        }}
+      />
+      <div className="relative p-6">{children}</div>
+    </div>
+  );
+}
+
+function StepLabel({ step, number }: { step: Step; number: number }) {
+  const color = STEP_COLORS[step] ?? "#f59e0b";
+  return (
+    <p
+      className="text-xs font-bold mb-2 uppercase tracking-[0.18em]"
+      style={{ color }}
+    >
+      Step {number} of 4
+    </p>
+  );
+}
+
+// ─── LANDING ──────────────────────────────────────────────────────────────────
+
 function LandingStep({
   onUpload,
   onQuestionnaire,
@@ -474,7 +604,6 @@ function LandingStep({
       exit={{ opacity: 0, y: -16 }}
       className="space-y-4"
     >
-      {/* Primary CTA */}
       <button
         onClick={onUpload}
         className="w-full group relative overflow-hidden rounded-2xl border border-amber-400/40 bg-gradient-to-br from-amber-400/12 to-amber-600/6 p-5 text-left hover:border-amber-400/70 transition-all duration-300"
@@ -492,7 +621,7 @@ function LandingStep({
               </span>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              The engine reads every transaction. It detects P2P transfers, maps
+              The engine reads every transaction, detects P2P transfers, maps
               merchants, applies caps and finds the card that earns most on your
               real spend.
             </p>
@@ -511,7 +640,6 @@ function LandingStep({
         <ArrowUpRight className="absolute top-5 right-5 w-4 h-4 text-amber-400 opacity-60 group-hover:opacity-100 transition-opacity" />
       </button>
 
-      {/* Divider */}
       <div className="flex items-center gap-3">
         <div className="flex-1 h-px bg-white/8" />
         <span className="text-xs text-white/30 font-medium">
@@ -520,7 +648,6 @@ function LandingStep({
         <div className="flex-1 h-px bg-white/8" />
       </div>
 
-      {/* Secondary CTA */}
       <button
         onClick={onQuestionnaire}
         className="w-full p-4 rounded-2xl border border-white/10 bg-white/4 hover:bg-white/8 transition-all text-left flex items-center gap-4"
@@ -537,19 +664,41 @@ function LandingStep({
         <ArrowRight className="ml-auto w-4 h-4 text-white/30" />
       </button>
 
-      {/* Engine callouts */}
-      <div className="grid grid-cols-3 gap-2 pt-2">
+      {/* Engine metric counters — not plain chips */}
+      <div className="grid grid-cols-3 gap-2 pt-1">
         {[
-          { label: "93 cards", sub: "2026 dataset" },
-          { label: "P2P filter", sub: "real spend only" },
-          { label: "Cap-aware", sub: "monthly limits" },
+          { num: "93", label: "Cards", sub: "2026 dataset", color: "#f59e0b" },
+          {
+            num: "P2P",
+            label: "Filtered",
+            sub: "real spend only",
+            color: "#10b981",
+          },
+          {
+            num: "Cap",
+            label: "Aware",
+            sub: "monthly limits",
+            color: "#a78bfa",
+          },
         ].map((c) => (
           <div
             key={c.label}
-            className="rounded-xl bg-white/4 border border-white/8 p-3 text-center"
+            className="rounded-xl border border-white/8 p-3 text-center relative overflow-hidden"
+            style={{ background: `${c.color}08` }}
           >
-            <p className="text-xs font-bold text-white/80">{c.label}</p>
-            <p className="text-[10px] text-white/40 mt-0.5">{c.sub}</p>
+            <div
+              className="absolute top-0 left-0 right-0 h-0.5"
+              style={{
+                background: `linear-gradient(90deg,${c.color},transparent)`,
+              }}
+            />
+            <p className="text-base font-bold" style={{ color: c.color }}>
+              {c.num}
+            </p>
+            <p className="text-[10px] font-semibold text-white/70 mt-0.5">
+              {c.label}
+            </p>
+            <p className="text-[9px] text-white/30">{c.sub}</p>
           </div>
         ))}
       </div>
@@ -557,9 +706,8 @@ function LandingStep({
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// WIZARD STEPS
-// ─────────────────────────────────────────────────────────────
+// ─── INCOME STEP ──────────────────────────────────────────────────────────────
+
 function IncomeStep({ onSubmit }: { onSubmit: (v: number) => void }) {
   const [income, setIncome] = useState(1200000);
   return (
@@ -568,40 +716,42 @@ function IncomeStep({ onSubmit }: { onSubmit: (v: number) => void }) {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
-      className="p-6 border border-white/10 rounded-3xl bg-black/20"
     >
-      <p className="text-xs text-amber-400 font-bold mb-2 uppercase tracking-widest">
-        Step 1 of 4
-      </p>
-      <h2 className="text-2xl font-bold mb-2">Annual Income</h2>
-      <p className="text-sm text-muted-foreground mb-8">
-        Used only to filter cards you're eligible for — not stored anywhere.
-      </p>
-      <MoneySlider value={income} onChange={setIncome} />
-      <div className="flex flex-wrap gap-2 justify-center mb-10">
-        {[300000, 500000, 1000000, 2000000, 3000000, 5000000].map((p) => (
-          <button
-            key={p}
-            onClick={() => setIncome(p)}
-            className={`px-3 py-1.5 rounded-full border text-xs transition-all ${income === p ? "border-amber-400 bg-amber-400/10 text-amber-400" : "border-white/10 bg-white/5 hover:bg-white/10"}`}
-          >
-            ₹{p >= 100000 ? `${p / 100000}L` : `${p / 1000}k`}
-          </button>
-        ))}
-      </div>
-      <Button
-        onClick={() => onSubmit(income)}
-        className="w-full h-13 text-base bg-amber-400 text-black hover:bg-amber-300"
-      >
-        Continue <ArrowRight className="ml-2 w-4 h-4" />
-      </Button>
+      <WizardCard step="income">
+        <StepLabel step="income" number={1} />
+        <h2 className="text-2xl font-bold mb-2">Annual Income</h2>
+        <p className="text-sm text-muted-foreground mb-8 leading-relaxed">
+          Used only to filter cards you're eligible for — not stored anywhere.
+        </p>
+        <MoneySlider value={income} onChange={setIncome} />
+        <div className="flex flex-wrap gap-2 justify-center mb-10">
+          {[300000, 500000, 1000000, 2000000, 3000000, 5000000].map((p) => (
+            <button
+              key={p}
+              onClick={() => setIncome(p)}
+              className={`px-3 py-1.5 rounded-full border text-xs transition-all ${income === p ? "border-amber-400 bg-amber-400/10 text-amber-400" : "border-white/10 bg-white/5 hover:bg-white/10"}`}
+            >
+              ₹{p >= 100000 ? `${p / 100000}L` : `${p / 1000}k`}
+            </button>
+          ))}
+        </div>
+        <Button
+          onClick={() => onSubmit(income)}
+          className="w-full h-13 text-base bg-amber-400 text-black hover:bg-amber-300"
+        >
+          Continue <ArrowRight className="ml-2 w-4 h-4" />
+        </Button>
+      </WizardCard>
     </motion.div>
   );
 }
 
+// ─── SPENDING STEP ────────────────────────────────────────────────────────────
+
 function SpendingStep({ onSubmit, onBack }: any) {
   const [spend, setSpend] = useState(50000);
   const [categories, setCategories] = useState<string[]>([]);
+  const color = STEP_COLORS.spending;
   const cats = [
     {
       id: "dining",
@@ -629,73 +779,108 @@ function SpendingStep({ onSubmit, onBack }: any) {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
-      className="p-6 border border-white/10 rounded-3xl bg-black/20 mb-12"
+      className="mb-12"
     >
-      <p className="text-xs text-amber-400 font-bold mb-2 uppercase tracking-widest">
-        Step 2 of 4
-      </p>
-      <h2 className="text-2xl font-bold mb-2">Monthly Spend</h2>
-      <p className="text-sm text-muted-foreground mb-6">
-        Total card-eligible spend. Include online shopping, groceries, dining.
-      </p>
-      <div className="mb-8">
-        <MoneySlider
-          value={spend}
-          onChange={setSpend}
-          min={5000}
-          max={300000}
-          step={1000}
-        />
-      </div>
-      <p className="text-xs text-muted-foreground mb-3 font-medium">
-        Where do you spend most? (select all that apply)
-      </p>
-      <div className="grid grid-cols-2 gap-3 mb-8">
-        {cats.map((c) => (
-          <button
-            key={c.id}
-            onClick={() =>
-              setCategories((p) =>
-                p.includes(c.id) ? p.filter((x) => x !== c.id) : [...p, c.id],
-              )
-            }
-            className={`p-4 border rounded-xl transition-all text-left ${categories.includes(c.id) ? "border-amber-400 bg-amber-400/10" : "border-white/10 hover:bg-white/5"}`}
+      <WizardCard step="spending">
+        <StepLabel step="spending" number={2} />
+        <h2 className="text-2xl font-bold mb-2">Monthly Spend</h2>
+        <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+          Total card-eligible spend including online shopping, groceries,
+          dining.
+        </p>
+        <div className="mb-8">
+          <MoneySlider
+            value={spend}
+            onChange={setSpend}
+            min={5000}
+            max={300000}
+            step={1000}
+          />
+        </div>
+        <p className="text-xs text-muted-foreground mb-3 font-medium">
+          Where do you spend most? (select all)
+        </p>
+        <div className="grid grid-cols-2 gap-3 mb-8">
+          {cats.map((c) => {
+            const sel = categories.includes(c.id);
+            return (
+              <button
+                key={c.id}
+                onClick={() =>
+                  setCategories((p) =>
+                    p.includes(c.id)
+                      ? p.filter((x) => x !== c.id)
+                      : [...p, c.id],
+                  )
+                }
+                className="p-4 border rounded-xl transition-all text-left relative overflow-hidden"
+                style={
+                  sel
+                    ? {
+                        borderColor: `${color}50`,
+                        background: `${color}10`,
+                        boxShadow: `0 0 12px ${color}18`,
+                      }
+                    : {
+                        border: "1px solid rgba(255,255,255,0.09)",
+                        background: "rgba(255,255,255,0.03)",
+                      }
+                }
+              >
+                {sel && (
+                  <div
+                    className="absolute top-0 left-0 right-0 h-0.5"
+                    style={{ background: color }}
+                  />
+                )}
+                {sel && (
+                  <CircleCheck
+                    className="absolute top-2.5 right-2.5 w-3.5 h-3.5"
+                    style={{ color }}
+                  />
+                )}
+                <c.icon
+                  className="mb-2 w-5 h-5"
+                  style={sel ? { color } : { color: "rgba(255,255,255,0.4)" }}
+                />
+                <p className="text-sm font-bold" style={sel ? { color } : {}}>
+                  {c.label}
+                </p>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  {c.desc}
+                </p>
+              </button>
+            );
+          })}
+        </div>
+        <div className="flex gap-3">
+          <Button
+            variant="ghost"
+            onClick={onBack}
+            className="flex-1 h-12 border border-white/10"
           >
-            <c.icon
-              className={`mb-2 w-5 h-5 ${categories.includes(c.id) ? "text-amber-400" : "text-muted-foreground"}`}
-            />
-            <p
-              className={`text-sm font-bold ${categories.includes(c.id) ? "text-amber-400" : "text-white"}`}
-            >
-              {c.label}
-            </p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">{c.desc}</p>
-          </button>
-        ))}
-      </div>
-      <div className="flex gap-3">
-        <Button
-          variant="ghost"
-          onClick={onBack}
-          className="flex-1 h-12 border border-white/10"
-        >
-          Back
-        </Button>
-        <Button
-          onClick={() => onSubmit(spend, categories)}
-          className="flex-[2] h-12 bg-amber-400 text-black hover:bg-amber-300"
-        >
-          Continue
-        </Button>
-      </div>
+            Back
+          </Button>
+          <Button
+            onClick={() => onSubmit(spend, categories)}
+            className="flex-[2] h-12 text-black font-bold"
+            style={{ background: color }}
+          >
+            Continue
+          </Button>
+        </div>
+      </WizardCard>
     </motion.div>
   );
 }
+
+// ─── TRAVEL STEP ─────────────────────────────────────────────────────────────
 
 function TravelStep({ onSubmit, onBack }: any) {
   const [travel, setTravel] = useState<"rare" | "domestic" | "international">(
     "rare",
   );
+  const color = STEP_COLORS.travel;
   const opts = [
     {
       id: "rare",
@@ -722,58 +907,83 @@ function TravelStep({ onSubmit, onBack }: any) {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
-      className="p-6 border border-white/10 rounded-3xl bg-black/20 mb-12"
+      className="mb-12"
     >
-      <p className="text-xs text-amber-400 font-bold mb-2 uppercase tracking-widest">
-        Step 3 of 4
-      </p>
-      <h2 className="text-2xl font-bold mb-2">Travel Habits</h2>
-      <p className="text-sm text-muted-foreground mb-6">
-        Affects lounge, forex and airline miles weighting.
-      </p>
-      <div className="grid gap-3 mb-8">
-        {opts.map((o) => (
-          <button
-            key={o.id}
-            onClick={() => setTravel(o.id as any)}
-            className={`p-4 border rounded-xl text-left flex items-center gap-4 transition-all ${travel === o.id ? "border-amber-400 bg-amber-400/10" : "border-white/10 hover:bg-white/5"}`}
-          >
-            <span className="text-2xl">{o.icon}</span>
-            <div>
-              <p
-                className={`font-bold ${travel === o.id ? "text-amber-400" : "text-white"}`}
+      <WizardCard step="travel">
+        <StepLabel step="travel" number={3} />
+        <h2 className="text-2xl font-bold mb-2">Travel Habits</h2>
+        <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+          Affects lounge, forex and airline miles weighting.
+        </p>
+        <div className="grid gap-3 mb-8">
+          {opts.map((o) => {
+            const sel = travel === o.id;
+            return (
+              <button
+                key={o.id}
+                onClick={() => setTravel(o.id as any)}
+                className="p-4 border rounded-xl text-left flex items-center gap-4 transition-all relative overflow-hidden"
+                style={
+                  sel
+                    ? {
+                        borderColor: `${color}50`,
+                        background: `${color}10`,
+                        boxShadow: `0 0 16px ${color}15`,
+                      }
+                    : {
+                        border: "1px solid rgba(255,255,255,0.09)",
+                        background: "rgba(255,255,255,0.03)",
+                      }
+                }
               >
-                {o.label}
-              </p>
-              <p className="text-xs text-muted-foreground mt-0.5">{o.sub}</p>
-            </div>
-            {travel === o.id && (
-              <CheckCircle2 className="ml-auto w-4 h-4 text-amber-400 shrink-0" />
-            )}
-          </button>
-        ))}
-      </div>
-      <div className="flex gap-3">
-        <Button
-          variant="ghost"
-          onClick={onBack}
-          className="flex-1 h-12 border border-white/10"
-        >
-          Back
-        </Button>
-        <Button
-          onClick={() => onSubmit(travel)}
-          className="flex-[2] h-12 bg-amber-400 text-black hover:bg-amber-300"
-        >
-          Continue
-        </Button>
-      </div>
+                {sel && (
+                  <div
+                    className="absolute left-0 top-0 bottom-0 w-0.5"
+                    style={{ background: color }}
+                  />
+                )}
+                <span className="text-2xl">{o.icon}</span>
+                <div className="flex-1">
+                  <p className="font-bold" style={sel ? { color } : {}}>
+                    {o.label}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    {o.sub}
+                  </p>
+                </div>
+                {sel && (
+                  <CircleCheck className="w-4 h-4 shrink-0" style={{ color }} />
+                )}
+              </button>
+            );
+          })}
+        </div>
+        <div className="flex gap-3">
+          <Button
+            variant="ghost"
+            onClick={onBack}
+            className="flex-1 h-12 border border-white/10"
+          >
+            Back
+          </Button>
+          <Button
+            onClick={() => onSubmit(travel)}
+            className="flex-[2] h-12 text-black font-bold"
+            style={{ background: color }}
+          >
+            Continue
+          </Button>
+        </div>
+      </WizardCard>
     </motion.div>
   );
 }
 
+// ─── PRIORITIES STEP ──────────────────────────────────────────────────────────
+
 function PrioritiesStep({ onSubmit, onBack }: any) {
   const [priorities, setPriorities] = useState<string[]>([]);
+  const color = STEP_COLORS.priorities;
   const opts = [
     {
       id: "rewards",
@@ -806,62 +1016,90 @@ function PrioritiesStep({ onSubmit, onBack }: any) {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
-      className="p-6 border border-white/10 rounded-3xl bg-black/20 mb-12"
+      className="mb-12"
     >
-      <p className="text-xs text-amber-400 font-bold mb-2 uppercase tracking-widest">
-        Step 4 of 4
-      </p>
-      <h2 className="text-2xl font-bold mb-2">Priorities</h2>
-      <p className="text-sm text-muted-foreground mb-6">
-        Select all that matter. The engine weights scoring accordingly.
-      </p>
-      <div className="grid grid-cols-2 gap-3 mb-8">
-        {opts.map((p) => (
-          <button
-            key={p.id}
-            onClick={() =>
-              setPriorities((prev) =>
-                prev.includes(p.id)
-                  ? prev.filter((x) => x !== p.id)
-                  : [...prev, p.id],
-              )
-            }
-            className={`p-4 border rounded-xl text-left transition-all ${priorities.includes(p.id) ? "border-amber-400 bg-amber-400/10" : "border-white/10 hover:bg-white/5"}`}
+      <WizardCard step="priorities">
+        <StepLabel step="priorities" number={4} />
+        <h2 className="text-2xl font-bold mb-2">Priorities</h2>
+        <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+          Select all that matter. The engine weights scoring accordingly.
+        </p>
+        <div className="grid grid-cols-2 gap-3 mb-8">
+          {opts.map((p) => {
+            const sel = priorities.includes(p.id);
+            return (
+              <button
+                key={p.id}
+                onClick={() =>
+                  setPriorities((prev) =>
+                    prev.includes(p.id)
+                      ? prev.filter((x) => x !== p.id)
+                      : [...prev, p.id],
+                  )
+                }
+                className="p-4 border rounded-xl text-left transition-all relative overflow-hidden"
+                style={
+                  sel
+                    ? {
+                        borderColor: `${color}50`,
+                        background: `${color}10`,
+                        boxShadow: `0 0 12px ${color}18`,
+                      }
+                    : {
+                        border: "1px solid rgba(255,255,255,0.09)",
+                        background: "rgba(255,255,255,0.03)",
+                      }
+                }
+              >
+                {sel && (
+                  <div
+                    className="absolute top-0 left-0 right-0 h-0.5"
+                    style={{ background: color }}
+                  />
+                )}
+                {sel && (
+                  <CircleCheck
+                    className="absolute top-2.5 right-2.5 w-3.5 h-3.5"
+                    style={{ color }}
+                  />
+                )}
+                <p.icon
+                  className="w-5 h-5 mb-2"
+                  style={sel ? { color } : { color: "rgba(255,255,255,0.4)" }}
+                />
+                <p className="text-sm font-bold" style={sel ? { color } : {}}>
+                  {p.label}
+                </p>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  {p.sub}
+                </p>
+              </button>
+            );
+          })}
+        </div>
+        <div className="flex gap-3">
+          <Button
+            variant="ghost"
+            onClick={onBack}
+            className="flex-1 h-14 border border-white/10"
           >
-            <p.icon
-              className={`w-5 h-5 mb-2 ${priorities.includes(p.id) ? "text-amber-400" : "text-muted-foreground"}`}
-            />
-            <p
-              className={`text-sm font-bold ${priorities.includes(p.id) ? "text-amber-400" : "text-white"}`}
-            >
-              {p.label}
-            </p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">{p.sub}</p>
-          </button>
-        ))}
-      </div>
-      <div className="flex gap-3">
-        <Button
-          variant="ghost"
-          onClick={onBack}
-          className="flex-1 h-14 border border-white/10"
-        >
-          Back
-        </Button>
-        <Button
-          onClick={() => onSubmit(priorities)}
-          className="flex-[2] h-14 bg-amber-400 text-black hover:bg-amber-300 font-bold"
-        >
-          <Sparkles className="mr-2 w-4 h-4" /> Run Engine
-        </Button>
-      </div>
+            Back
+          </Button>
+          <Button
+            onClick={() => onSubmit(priorities)}
+            className="flex-[2] h-14 text-black font-bold"
+            style={{ background: color }}
+          >
+            <Sparkles className="mr-2 w-4 h-4" /> Run Engine
+          </Button>
+        </div>
+      </WizardCard>
     </motion.div>
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// RESULTS PAGE — full-screen, no header/stepper
-// ─────────────────────────────────────────────────────────────
+// ─── RESULTS PAGE ─────────────────────────────────────────────────────────────
+
 function ResultsPage({
   recommendations,
   profile,
@@ -881,40 +1119,75 @@ function ResultsPage({
     fuel: 0,
     rent: 0,
     other: profile.monthlySpend * 0.5,
+    grocery:0,
   };
-
   const analysis = statementResult?.analysis;
   const monthlyIncome = profile.income > 0 ? profile.income / 12 : null;
+  const topNetVal =
+    !isAnalyzing && recommendations.length
+      ? calculateInDepthSavings(recommendations[0], sp).netValue
+      : null;
 
   return (
-    <div className="min-h-screen bg-[#080808]">
-      {/* Results header bar */}
-      <div className="sticky top-0 z-30 bg-[#080808]/95 backdrop-blur border-b border-white/8 px-4 py-3 flex items-center justify-between">
+    <div className="min-h-screen bg-[#080808] relative">
+      {/* Ambient glows */}
+      <div
+        className="pointer-events-none fixed inset-0 overflow-hidden"
+        aria-hidden
+      >
+        <div
+          className="absolute -top-32 -right-32 w-80 h-80 rounded-full blur-3xl"
+          style={{ background: "rgba(245,158,11,0.04)" }}
+        />
+        <div
+          className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full blur-3xl"
+          style={{ background: "rgba(16,185,129,0.03)" }}
+        />
+      </div>
+
+      {/* Sticky header */}
+      <div
+        className="sticky top-0 z-30 border-b border-white/8 px-4 py-3 flex items-center justify-between"
+        style={{
+          background:
+            "linear-gradient(180deg,rgba(8,8,8,0.98),rgba(8,8,8,0.92))",
+          backdropFilter: "blur(12px)",
+        }}
+      >
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-amber-400/15 flex items-center justify-center">
             <Sparkles className="w-4 h-4 text-amber-400" />
           </div>
           <div>
-            <p className="text-sm font-bold text-white">Engine Results</p>
+            <p className="text-sm font-bold">Engine Results</p>
             <p className="text-[10px] text-muted-foreground">
               {statementResult
-                ? "Based on your statement"
-                : "Based on your profile"}
+                ? `${recommendations.length} cards · statement analysis`
+                : `${recommendations.length} cards · questionnaire`}
             </p>
           </div>
         </div>
-        <button
-          onClick={onReset}
-          className="flex items-center gap-1.5 text-xs text-white/50 hover:text-white transition-colors px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10"
-        >
-          <RotateCcw className="w-3 h-3" /> Restart
-        </button>
+        <div className="flex items-center gap-2">
+          {topNetVal !== null && (
+            <span
+              className={`text-xs font-bold px-2 py-1 rounded-full ${topNetVal >= 0 ? "text-emerald-400 bg-emerald-400/10" : "text-red-400 bg-red-400/10"}`}
+            >
+              Best: ₹{topNetVal.toLocaleString("en-IN")}/yr
+            </span>
+          )}
+          <button
+            onClick={onReset}
+            className="flex items-center gap-1.5 text-xs text-white/50 hover:text-white transition-colors px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10"
+          >
+            <RotateCcw className="w-3 h-3" /> Restart
+          </button>
+        </div>
       </div>
 
-      <div className="px-4 py-6 max-w-md mx-auto space-y-6 pb-24">
-        {/* Analyzing state */}
+      <div className="px-4 py-6 max-w-md mx-auto space-y-6 pb-24 relative">
+        {/* Analyzing */}
         {isAnalyzing && (
-          <div className="flex flex-col items-center justify-center py-20 gap-4">
+          <div className="flex flex-col items-center justify-center py-20 gap-5">
             <div className="relative w-16 h-16">
               <div className="absolute inset-0 rounded-full border-2 border-amber-400/20 animate-ping" />
               <div className="absolute inset-2 rounded-full border-2 border-amber-400 border-t-transparent animate-spin" />
@@ -932,76 +1205,99 @@ function ResultsPage({
 
         {!isAnalyzing && (
           <>
-            {/* ── Statement summary strip ── */}
+            {/* Statement summary — asymmetric: max-earn is hero */}
             {analysis && (
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="grid grid-cols-3 gap-2"
               >
-                {[
-                  {
-                    label: "Total spend",
-                    val: `₹${analysis.totalSpend.toLocaleString("en-IN")}`,
-                    sub: "this month",
-                    color: "",
-                  },
-                  {
-                    label: "Rewardable",
-                    val: `₹${analysis.rewardableSpend.toLocaleString("en-IN")}`,
-                    sub: "excl. P2P/charges",
-                    color: "text-amber-400",
-                  },
-                  {
-                    label: "Max possible",
-                    val: `₹${Math.round(analysis.totalPotentialRewards).toLocaleString("en-IN")}`,
-                    sub: "best card/txn",
-                    color: "text-green-400",
-                  },
-                ].map((c) => (
+                {/* Total — neutral */}
+                <div className="rounded-xl bg-white/4 border border-white/8 p-3">
+                  <p className="text-[9px] text-white/40 uppercase tracking-widest mb-1">
+                    Total
+                  </p>
+                  <p className="text-sm font-bold">
+                    ₹{analysis.totalSpend.toLocaleString("en-IN")}
+                  </p>
+                  <p className="text-[9px] text-white/25 mt-0.5">this month</p>
+                </div>
+                {/* Rewardable — amber accent */}
+                <div
+                  className="rounded-xl border p-3 relative overflow-hidden"
+                  style={{
+                    borderColor: "rgba(245,158,11,0.25)",
+                    background: "rgba(245,158,11,0.06)",
+                  }}
+                >
                   <div
-                    key={c.label}
-                    className="rounded-xl bg-white/4 border border-white/8 p-3"
-                  >
-                    <p className="text-[10px] text-muted-foreground mb-1">
-                      {c.label}
-                    </p>
-                    <p className={`text-sm font-bold ${c.color}`}>{c.val}</p>
-                    <p className="text-[10px] text-white/30 mt-0.5">{c.sub}</p>
-                  </div>
-                ))}
+                    className="absolute top-0 left-0 right-0 h-0.5"
+                    style={{
+                      background: "linear-gradient(90deg,#f59e0b,transparent)",
+                    }}
+                  />
+                  <p className="text-[9px] text-amber-400/70 uppercase tracking-widest mb-1">
+                    Rewardable
+                  </p>
+                  <p className="text-sm font-bold text-amber-400">
+                    ₹{analysis.rewardableSpend.toLocaleString("en-IN")}
+                  </p>
+                  <p className="text-[9px] text-white/25 mt-0.5">excl. P2P</p>
+                </div>
+                {/* Max earn — green hero, larger number */}
+                <div
+                  className="rounded-xl border p-3 relative overflow-hidden"
+                  style={{
+                    borderColor: "rgba(16,185,129,0.30)",
+                    background: "rgba(16,185,129,0.08)",
+                    boxShadow: "0 0 16px rgba(16,185,129,0.08)",
+                  }}
+                >
+                  <div
+                    className="absolute top-0 left-0 right-0 h-0.5"
+                    style={{
+                      background: "linear-gradient(90deg,#10b981,transparent)",
+                    }}
+                  />
+                  <p className="text-[9px] text-emerald-400/70 uppercase tracking-widest mb-1">
+                    Max earn
+                  </p>
+                  <p className="text-xl font-bold text-emerald-400 leading-tight">
+                    ₹
+                    {Math.round(analysis.totalPotentialRewards).toLocaleString(
+                      "en-IN",
+                    )}
+                  </p>
+                  <p className="text-[9px] text-white/25 mt-0.5">
+                    best card/txn
+                  </p>
+                </div>
               </motion.div>
             )}
 
-            {/* ── Income eligibility notice ── */}
+            {/* Income eligibility */}
             {monthlyIncome !== null && (
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.05 }}
-                className="rounded-xl bg-white/4 border border-white/8 p-4"
+                className="rounded-xl border border-blue-500/20 bg-blue-500/6 p-4 flex items-start gap-3"
               >
-                <div className="flex items-start gap-3">
-                  <Info className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-xs font-bold text-white/80 mb-1">
-                      Income Eligibility
-                    </p>
-                    <p className="text-[11px] text-muted-foreground leading-relaxed">
-                      Annual income ₹{(profile.income / 100000).toFixed(1)}L →
-                      monthly ₹
-                      {Math.round(monthlyIncome).toLocaleString("en-IN")}. Cards
-                      below have been filtered to those your income qualifies
-                      for. Premium cards requiring {">"}₹
-                      {Math.round(monthlyIncome).toLocaleString("en-IN")}/mo are
-                      hidden.
-                    </p>
-                  </div>
+                <Info className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-xs font-bold text-blue-300 mb-1">
+                    Income Eligibility Filter
+                  </p>
+                  <p className="text-[11px] text-muted-foreground leading-relaxed">
+                    ₹{(profile.income / 100000).toFixed(1)}L/yr → ₹
+                    {Math.round(monthlyIncome).toLocaleString("en-IN")}/mo.
+                    Cards requiring higher income are hidden.
+                  </p>
                 </div>
               </motion.div>
             )}
 
-            {/* ── Category breakdown (statement path) ── */}
+            {/* Category breakdown */}
             {analysis && analysis.categoryBreakdown.length > 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
@@ -1009,9 +1305,9 @@ function ResultsPage({
                 transition={{ delay: 0.1 }}
                 className="rounded-2xl border border-white/8 overflow-hidden"
               >
-                <div className="px-4 pt-4 pb-3 border-b border-white/8">
-                  <p className="text-xs font-bold text-white/60 uppercase tracking-widest">
-                    Spend breakdown · best card per category
+                <div className="px-4 py-3 border-b border-white/8">
+                  <p className="text-xs font-bold text-white/45 uppercase tracking-widest">
+                    Spend by category · best card per merchant
                   </p>
                 </div>
                 <div className="divide-y divide-white/5">
@@ -1019,64 +1315,79 @@ function ResultsPage({
                     const meta =
                       MERCHANT_META[cat.merchant] ?? MERCHANT_META.other;
                     const Icon = meta.icon;
-                    const monthlyPotential = cat.bestReward;
+                    const maxSpend = Math.max(
+                      ...analysis.categoryBreakdown.map(
+                        (c: any) => c.totalSpend,
+                      ),
+                    );
+                    const barPct = Math.min(
+                      100,
+                      (cat.totalSpend / maxSpend) * 100,
+                    );
                     return (
-                      <div
-                        key={cat.merchant}
-                        className="flex items-center gap-3 px-4 py-3"
-                      >
-                        <div
-                          className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center shrink-0`}
-                        >
-                          <Icon className={`w-4 h-4 ${meta.color}`} />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between">
-                            <p className="text-xs font-bold">{meta.label}</p>
-                            <p className="text-xs font-bold text-green-400">
-                              +₹{Math.round(monthlyPotential)}
-                            </p>
+                      <div key={cat.merchant} className="px-4 py-3">
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center shrink-0`}
+                          >
+                            <Icon className={`w-4 h-4 ${meta.color}`} />
                           </div>
-                          <div className="flex items-center justify-between mt-0.5">
-                            <p className="text-[10px] text-muted-foreground">
-                              ₹{cat.totalSpend.toLocaleString("en-IN")} ·{" "}
-                              {cat.txnCount} txn
-                            </p>
-                            <p className="text-[10px] text-amber-400">
-                              {cat.bestRate.toFixed(1)}% ·{" "}
-                              {cat.bestCard?.name
-                                ?.split(" ")
-                                .slice(0, 2)
-                                .join(" ")}
-                            </p>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-1.5">
+                              <p className="text-xs font-bold">{meta.label}</p>
+                              <div className="flex items-center gap-2">
+                                <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-amber-400/15 text-amber-400 font-bold">
+                                  {cat.bestCard?.name
+                                    ?.split(" ")
+                                    .slice(0, 2)
+                                    .join(" ")}{" "}
+                                  {cat.bestRate.toFixed(1)}%
+                                </span>
+                                <p className="text-xs font-bold text-emerald-400">
+                                  +₹{Math.round(cat.bestReward)}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div className="flex-1 h-1 rounded-full bg-white/8 overflow-hidden">
+                                <div
+                                  className="h-full rounded-full bg-white/25"
+                                  style={{ width: `${barPct}%` }}
+                                />
+                              </div>
+                              <p className="text-[10px] text-muted-foreground shrink-0">
+                                ₹{cat.totalSpend.toLocaleString("en-IN")} ·{" "}
+                                {cat.txnCount} txn
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
                     );
                   })}
                 </div>
-                {/* Non-rewardable note */}
-                {analysis && (
-                  <div className="px-4 py-3 bg-white/2 border-t border-white/5">
-                    <p className="text-[10px] text-white/30 flex items-center gap-1.5">
-                      <AlertCircle className="w-3 h-3 shrink-0" />
-                      P2P transfers & bank charges excluded — credit cards earn
-                      ₹0 on these
-                    </p>
-                  </div>
-                )}
+                <div className="px-4 py-2.5 bg-white/2 border-t border-white/5">
+                  <p className="text-[10px] text-white/25 flex items-center gap-1.5">
+                    <AlertCircle className="w-3 h-3 shrink-0" />
+                    P2P transfers & bank charges excluded — credit cards earn ₹0
+                    on these
+                  </p>
+                </div>
               </motion.div>
             )}
 
-            {/* ── Card recommendations ── */}
+            {/* Card recommendations */}
             <div>
-              <p className="text-xs font-bold text-white/50 uppercase tracking-widest mb-4">
-                Top card matches
-              </p>
-              <div className="space-y-4">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex-1 h-px bg-white/8" />
+                <p className="text-xs font-bold text-white/35 uppercase tracking-widest">
+                  Top card matches
+                </p>
+                <div className="flex-1 h-px bg-white/8" />
+              </div>
+              <div className="space-y-5">
                 {recommendations.map((card: CardType, i: number) => {
                   const audit = calculateInDepthSavings(card, sp);
-                  // Income cap check
                   const incomeInLakhs =
                     profile.income > 0 ? profile.income / 100_000 : null;
                   const incomeGap =
@@ -1085,28 +1396,24 @@ function ResultsPage({
                     incomeInLakhs < card.minIncomeLakhs
                       ? card.minIncomeLakhs - incomeInLakhs
                       : 0;
-
                   return (
                     <motion.div
                       key={card.id}
                       initial={{ opacity: 0, y: 16 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.05 * i }}
+                      transition={{ delay: 0.06 * i }}
                       className="relative cursor-pointer group"
                       onClick={() => onCardClick(card)}
                     >
-                      {/* Rank badge */}
-                      {i === 0 && (
-                        <div className="absolute -top-2.5 left-4 z-10 flex items-center gap-1 bg-amber-400 text-black text-[10px] font-bold px-2.5 py-1 rounded-full">
-                          <Star className="w-3 h-3" /> Best Match
+                      {i < 3 && (
+                        <div className="absolute -top-2.5 left-4 z-10">
+                          <span
+                            className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${RANK_STYLES[i].badge}`}
+                          >
+                            {RANK_STYLES[i].label}
+                          </span>
                         </div>
                       )}
-                      {i === 1 && (
-                        <div className="absolute -top-2.5 left-4 z-10 bg-zinc-700 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
-                          #2 Runner-up
-                        </div>
-                      )}
-
                       <CardChip
                         card={card}
                         audit={audit}
@@ -1122,7 +1429,6 @@ function ResultsPage({
         )}
       </div>
 
-      {/* Card detail modal */}
       <AnimatePresence>
         {selectedCard && (
           <CardDetailModal
@@ -1138,9 +1444,8 @@ function ResultsPage({
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// CARD CHIP — compact card row on results page
-// ─────────────────────────────────────────────────────────────
+// ─── CARD CHIP ────────────────────────────────────────────────────────────────
+
 function CardChip({
   card,
   audit,
@@ -1152,6 +1457,7 @@ function CardChip({
   incomeGap: number;
   rank: number;
 }) {
+  const rs = RANK_STYLES[Math.min(rank - 1, RANK_STYLES.length - 1)];
   const bestFor = (() => {
     const rates: [string, number][] = [
       [
@@ -1173,68 +1479,75 @@ function CardChip({
 
   return (
     <div
-      className={`rounded-2xl border overflow-hidden transition-all group-hover:border-white/20 ${rank === 1 ? "border-amber-400/30 bg-gradient-to-br from-amber-400/6 to-transparent" : "border-white/8 bg-white/2"}`}
+      className={`rounded-2xl border overflow-hidden transition-all group-hover:border-white/25 bg-gradient-to-br ${rs.bg} ${rs.border}`}
+      style={{
+        boxShadow: rank === 1 ? "0 0 28px rgba(245,158,11,0.10)" : undefined,
+      }}
     >
       {/* Card gradient header */}
       <div
-        className={`bg-gradient-to-r ${card.imageGradient} px-4 py-3 flex items-center justify-between`}
+        className={`bg-gradient-to-r ${card.imageGradient} px-4 py-3.5 flex items-center justify-between`}
       >
         <div>
-          <p className="text-[10px] opacity-70">{card.bank}</p>
+          <p className="text-[10px] opacity-65">{card.bank}</p>
           <p className="font-bold text-sm">{card.name}</p>
         </div>
         <div className="text-right">
-          <p className="text-[10px] opacity-70">Net/yr</p>
+          <p className="text-[10px] opacity-60">Net/yr</p>
           <p
-            className={`font-bold text-base ${audit.netValue >= 0 ? "text-white" : "text-red-300"}`}
+            className={`font-bold text-xl ${audit.netValue >= 0 ? "text-white" : "text-red-300"}`}
           >
             ₹{audit.netValue.toLocaleString("en-IN")}
           </p>
         </div>
       </div>
 
-      {/* Stats row */}
-      <div className="px-4 py-3 grid grid-cols-4 gap-3 text-center border-b border-white/6">
+      {/* 3-col stats — simplified and readable */}
+      <div className="px-4 py-3 grid grid-cols-3 gap-3 text-center border-b border-white/6">
         {[
           {
-            label: "Fee",
+            label: "Annual fee",
             val:
               card.annualFee === 0
                 ? "Free"
                 : `₹${card.annualFee.toLocaleString()}`,
+            color: card.annualFee === 0 ? "text-emerald-400" : "text-white/80",
           },
-          { label: "Base", val: `${card.baseRewardRate}%` },
-          { label: "Best for", val: bestFor },
-          { label: "Eff. rate", val: `${audit.effectiveRewardRate}%` },
+          {
+            label: "Eff. yield",
+            val: `${audit.effectiveRewardRate}%`,
+            color: "text-amber-400",
+          },
+          { label: "Best for", val: bestFor, color: "text-white/75" },
         ].map((s) => (
           <div key={s.label}>
-            <p className="text-[9px] text-white/40 mb-0.5">{s.label}</p>
-            <p className="text-xs font-bold text-white/90">{s.val}</p>
+            <p className="text-[9px] text-white/35 mb-1">{s.label}</p>
+            <p className={`text-xs font-bold ${s.color}`}>{s.val}</p>
           </div>
         ))}
       </div>
 
-      {/* Footer row */}
-      <div className="px-4 py-2.5 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      {/* Status pill row */}
+      <div className="px-4 py-2.5 flex items-center justify-between flex-wrap gap-1.5">
+        <div className="flex items-center gap-1.5 flex-wrap">
           {audit.feeWaived && (
-            <span className="text-[10px] text-green-400 flex items-center gap-1">
-              <CircleCheck className="w-3 h-3" /> Fee waived
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-400/15 text-emerald-400 flex items-center gap-1">
+              <CircleCheck className="w-2.5 h-2.5" /> Fee waived
             </span>
           )}
           {incomeGap > 0 && (
-            <span className="text-[10px] text-amber-400 flex items-center gap-1">
-              <TriangleAlert className="w-3 h-3" /> Need ₹{incomeGap.toFixed(1)}
-              L more income
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400/15 text-amber-400 flex items-center gap-1">
+              <TriangleAlert className="w-2.5 h-2.5" /> Need ₹
+              {incomeGap.toFixed(1)}L more
             </span>
           )}
-          {card.rewardCap !== "No Cap" && (
-            <span className="text-[10px] text-white/40 flex items-center gap-1">
-              <Lock className="w-3 h-3" /> Cap: {card.rewardCap}
+          {card.rewardCap !== "No Cap" && card.rewardCap && (
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/8 text-white/40 flex items-center gap-1">
+              <Lock className="w-2.5 h-2.5" /> Cap: {card.rewardCap}
             </span>
           )}
         </div>
-        <span className="text-[10px] text-white/30 group-hover:text-amber-400 transition-colors">
+        <span className="text-[10px] text-white/25 group-hover:text-amber-400 transition-colors">
           Details →
         </span>
       </div>
@@ -1242,9 +1555,8 @@ function CardChip({
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// CARD DETAIL MODAL — deep dive
-// ─────────────────────────────────────────────────────────────
+// ─── CARD DETAIL MODAL ────────────────────────────────────────────────────────
+
 function CardDetailModal({
   card,
   onClose,
@@ -1252,6 +1564,7 @@ function CardDetailModal({
   activeSpend,
   statementResult,
 }: any) {
+  const [showAllTxn, setShowAllTxn] = useState(false);
   const sp: SpendProfile = activeSpend ?? {
     food: profile.categories?.includes("dining")
       ? profile.monthlySpend * 0.2
@@ -1268,8 +1581,6 @@ function CardDetailModal({
     other: profile.monthlySpend * 0.05,
   };
   const audit = calculateInDepthSavings(card, sp);
-
-  // Income eligibility check
   const incomeInLakhs = profile.income > 0 ? profile.income / 100_000 : null;
   const monthlyIncome = profile.income > 0 ? profile.income / 12 : null;
   const incomeGap =
@@ -1281,7 +1592,6 @@ function CardDetailModal({
   const requiredMonthly =
     card.minIncomeLakhs > 0 ? (card.minIncomeLakhs * 100000) / 12 : 0;
 
-  // Per-txn performance on this card (statement path)
   const txnInsights: any[] = statementResult
     ? statementResult.analysis.insights
         .filter((ins: any) => ins.isRewardable && ins.transaction.amount > 0)
@@ -1295,27 +1605,23 @@ function CardDetailModal({
         .filter((ins: any) => ins.thisCardReward > 0)
         .sort((a: any, b: any) => b.thisCardReward - a.thisCardReward)
     : [];
-
   const totalMonthlyFromCard = txnInsights.reduce(
     (s: number, i: any) => s + i.thisCardReward,
     0,
   );
 
-  // Cap analysis
-  const capStr = card.rewardCap;
-  const hasCap = capStr !== "No Cap" && capStr !== "" && capStr !== undefined;
+  const hasCap =
+    card.rewardCap !== "No Cap" &&
+    card.rewardCap !== "" &&
+    card.rewardCap !== undefined;
   const capMonthly = (() => {
     if (!hasCap) return null;
-    const s = capStr.toLowerCase();
-    const hask = s.includes("k"),
-      hasl = s.includes("l");
-    const mult = hasl ? 100000 : hask ? 1000 : 1;
+    const s = card.rewardCap.toLowerCase();
+    const mult = s.includes("l") ? 100000 : s.includes("k") ? 1000 : 1;
     const n = parseFloat(s.replace(/[^0-9.]/g, ""));
-    if (isNaN(n)) return null;
-    return n * mult; // monthly amount
+    return isNaN(n) ? null : n * mult;
   })();
 
-  // Rate rows for "your spend" breakdown
   const rateRows = [
     { merchant: "swiggy" as const, label: "Swiggy / Zomato", monthly: sp.food },
     {
@@ -1341,6 +1647,8 @@ function CardDetailModal({
     .sort((a, b) => b.reward - a.reward)
     .slice(0, 5);
 
+  const visibleTxn = showAllTxn ? txnInsights : txnInsights.slice(0, 5);
+
   return (
     <motion.div
       className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-end sm:items-center justify-center z-50"
@@ -1357,7 +1665,7 @@ function CardDetailModal({
         transition={{ type: "spring", damping: 30, stiffness: 300 }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Hero */}
+        {/* Hero gradient header */}
         <div className={`bg-gradient-to-br ${card.imageGradient} p-6 relative`}>
           <button
             onClick={onClose}
@@ -1381,7 +1689,6 @@ function CardDetailModal({
               </span>
             ))}
           </div>
-          {/* Net value badge */}
           <div className="absolute bottom-4 right-4 bg-black/50 backdrop-blur px-3 py-1.5 rounded-xl text-center">
             <p className="text-[9px] text-white/50 uppercase">Net/yr</p>
             <p
@@ -1393,64 +1700,68 @@ function CardDetailModal({
         </div>
 
         <div className="p-5 space-y-6">
-          {/* ── Income eligibility ── */}
+          {/* Income eligibility */}
           {incomeGap > 0 ? (
-            <div className="rounded-xl bg-amber-400/8 border border-amber-400/25 p-4">
-              <div className="flex items-start gap-3">
-                <TriangleAlert className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-sm font-bold text-amber-400 mb-1">
-                    Income requirement not met
-                  </p>
-                  <p className="text-xs text-white/60 leading-relaxed">
-                    This card requires ₹{card.minIncomeLakhs}L annual income (₹
-                    {Math.round(requiredMonthly).toLocaleString("en-IN")}/mo).
-                    Your declared income is ₹
-                    {profile.income > 0
-                      ? (profile.income / 100000).toFixed(1)
-                      : "?"}
-                    L. Gap: ₹{incomeGap.toFixed(1)}L — you may still apply if
-                    income has grown recently.
-                  </p>
-                </div>
+            <div className="rounded-xl bg-amber-400/8 border border-amber-400/25 p-4 flex items-start gap-3">
+              <TriangleAlert className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-bold text-amber-400 mb-1">
+                  Income requirement not met
+                </p>
+                <p className="text-xs text-white/60 leading-relaxed">
+                  Requires ₹{card.minIncomeLakhs}L/yr (₹
+                  {Math.round(requiredMonthly).toLocaleString("en-IN")}/mo).
+                  Gap: ₹{incomeGap.toFixed(1)}L — you may still apply if income
+                  has grown recently.
+                </p>
               </div>
             </div>
           ) : (
             incomeInLakhs !== null &&
             card.minIncomeLakhs > 0 && (
-              <div className="rounded-xl bg-green-400/6 border border-green-400/20 p-3 flex items-center gap-3">
-                <CircleCheck className="w-4 h-4 text-green-400 shrink-0" />
+              <div className="rounded-xl bg-emerald-400/6 border border-emerald-400/20 p-3 flex items-center gap-3">
+                <CircleCheck className="w-4 h-4 text-emerald-400 shrink-0" />
                 <p className="text-xs text-white/60">
-                  Income eligible — requires ₹{card.minIncomeLakhs}L/yr (₹
-                  {Math.round(requiredMonthly).toLocaleString("en-IN")}/mo), you
+                  Income eligible — requires ₹{card.minIncomeLakhs}L/yr, you
                   qualify.
                 </p>
               </div>
             )
           )}
 
-          {/* ── Annual P&L ── */}
-          <section>
-            <SectionHeader
-              icon={<TrendingUp className="w-4 h-4 text-green-400" />}
-              title="Annual P&L Projection"
-            />
+          {/* P&L — color-coded by type */}
+          <ModalSection
+            icon={<TrendingUp className="w-4 h-4 text-emerald-400" />}
+            title="Annual P&L"
+            color="#10b981"
+          >
             <div className="grid grid-cols-3 gap-2 mb-3">
               {audit.breakdown.map((b) => (
                 <div
                   key={b.label}
-                  className="p-3 rounded-xl bg-white/4 border border-white/8 text-center"
+                  className="p-3 rounded-xl border text-center"
+                  style={
+                    b.plus
+                      ? {
+                          borderColor: "rgba(16,185,129,0.25)",
+                          background: "rgba(16,185,129,0.07)",
+                        }
+                      : {
+                          borderColor: "rgba(239,68,68,0.25)",
+                          background: "rgba(239,68,68,0.07)",
+                        }
+                  }
                 >
                   <p className="text-[9px] text-white/40 mb-1">{b.label}</p>
                   <p
-                    className={`text-sm font-bold ${b.plus ? "text-green-400" : "text-red-400"}`}
+                    className={`text-sm font-bold ${b.plus ? "text-emerald-400" : "text-red-400"}`}
                   >
                     {b.plus ? "+" : "−"}₹{b.value.toLocaleString("en-IN")}
                   </p>
                 </div>
               ))}
             </div>
-            <div className="p-3 rounded-xl bg-amber-400/8 border border-amber-400/20 flex justify-between items-center">
+            <div className="p-3.5 rounded-xl border border-amber-400/25 bg-amber-400/8 flex justify-between items-center">
               <span className="text-sm font-bold">Net Annual Value</span>
               <span
                 className={`text-xl font-bold ${audit.netValue >= 0 ? "text-amber-400" : "text-red-400"}`}
@@ -1458,40 +1769,38 @@ function CardDetailModal({
                 ₹{audit.netValue.toLocaleString("en-IN")}
               </span>
             </div>
-            <div className="flex items-center justify-between mt-2 text-[11px] text-white/40">
-              <span>
-                Effective yield: {audit.effectiveRewardRate}% on spend
-              </span>
+            <div className="flex items-center justify-between mt-2 text-[11px] text-white/35">
+              <span>Yield: {audit.effectiveRewardRate}% on spend</span>
               <span>
                 Break-even: ₹
                 {audit.breakEvenMonthlySpend.toLocaleString("en-IN")}/mo
               </span>
             </div>
             {audit.feeWaived && (
-              <p className="text-xs text-green-400 mt-1.5 flex items-center gap-1.5">
+              <p className="text-xs text-emerald-400 mt-1.5 flex items-center gap-1.5">
                 <CircleCheck className="w-3.5 h-3.5" />
-                Fee waived — your spend exceeds ₹
+                Fee waived — spend exceeds ₹
                 {(card.retentionSpendReq / 100000).toFixed(1)}L/yr threshold
               </p>
             )}
-          </section>
+          </ModalSection>
 
-          {/* ── Reward cap analysis ── */}
+          {/* Reward cap */}
           {hasCap && (
-            <section>
-              <SectionHeader
-                icon={<Lock className="w-4 h-4 text-amber-400" />}
-                title="Reward Cap Analysis"
-              />
+            <ModalSection
+              icon={<Lock className="w-4 h-4 text-amber-400" />}
+              title="Reward Cap"
+              color="#f59e0b"
+            >
               <div className="rounded-xl bg-white/4 border border-white/8 p-4 space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-white/70">Monthly cap</span>
+                  <span className="text-white/60">Monthly cap</span>
                   <span className="font-bold text-amber-400">
-                    ₹{capMonthly?.toLocaleString("en-IN") ?? capStr}
+                    ₹{capMonthly?.toLocaleString("en-IN") ?? card.rewardCap}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-white/70">Annual cap (×12)</span>
+                  <span className="text-white/60">Annual cap (×12)</span>
                   <span className="font-bold">
                     ₹
                     {capMonthly
@@ -1502,34 +1811,33 @@ function CardDetailModal({
                 {capMonthly && audit.grossRewards > capMonthly * 12 && (
                   <div className="pt-2 border-t border-white/8 text-xs text-amber-400 flex items-center gap-2">
                     <TriangleAlert className="w-3.5 h-3.5 shrink-0" />
-                    Your projected rewards (₹
-                    {audit.grossRewards.toLocaleString("en-IN")}) exceed the
-                    annual cap. Actual earnings capped at ₹
+                    Projected rewards exceed cap. Actual: ₹
                     {(capMonthly * 12).toLocaleString("en-IN")}.
                   </div>
                 )}
                 {capMonthly && audit.grossRewards <= capMonthly * 12 && (
-                  <div className="pt-2 border-t border-white/8 text-xs text-green-400 flex items-center gap-2">
+                  <div className="pt-2 border-t border-white/8 text-xs text-emerald-400 flex items-center gap-2">
                     <CircleCheck className="w-3.5 h-3.5 shrink-0" />
-                    Your spend stays within the cap — full rewards earned.
+                    Spend stays within cap — full rewards earned.
                   </div>
                 )}
               </div>
-            </section>
+            </ModalSection>
           )}
 
-          {/* ── Rates on your spend ── */}
+          {/* Rates on your spend — color interpolated bars */}
           {rateRows.length > 0 && (
-            <section>
-              <SectionHeader
-                icon={<Sparkles className="w-4 h-4 text-amber-400" />}
-                title="Rates on Your Spend"
-              />
-              <div className="space-y-1.5">
+            <ModalSection
+              icon={<Sparkles className="w-4 h-4 text-amber-400" />}
+              title="Rates on Your Spend"
+              color="#f59e0b"
+            >
+              <div className="space-y-2">
                 {rateRows.map((r) => {
                   const meta = MERCHANT_META[r.merchant] ?? MERCHANT_META.other;
                   const Icon = meta.icon;
-                  const barPct = Math.min(100, (r.rate / 25) * 100);
+                  const color = rateColor(r.rate);
+                  const barPct = Math.min(100, (r.rate / 20) * 100);
                   return (
                     <div
                       key={r.merchant}
@@ -1543,18 +1851,21 @@ function CardDetailModal({
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between mb-1">
                           <span className="text-xs font-medium">{r.label}</span>
-                          <span className="text-xs font-bold text-amber-400">
+                          <span className="text-xs font-bold" style={{ color }}>
                             +₹{Math.round(r.reward)}/mo
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <div className="flex-1 h-1 rounded-full bg-white/8">
+                          <div className="flex-1 h-1.5 rounded-full bg-white/8 overflow-hidden">
                             <div
-                              className="h-full rounded-full bg-amber-400"
-                              style={{ width: `${barPct}%` }}
+                              className="h-full rounded-full"
+                              style={{ width: `${barPct}%`, background: color }}
                             />
                           </div>
-                          <span className="text-[10px] text-white/40 shrink-0">
+                          <span
+                            className="text-[10px] font-bold shrink-0"
+                            style={{ color }}
+                          >
                             {r.rate.toFixed(1)}%
                           </span>
                         </div>
@@ -1563,109 +1874,165 @@ function CardDetailModal({
                   );
                 })}
               </div>
-            </section>
+            </ModalSection>
           )}
 
-          {/* ── Per-transaction (statement path) ── */}
+          {/* Per-transaction — no nested scroll, show/hide toggle */}
           {txnInsights.length > 0 && (
-            <section>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <Receipt className="w-4 h-4 text-blue-400" />
-                  <p className="text-sm font-bold">On Your Transactions</p>
-                </div>
-                <span className="text-sm font-bold text-green-400">
-                  +₹{Math.round(totalMonthlyFromCard)}/mo
-                </span>
-              </div>
-              <div className="space-y-1.5 max-h-52 overflow-y-auto pr-1">
-                {txnInsights.slice(0, 12).map((ins: any, idx: number) => {
+            <ModalSection
+              icon={<Receipt className="w-4 h-4 text-blue-400" />}
+              title={`Your Transactions · +₹${Math.round(totalMonthlyFromCard)}/mo`}
+              color="#3b82f6"
+            >
+              <div className="space-y-1.5">
+                {visibleTxn.map((ins: any, idx: number) => {
                   const meta =
                     MERCHANT_META[ins.merchant] ?? MERCHANT_META.other;
                   const Icon = meta.icon;
-                  const isTopForThis = ins.bestCard?.id === card.id;
+                  const isBest = ins.bestCard?.id === card.id;
                   return (
                     <div
                       key={idx}
-                      className={`flex items-center gap-2.5 p-2.5 rounded-lg ${isTopForThis ? "bg-green-400/8 border border-green-400/15" : "bg-white/3"}`}
+                      className="flex items-center gap-2.5 p-2.5 rounded-xl"
+                      style={
+                        isBest
+                          ? {
+                              background: "rgba(16,185,129,0.07)",
+                              border: "1px solid rgba(16,185,129,0.15)",
+                            }
+                          : { background: "rgba(255,255,255,0.03)" }
+                      }
                     >
                       <Icon className={`w-3.5 h-3.5 ${meta.color} shrink-0`} />
                       <div className="flex-1 min-w-0">
                         <p className="text-[11px] font-medium truncate">
                           {ins.transaction.description.slice(0, 32)}
                         </p>
-                        <p className="text-[10px] text-white/35">
+                        <p className="text-[10px] text-white/30">
                           ₹{ins.transaction.amount.toLocaleString("en-IN")} ·{" "}
-                          {ins.thisCardRate.toFixed(1)}% cashback
-                          {isTopForThis
-                            ? " · ✓ best card for this"
+                          {ins.thisCardRate.toFixed(1)}%
+                          {isBest
+                            ? " · ✓ best card"
                             : ins.bestCard
                               ? ` · ${ins.bestCard.name.split(" ").slice(-1)[0]} earns more`
                               : ""}
                         </p>
                       </div>
-                      <p className="text-[11px] font-bold text-green-400 shrink-0">
+                      <p className="text-[11px] font-bold text-emerald-400 shrink-0">
                         +₹{Math.round(ins.thisCardReward)}
                       </p>
                     </div>
                   );
                 })}
               </div>
-              <div className="mt-2 p-3 rounded-xl bg-amber-400/8 border border-amber-400/15 flex items-center justify-between">
+              {txnInsights.length > 5 && (
+                <button
+                  onClick={() => setShowAllTxn((v) => !v)}
+                  className="w-full mt-2 py-2 text-xs text-white/40 hover:text-white transition-colors flex items-center justify-center gap-1"
+                >
+                  {showAllTxn ? (
+                    <>
+                      <ChevronUp className="w-3 h-3" />
+                      Show fewer
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown className="w-3 h-3" />
+                      Show {txnInsights.length - 5} more
+                    </>
+                  )}
+                </button>
+              )}
+              <div className="mt-2.5 p-3 rounded-xl border border-amber-400/20 bg-amber-400/8 flex items-center justify-between">
                 <span className="text-xs font-medium text-white/70">
-                  Total monthly rewards with this card
+                  Total monthly with this card
                 </span>
                 <span className="text-sm font-bold text-amber-400">
                   ₹{Math.round(totalMonthlyFromCard)}
                 </span>
               </div>
-            </section>
+            </ModalSection>
           )}
 
-          {/* ── Travel perks ── */}
-          <section>
-            <SectionHeader
-              icon={<Plane className="w-4 h-4 text-sky-400" />}
-              title="Travel Benefits"
-            />
+          {/* Travel perks — semantic color: good=green, neutral=default */}
+          <ModalSection
+            icon={<Plane className="w-4 h-4 text-sky-400" />}
+            title="Travel Benefits"
+            color="#38bdf8"
+          >
             <div className="grid grid-cols-3 gap-2">
               {[
-                { label: "Dom. Lounge", val: String(card.domesticLounge) },
-                { label: "Intl Lounge", val: String(card.internationalLounge) },
-                { label: "Forex markup", val: `${card.forexMarkup}%` },
+                {
+                  label: "Dom. Lounge",
+                  val: String(card.domesticLounge),
+                  good:
+                    parseInt(String(card.domesticLounge)) > 0 ||
+                    String(card.domesticLounge)
+                      .toLowerCase()
+                      .includes("unlimit"),
+                },
+                {
+                  label: "Intl Lounge",
+                  val: String(card.internationalLounge),
+                  good:
+                    parseInt(String(card.internationalLounge)) > 0 ||
+                    String(card.internationalLounge)
+                      .toLowerCase()
+                      .includes("unlimit"),
+                },
+                {
+                  label: "Forex markup",
+                  val: `${card.forexMarkup}%`,
+                  good: card.forexMarkup === 0,
+                },
               ].map((m) => (
                 <div
                   key={m.label}
-                  className="p-3 rounded-xl bg-white/4 border border-white/8 text-center"
+                  className="p-3 rounded-xl border text-center"
+                  style={
+                    m.good
+                      ? {
+                          borderColor: "rgba(16,185,129,0.25)",
+                          background: "rgba(16,185,129,0.06)",
+                        }
+                      : {
+                          borderColor: "rgba(255,255,255,0.08)",
+                          background: "rgba(255,255,255,0.03)",
+                        }
+                  }
                 >
-                  <p className="text-[9px] text-white/40 mb-1">{m.label}</p>
-                  <p className="text-sm font-bold">{m.val}</p>
+                  <p className="text-[9px] text-white/35 mb-1">{m.label}</p>
+                  <p
+                    className={`text-sm font-bold ${m.good ? "text-emerald-400" : "text-white/75"}`}
+                  >
+                    {m.val}
+                  </p>
                 </div>
               ))}
             </div>
-          </section>
+          </ModalSection>
 
-          {/* Fee waiver details */}
+          {/* Fee waiver */}
           {card.retentionSpendReq > 0 && (
             <div className="rounded-xl bg-white/4 border border-white/8 p-4 text-xs space-y-1.5">
-              <p className="font-bold text-white/70 flex items-center gap-1.5">
+              <p className="font-bold text-white/65 flex items-center gap-1.5">
                 <Info className="w-3.5 h-3.5" /> Annual Fee Waiver
               </p>
               <p className="text-white/50 leading-relaxed">
-                Fee of ₹{card.annualFee.toLocaleString()} waived if you spend ₹
+                Fee of ₹{card.annualFee.toLocaleString()} waived at ₹
                 {(card.retentionSpendReq / 100000).toFixed(1)}L/yr (₹
                 {Math.round(card.retentionSpendReq / 12).toLocaleString(
                   "en-IN",
                 )}
                 /mo).
                 {audit.feeWaived
-                  ? " Your current spend qualifies."
-                  : " Your current spend does not qualify."}
+                  ? " ✓ Your spend qualifies."
+                  : " Your spend does not qualify."}
               </p>
             </div>
           )}
 
-          {/* Joining / milestone */}
+          {/* Welcome / milestone */}
           {(card.joiningBenefit !== "N/A" ||
             card.milestoneBenefit !== "None") && (
             <div className="space-y-2">
@@ -1684,7 +2051,6 @@ function CardDetailModal({
             </div>
           )}
 
-          {/* T&C note */}
           {card.notesTnc && (
             <p className="text-[11px] text-white/30 leading-relaxed flex items-start gap-1.5">
               <Info className="w-3 h-3 shrink-0 mt-0.5" />
@@ -1692,9 +2058,23 @@ function CardDetailModal({
             </p>
           )}
 
-          {/* Apply CTA */}
-          <div className="pt-2">
-            <button className="w-full bg-amber-400 text-black py-4 rounded-2xl font-bold hover:bg-amber-300 active:scale-98 transition-all text-base">
+          {/* Apply CTA with context reminder */}
+          <div className="rounded-2xl border border-white/8 bg-white/3 p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <p className="text-xs text-muted-foreground">{card.bank}</p>
+                <p className="text-sm font-bold">{card.name}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-[10px] text-muted-foreground">Net/yr</p>
+                <p
+                  className={`text-lg font-bold ${audit.netValue >= 0 ? "text-emerald-400" : "text-red-400"}`}
+                >
+                  ₹{audit.netValue.toLocaleString("en-IN")}
+                </p>
+              </div>
+            </div>
+            <button className="w-full bg-amber-400 text-black py-3.5 rounded-xl font-bold hover:bg-amber-300 active:scale-[0.98] transition-all text-sm">
               Apply for {card.name} →
             </button>
           </div>
@@ -1704,20 +2084,30 @@ function CardDetailModal({
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// SHARED
-// ─────────────────────────────────────────────────────────────
-function SectionHeader({
+// ─── MODAL SECTION HEADER ─────────────────────────────────────────────────────
+
+function ModalSection({
   icon,
   title,
+  color,
+  children,
 }: {
   icon: React.ReactNode;
   title: string;
+  color: string;
+  children: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center gap-2 mb-3">
-      {icon}
-      <p className="text-sm font-bold">{title}</p>
-    </div>
+    <section>
+      <div className="flex items-center gap-2 mb-2">
+        {icon}
+        <p className="text-sm font-bold">{title}</p>
+      </div>
+      <div
+        className="mb-4 h-px"
+        style={{ background: `linear-gradient(90deg,${color}40,transparent)` }}
+      />
+      {children}
+    </section>
   );
 }

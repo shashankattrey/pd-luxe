@@ -159,6 +159,7 @@ const DEFAULT_CHAT_SPEND = {
   fuel: 2000,
   rent: 0,
   other: 5000,
+  grocery: 0,
 };
 
 export default function DashboardLayout({

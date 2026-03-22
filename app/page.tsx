@@ -1,7 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  AnimatePresence,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
 import Link from "next/link";
 import {
   CreditCard,
@@ -9,24 +16,15 @@ import {
   ShieldCheck,
   TrendingUp,
   ArrowRight,
-  Wallet,
   Bot,
-  Plane,
-  LineChart,
   Globe,
   SquareChartGantt,
-  Fingerprint,
-  Lock,
-  Database,
   SearchCheck,
   Zap,
   PieChart,
   ShieldAlert,
   ChevronRight,
   Cpu,
-  CheckCircle2,
-  Calculator,
-  Landmark,
   Target,
   Coins,
   HeartPulse,
@@ -36,500 +34,1416 @@ import {
   ReceiptIndianRupee,
   Languages,
   BarChart3,
-  Landmark as Bank,
   History,
   Scale,
+  LineChart,
+  Lock,
+  Database,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
+// ─── GLOBAL FONT INJECTION ────────────────────────────────────────────────────
+const FontStyle = () => (
+  <style>{`
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Serif+Display:ital@0;1&family=Instrument+Sans:wght@400;500;600;700&display=swap');
+    :root {
+      --gold: #D4A853;
+      --gold-light: #F0C878;
+      --gold-dim: rgba(212,168,83,0.15);
+      --ink: #080808;
+    }
+    * { box-sizing: border-box; }
+    body { background: var(--ink); }
+    .font-display { font-family: 'Playfair Display', serif; }
+    .font-serif  { font-family: 'DM Serif Display', serif; }
+    .font-sans   { font-family: 'Instrument Sans', sans-serif; }
+
+    /* Gold shimmer animation */
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+    .gold-shimmer {
+      background: linear-gradient(90deg, #b8860b 0%, #f5d07a 40%, #D4A853 60%, #b8860b 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 4s linear infinite;
+    }
+
+    /* Ticker tape */
+    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .ticker-inner { animation: ticker 28s linear infinite; }
+    .ticker-inner:hover { animation-play-state: paused; }
+
+    /* Pulsing glow dot */
+    @keyframes glow-pulse {
+      0%, 100% { box-shadow: 0 0 4px 1px rgba(212,168,83,0.6); }
+      50%       { box-shadow: 0 0 14px 4px rgba(212,168,83,0.9); }
+    }
+    .glow-dot { animation: glow-pulse 2s ease-in-out infinite; }
+
+    /* Float animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      33%       { transform: translateY(-8px) rotate(1deg); }
+      66%       { transform: translateY(-4px) rotate(-1deg); }
+    }
+    .float { animation: float 6s ease-in-out infinite; }
+
+    /* Number tick */
+    @keyframes numtick {
+      0%   { opacity: 0; transform: translateY(8px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .numtick { animation: numtick 0.3s ease forwards; }
+
+    /* Scan line */
+    @keyframes scan {
+      0%   { top: 0%; opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+    .scan-line {
+      position: absolute; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212,168,83,0.6), transparent);
+      animation: scan 3s ease-in-out infinite;
+    }
+
+    /* Gradient border */
+    .gold-border {
+      border: 1px solid transparent;
+      background-clip: padding-box;
+      position: relative;
+    }
+    .gold-border::before {
+      content: '';
+      position: absolute; inset: -1px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(212,168,83,0.4), transparent 50%, rgba(212,168,83,0.2));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+
+    /* Noise overlay */
+    .noise::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+  `}</style>
+);
+
+// ─── STATIC RATES FROM useFundData FALLBACK ──────────────────────────────────
+// Values mirror FALLBACK_RATES in useFundData.ts (Q1 2026)
+// When you wire up the real hook, replace these with the live rates object.
+const RATES = {
+  nifty50: { value: 24148, changePct: +0.42 },
+  sensex: { value: 79480, changePct: +0.38 },
+  niftyBank: { value: 52340, changePct: -0.12 },
+  niftyMid: { value: 49200, changePct: +0.61 },
+  gold24k: { value: 79420, changePct: +0.21 }, // ₹/10g live proxy
+  usdInr: { value: 83.2, changePct: -0.05 },
+  ppf: { rate: 7.1 },
+  ssy: { rate: 8.2 },
+  scss: { rate: 8.2 },
+  rbiBonds: { rate: 8.05 },
+  nsc: { rate: 7.7 },
+  sgb: { interestRate: 2.5, lastIssuePrice: 6263 },
+  hdfcFD: { rate365: 7.0 },
+  repoRate: { value: 6.5 },
+  inflation: { value: 5.1 },
+};
+
+// Build ticker items from real rate data — wealth-first, not card-first
+const TICKER_ITEMS = [
+  {
+    label: "NIFTY 50",
+    val: RATES.nifty50.value.toLocaleString("en-IN"),
+    up: RATES.nifty50.changePct >= 0,
+  },
+  {
+    label: "SENSEX",
+    val: RATES.sensex.value.toLocaleString("en-IN"),
+    up: RATES.sensex.changePct >= 0,
+  },
+  {
+    label: "NIFTY BANK",
+    val: RATES.niftyBank.value.toLocaleString("en-IN"),
+    up: RATES.niftyBank.changePct >= 0,
+  },
+  {
+    label: "NIFTY MIDCAP",
+    val: RATES.niftyMid.value.toLocaleString("en-IN"),
+    up: RATES.niftyMid.changePct >= 0,
+  },
+  {
+    label: "GOLD / 10g",
+    val: `₹${RATES.gold24k.value.toLocaleString("en-IN")}`,
+    up: RATES.gold24k.changePct >= 0,
+  },
+  {
+    label: "USD/INR",
+    val: RATES.usdInr.value.toFixed(2),
+    up: RATES.usdInr.changePct >= 0,
+  },
+  { label: "PPF RATE", val: `${RATES.ppf.rate}%`, up: true },
+  { label: "SSY RATE", val: `${RATES.ssy.rate}%`, up: true },
+  { label: "RBI BONDS", val: `${RATES.rbiBonds.rate}%`, up: true },
+  { label: "HDFC FD 1Y", val: `${RATES.hdfcFD.rate365}%`, up: true },
+  { label: "SGB YIELD", val: `${RATES.sgb.interestRate}% + Gold`, up: true },
+  { label: "REPO RATE", val: `${RATES.repoRate.value}%`, up: false },
+  { label: "INFLATION", val: `${RATES.inflation.value}%`, up: false },
+  { label: "NSC RATE", val: `${RATES.nsc.rate}%`, up: true },
+  { label: "SCSS RATE", val: `${RATES.scss.rate}%`, up: true },
+];
+
+function LiveTicker() {
+  // Triple the items so the seamless loop always has content visible
+  const tripled = [...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS];
+  return (
+    <div className="fixed top-0 left-0 right-0 z-[200] overflow-hidden h-7 bg-black border-b border-[rgba(212,168,83,0.2)] flex items-center font-sans">
+      <div className="shrink-0 px-4 text-[10px] font-bold uppercase tracking-widest text-[#D4A853] border-r border-[rgba(212,168,83,0.2)] h-full flex items-center gap-1.5 bg-[rgba(212,168,83,0.05)]">
+        <span className="w-1.5 h-1.5 rounded-full bg-[#D4A853] glow-dot inline-block" />
+        LIVE
+      </div>
+      <div className="flex-1 overflow-hidden relative">
+        <div className="ticker-inner flex gap-0 whitespace-nowrap">
+          {tripled.map((item, i) => (
+            <span
+              key={i}
+              className="inline-flex items-center gap-2 px-5 text-[10px] font-bold border-r border-white/5 h-7 leading-7"
+            >
+              <span className="text-white/25 uppercase tracking-widest">
+                {item.label}
+              </span>
+              <span className={item.up ? "text-emerald-400" : "text-red-400"}>
+                {item.val}
+              </span>
+              <span
+                className={item.up ? "text-emerald-400/50" : "text-red-400/50"}
+              >
+                {item.up ? "▲" : "▼"}
+              </span>
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── ANIMATED COUNTER ─────────────────────────────────────────────────────────
+function AnimCount({
+  to,
+  prefix = "",
+  suffix = "",
+  decimals = 0,
+  className = "",
+}: {
+  to: number;
+  prefix?: string;
+  suffix?: string;
+  decimals?: number;
+  className?: string;
+}) {
+  const [val, setVal] = useState(0);
+  const [visible, setVisible] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) setVisible(true);
+      },
+      { threshold: 0.5 },
+    );
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  useEffect(() => {
+    if (!visible) return;
+    let start = 0;
+    const steps = 60,
+      inc = to / steps;
+    const id = setInterval(() => {
+      start = Math.min(to, start + inc + (to - start) * 0.08);
+      setVal(start);
+      if (start >= to) {
+        setVal(to);
+        clearInterval(id);
+      }
+    }, 1000 / steps);
+    return () => clearInterval(id);
+  }, [visible, to]);
+  return (
+    <span ref={ref} className={className}>
+      {prefix}
+      {val.toFixed(decimals)}
+      {suffix}
+    </span>
+  );
+}
+
+// ─── FLOATING CARD VISUAL ─────────────────────────────────────────────────────
+function FloatingCard({
+  delay = 0,
+  gradient,
+  name,
+  reward,
+  top,
+  left,
+  right,
+  rotate,
+}: any) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      style={{ top, left, right, rotate: `${rotate}deg`, position: "absolute" }}
+      className="float"
+    >
+      <div
+        className={`w-44 h-28 rounded-2xl bg-gradient-to-br ${gradient} relative overflow-hidden shadow-2xl border border-white/10`}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
+        <div className="scan-line" />
+        <div className="absolute top-3 left-3 w-8 h-6 rounded-md bg-gradient-to-br from-amber-300/40 to-amber-500/30 border border-white/20" />
+        <div className="absolute top-3 right-3 text-[8px] font-bold text-white/50 uppercase tracking-widest">
+          {name}
+        </div>
+        <div className="absolute bottom-3 left-3">
+          <p className="text-[8px] text-white/40 uppercase tracking-widest">
+            Reward Rate
+          </p>
+          <p className="text-sm font-bold text-[#D4A853]">{reward}</p>
+        </div>
+        <div className="absolute bottom-3 right-3 opacity-20">
+          <div className="w-3.5 h-3.5 rounded-full border border-white" />
+          <div className="w-5 h-5 rounded-full border border-white absolute -top-0.5 -left-0.5" />
+        </div>
+        {/* Holographic shimmer strip */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── FLOAT WIDGET WRAPPER (wealth instrument panels) ─────────────────────────
+function FloatWidget({ children, delay = 0, top, left, right, rotate }: any) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      style={{ top, left, right, rotate: `${rotate}deg`, position: "absolute" }}
+      className="float"
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// ─── SECTION REVEAL WRAPPER ───────────────────────────────────────────────────
+function Reveal({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 export default function LandingPage() {
   const [activeTab, setActiveTab] = useState("travel");
+  const [mouseX, setMouseX] = useState(0);
+  const [mouseY, setMouseY] = useState(0);
+
+  // Subtle parallax on mouse move for hero
+  useEffect(() => {
+    const h = (e: MouseEvent) => {
+      setMouseX((e.clientX / window.innerWidth - 0.5) * 20);
+      setMouseY((e.clientY / window.innerHeight - 0.5) * 20);
+    };
+    window.addEventListener("mousemove", h);
+    return () => window.removeEventListener("mousemove", h);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-[#020202] text-slate-200 selection:bg-yellow-400 selection:text-white overflow-x-hidden font-sans">
-      {/* 1. NAVIGATION (Master Version) */}
-      <nav className="fixed top-0 left-0 right-0 z-[100] border-b border-white/5 bg-black/80 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl  flex items-center justify-center shadow-lg">
-              <img
-                src="/favicon.ico"
-                alt="Logo"
-                className="w-10 h-10 rounded-lg"
-              />
+    <div className="min-h-screen bg-[#080808] text-slate-200 selection:bg-[#D4A853] selection:text-black overflow-x-hidden font-sans">
+      <FontStyle />
+      <LiveTicker />
+
+      {/* ══ NAVIGATION ════════════════════════════════════════════════════ */}
+      <nav className="fixed top-7 left-0 right-0 z-[100]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center justify-between px-6 py-3 rounded-2xl bg-black/70 backdrop-blur-xl border border-white/[0.07]">
+            <Link href="/" className="flex items-center gap-3 group">
+              <div
+                className="w-9 h-9 rounded-xl flex items-center justify-center"
+                style={{
+                  background: "linear-gradient(135deg,#D4A853,#8B6914)",
+                }}
+              >
+                <span className="text-black font-black text-sm font-display">
+                  P
+                </span>
+              </div>
+              <div>
+                <span className="font-display text-lg font-bold text-white leading-none tracking-tight">
+                  PaisaDekho
+                </span>
+                <span className="block text-[9px] text-[#D4A853] font-bold uppercase tracking-[0.3em] mt-0.5">
+                  Luxe Intelligence
+                </span>
+              </div>
+            </Link>
+
+            <div className="hidden lg:flex items-center gap-8">
+              {[
+                ["#how-it-works", "The Loop"],
+                ["#use-cases", "Use Cases"],
+                ["#butler-lab", "Butler Lab"],
+                ["#wealth", "Wealth Meta"],
+                ["#security", "Privacy"],
+              ].map(([href, label]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/40 hover:text-[#D4A853] transition-all duration-200"
+                >
+                  {label}
+                </Link>
+              ))}
             </div>
-            <div className="flex flex-col">
-              <span className="font-serif text-xl font-bold text-white leading-none tracking-tight">
-                PaisaDekho
-              </span>
-              <span className="text-[10px] text-yellow-400 font-bold uppercase tracking-[0.3em] mt-1">
-                Luxe Intelligence
-              </span>
-            </div>
-          </Link>
-          <div className="hidden lg:flex items-center gap-8">
-            <NavLink href="#how-it-works">The Loop</NavLink>
-            <NavLink href="#use-cases">Use Cases</NavLink>
-            <NavLink href="#butler-lab">Butler Lab</NavLink>
-            <NavLink href="#wealth">Wealth Meta</NavLink>
-            <NavLink href="#security">Privacy</NavLink>
+
+            <Link href="/auth/login">
+              <button
+                className="relative overflow-hidden px-6 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-[0.2em] text-black transition-all group"
+                style={{
+                  background: "linear-gradient(135deg,#D4A853,#F0C878)",
+                }}
+              >
+                <span className="relative z-10">Apply for Access</span>
+                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors" />
+              </button>
+            </Link>
           </div>
-          <Link href="/auth/login">
-            <Button className="bg-yellow-400 text-black font-extrabold hover:scale-105 transition-all rounded-full px-8 shadow-lg shadow-gold/20 h-12">
-              Apply for Access
-            </Button>
-          </Link>
         </div>
       </nav>
 
-      {/* 2. HERO SECTION */}
-      <section className="relative pt-52 pb-24 px-6 overflow-hidden">
-        <div className="max-w-7xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="mb-8 inline-flex items-center gap-2 px-5 py-2 rounded-full border border-gold/20 bg-gold/5 text-yellow-400 text-[10px] font-bold uppercase tracking-[0.2em]">
-              <Sparkles className="w-4 h-4" /> 2026 Sovereign Wealth
-              Intelligence
+      {/* ══ HERO ══════════════════════════════════════════════════════════ */}
+      <section className="relative min-h-screen flex items-center justify-center pt-28 pb-24 px-6 overflow-hidden">
+        {/* Background layers */}
+        <div className="absolute inset-0">
+          {/* Deep radial */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_40%,rgba(212,168,83,0.07),transparent)]" />
+          {/* Grid */}
+          <div
+            className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(212,168,83,0.6) 1px,transparent 1px),linear-gradient(90deg,rgba(212,168,83,0.6) 1px,transparent 1px)",
+              backgroundSize: "80px 80px",
+            }}
+          />
+          {/* Corner vignette */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_100%_100%_at_50%_50%,transparent_50%,rgba(8,8,8,0.8)_100%)]" />
+        </div>
+
+        {/* Floating wealth widgets — parallax */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none hidden lg:block"
+          style={{ x: mouseX * 0.3, y: mouseY * 0.3 }}
+        >
+          {/* SIP Calculator widget — top left */}
+          <FloatWidget delay={0.3} top="14%" left="3%" rotate={-6}>
+            <div className="w-52 rounded-2xl bg-gradient-to-br from-emerald-950 to-zinc-950 border border-emerald-400/15 p-4 shadow-2xl">
+              <div className="scan-line" />
+              <p className="text-[9px] font-bold uppercase tracking-widest text-emerald-400/60 mb-3">
+                SIP Calculator
+              </p>
+              <p className="text-[10px] text-white/40 mb-1">
+                Monthly ₹10,000 · 15 yrs · 14%
+              </p>
+              <p className="text-xl font-black text-emerald-400 font-display">
+                ₹74.7 Lakhs
+              </p>
+              <p className="text-[9px] text-white/25 mt-1">Projected corpus</p>
+              <div className="mt-3 flex gap-1">
+                {[40, 55, 62, 70, 80, 91, 100].map((h, i) => (
+                  <div
+                    key={i}
+                    className="flex-1 rounded-sm bg-emerald-400/20"
+                    style={{ height: h * 0.28 + "px", alignSelf: "flex-end" }}
+                  />
+                ))}
+              </div>
             </div>
-            <h1 className="font-serif text-7xl md:text-9xl font-extrabold text-white mb-8 tracking-tighter leading-[0.9]">
-              Your Money, <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-100 via-yellow-200 to-yellow-500 italic">
-                Self-Driving.
-              </span>
-            </h1>
-            <p className="text-lg md:text-2xl text-slate-400 max-w-4xl mx-auto mb-12 font-light leading-relaxed">
-              The only AI layer that bridges the gap between your{" "}
-              <span className="text-white font-medium">Credit Card swipe</span>{" "}
-              and your{" "}
-              <span className="text-white font-medium">Retirement Corpus</span>.
-              PaisaDekho Luxe orchestrates every rupee across 200+ Indian assets
-              with institutional precision.
-            </p>
+          </FloatWidget>
+
+          {/* Gold / SGB widget — top right */}
+          <FloatWidget delay={0.5} top="16%" right="3%" rotate={7}>
+            <div className="w-48 rounded-2xl bg-gradient-to-br from-amber-950 to-zinc-950 border border-amber-400/15 p-4 shadow-2xl">
+              <div className="scan-line" />
+              <p className="text-[9px] font-bold uppercase tracking-widest text-[#D4A853]/60 mb-3">
+                Gold / SGB
+              </p>
+              <div className="flex items-end justify-between mb-1">
+                <p className="text-xl font-black text-[#D4A853] font-display">
+                  ₹79,420
+                </p>
+                <span className="text-[9px] text-emerald-400 font-bold">
+                  ▲ 0.21%
+                </span>
+              </div>
+              <p className="text-[9px] text-white/30">Per 10g · 24k</p>
+              <div className="mt-3 pt-3 border-t border-white/5">
+                <p className="text-[9px] text-white/30 mb-0.5">
+                  SGB Interest Rate
+                </p>
+                <p className="text-sm font-bold text-[#D4A853]">
+                  {RATES.sgb.interestRate}% p.a. + Gains
+                </p>
+              </div>
+            </div>
+          </FloatWidget>
+
+          {/* Portfolio donut widget — bottom left */}
+          <FloatWidget delay={0.7} top="60%" left="2%" rotate={4}>
+            <div className="w-52 rounded-2xl bg-gradient-to-br from-violet-950 to-zinc-950 border border-violet-400/12 p-4 shadow-2xl">
+              <div className="scan-line" />
+              <p className="text-[9px] font-bold uppercase tracking-widest text-violet-400/60 mb-3">
+                Sample Portfolio
+              </p>
+              <div className="flex items-center gap-3">
+                {/* Mini donut SVG */}
+                <svg width="48" height="48" viewBox="0 0 48 48">
+                  {[
+                    { pct: 45, color: "#a78bfa", offset: 0 },
+                    { pct: 25, color: "#D4A853", offset: 45 },
+                    { pct: 20, color: "#34d399", offset: 70 },
+                    { pct: 10, color: "#60a5fa", offset: 90 },
+                  ].map((s, i) => {
+                    const r = 16,
+                      circ = 2 * Math.PI * r;
+                    return (
+                      <circle
+                        key={i}
+                        cx="24"
+                        cy="24"
+                        r={r}
+                        fill="none"
+                        stroke={s.color}
+                        strokeWidth="7"
+                        strokeDasharray={`${(s.pct / 100) * circ} ${circ}`}
+                        strokeDashoffset={-(s.offset / 100) * circ}
+                        transform="rotate(-90 24 24)"
+                        opacity="0.85"
+                      />
+                    );
+                  })}
+                </svg>
+                <div className="space-y-1.5">
+                  {[
+                    ["Equity", "45%", "#a78bfa"],
+                    ["Gold", "25%", "#D4A853"],
+                    ["Debt", "20%", "#34d399"],
+                    ["Intl", "10%", "#60a5fa"],
+                  ].map(([l, p, c]) => (
+                    <div key={l} className="flex items-center gap-1.5">
+                      <span
+                        className="w-1.5 h-1.5 rounded-full shrink-0"
+                        style={{ background: c }}
+                      />
+                      <span className="text-[9px] text-white/40">{l}</span>
+                      <span className="text-[9px] font-bold text-white/70 ml-auto">
+                        {p}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </FloatWidget>
+
+          {/* Govt scheme rates widget — bottom right */}
+          <FloatWidget delay={0.9} top="56%" right="2%" rotate={-5}>
+            <div className="w-48 rounded-2xl bg-gradient-to-br from-sky-950 to-zinc-950 border border-sky-400/12 p-4 shadow-2xl">
+              <div className="scan-line" />
+              <p className="text-[9px] font-bold uppercase tracking-widest text-sky-400/60 mb-3">
+                Govt Schemes
+              </p>
+              <div className="space-y-2">
+                {[
+                  ["PPF", `${RATES.ppf.rate}%`, "#34d399"],
+                  ["SSY", `${RATES.ssy.rate}%`, "#D4A853"],
+                  ["RBI Bonds", `${RATES.rbiBonds.rate}%`, "#60a5fa"],
+                  ["SCSS", `${RATES.scss.rate}%`, "#a78bfa"],
+                ].map(([name, rate, color]) => (
+                  <div key={name} className="flex items-center justify-between">
+                    <span className="text-[9px] text-white/35">{name}</span>
+                    <span className="text-[9px] font-black" style={{ color }}>
+                      {rate}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </FloatWidget>
+        </motion.div>
+
+        {/* Hero text */}
+        <div className="relative z-10 text-center max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-[rgba(212,168,83,0.25)] bg-[rgba(212,168,83,0.06)] text-[#D4A853] text-[10px] font-bold uppercase tracking-[0.25em] mb-8">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#D4A853] glow-dot" />
+              2026 · AI Wealth Manager · SIP · Mutual Funds · Gold · Govt
+              Schemes · Cards
+            </div>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="font-display text-[72px] sm:text-[88px] md:text-[108px] font-black leading-[0.88] tracking-tighter mb-8 text-white"
+          >
+            Your Money,
+            <br />
+            <span className="gold-shimmer italic">Self-Driving.</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.25 }}
+            className="text-lg md:text-xl text-white/40 max-w-3xl mx-auto mb-12 leading-relaxed font-sans font-light"
+          >
+            India's first AI that builds your{" "}
+            <span className="text-white font-medium">wealth corpus</span>,
+            optimises every{" "}
+            <span className="text-white font-medium">
+              SIP, FD, and Govt Scheme
+            </span>
+            , and supercharges your credit card rewards — all in one intelligent
+            engine.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          >
+            <Link href="/auth/login">
+              <button
+                className="group relative overflow-hidden px-10 py-4 rounded-full text-sm font-bold uppercase tracking-[0.2em] text-black transition-all duration-300 hover:scale-105 shadow-2xl"
+                style={{
+                  background:
+                    "linear-gradient(135deg,#D4A853 0%,#F0C878 50%,#D4A853 100%)",
+                  boxShadow: "0 0 40px rgba(212,168,83,0.3)",
+                }}
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  Start for Free{" "}
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors" />
+              </button>
+            </Link>
+            <button className="px-10 py-4 rounded-full text-sm font-bold uppercase tracking-[0.2em] text-white/60 border border-white/10 hover:border-[rgba(212,168,83,0.4)] hover:text-[#D4A853] transition-all duration-200">
+              Watch Demo
+            </button>
+          </motion.div>
+
+          {/* Live stats strip */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="mt-16 flex flex-wrap items-center justify-center gap-8 sm:gap-12"
+          >
+            {[
+              { label: "Corpus Managed", to: 487, suffix: " Cr", prefix: "₹" },
+              { label: "Funds Tracked", to: 2500, suffix: "+", prefix: "" },
+              {
+                label: "Simulations / Day",
+                to: 50000,
+                suffix: "+",
+                prefix: "",
+              },
+              {
+                label: "Avg. XIRR Boost",
+                to: 3.2,
+                suffix: "%",
+                prefix: "+",
+                decimals: 1,
+              },
+            ].map((s) => (
+              <div key={s.label} className="text-center">
+                <AnimCount
+                  to={s.to}
+                  prefix={s.prefix || ""}
+                  suffix={s.suffix}
+                  decimals={(s as any).decimals || 0}
+                  className="font-display text-3xl font-bold text-[#D4A853] tabular-nums"
+                />
+                <p className="text-[10px] text-white/30 uppercase tracking-widest mt-1">
+                  {s.label}
+                </p>
+              </div>
+            ))}
           </motion.div>
         </div>
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[800px] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold/10 via-transparent to-transparent -z-10 opacity-50" />
+
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#080808] to-transparent" />
       </section>
 
-      {/* 3. HOW IT WORKS (THE INTELLIGENCE LOOP) */}
-      <section
-        id="how-it-works"
-        className="py-24 px-6 bg-white/[0.01] border-y border-white/5"
-      >
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="font-serif text-4xl font-bold text-white mb-4 italic">
-              The <span className="text-yellow-400">Intelligence</span> Loop
+      {/* ══ INTELLIGENCE LOOP ═════════════════════════════════════════════ */}
+      <section id="how-it-works" className="py-32 px-6 relative">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_50%_50%,rgba(212,168,83,0.04),transparent)]" />
+        <div className="max-w-7xl mx-auto relative">
+          <Reveal className="text-center mb-20">
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#D4A853] mb-4">
+              How It Works
+            </p>
+            <h2 className="font-display text-5xl md:text-6xl font-black text-white leading-tight">
+              The <em className="gold-shimmer not-italic">Intelligence</em> Loop
             </h2>
-            <p className="text-slate-500">
+            <p className="text-white/35 mt-4 text-lg">
               How we turn your daily spend into long-term generational wealth.
             </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <StepCard
-              num="01"
-              icon={SearchCheck}
-              title="Local Data Scan"
-              desc="Scans your cashflow and card devaluations on-device. No data ever leaves your phone."
-            />
-            <StepCard
-              num="02"
-              icon={Cpu}
-              title="Alpha Analysis"
-              desc="Butler runs 50,000+ simulations to find the highest-yield path for every rupee."
-            />
-            <StepCard
-              num="03"
-              icon={Target}
-              title="Goal Mapping"
-              desc="Your SIPs and Reward Points are unified into a single goal-based trajectory."
-            />
-            <StepCard
-              num="04"
-              icon={Zap}
-              title="Auto-Execution"
-              desc="One-tap trades, rebalancing, and fee waivers via secure institutional bridges."
-            />
+          </Reveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-0 relative">
+            {/* Connecting line */}
+            <div className="hidden md:block absolute top-16 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-[rgba(212,168,83,0.3)] to-transparent" />
+
+            {[
+              {
+                num: "01",
+                icon: SearchCheck,
+                title: "Local Data Scan",
+                desc: "Scans cashflow and card devaluations on-device. Zero data leaves your phone.",
+              },
+              {
+                num: "02",
+                icon: Cpu,
+                title: "Alpha Analysis",
+                desc: "Butler runs 50,000+ simulations to find the highest-yield path for every rupee.",
+              },
+              {
+                num: "03",
+                icon: Target,
+                title: "Goal Mapping",
+                desc: "SIPs and Reward Points unified into a single goal-based trajectory.",
+              },
+              {
+                num: "04",
+                icon: Zap,
+                title: "Auto-Execution",
+                desc: "One-tap trades, rebalancing, and fee waivers via secure institutional bridges.",
+              },
+            ].map((s, i) => (
+              <Reveal key={s.num} delay={i * 0.1}>
+                <div className="group p-8 text-center relative">
+                  {/* Step number */}
+                  <div className="relative inline-flex items-center justify-center w-14 h-14 mb-8">
+                    <div className="absolute inset-0 rounded-full border border-[rgba(212,168,83,0.2)] group-hover:border-[rgba(212,168,83,0.5)] transition-colors" />
+                    <div className="absolute inset-0 rounded-full bg-[rgba(212,168,83,0.04)] group-hover:bg-[rgba(212,168,83,0.1)] transition-colors" />
+                    <s.icon className="w-6 h-6 text-[#D4A853]" />
+                    <span className="absolute -top-2 -right-2 text-[9px] font-black text-[#D4A853]/60 bg-[#080808] px-1">
+                      {s.num}
+                    </span>
+                  </div>
+                  <h4 className="font-display text-lg font-bold text-white mb-3">
+                    {s.title}
+                  </h4>
+                  <p className="text-white/35 text-sm leading-relaxed">
+                    {s.desc}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* 4. THE LUXE USE CASE DIRECTORY */}
+      {/* ══ USE CASES BENTO ═══════════════════════════════════════════════ */}
       <section id="use-cases" className="py-32 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-20 text-center md:text-left">
-            <h2 className="font-serif text-5xl font-bold text-white mb-6">
-              Built for{" "}
-              <span className="text-yellow-400">Life's Complexity</span>
-            </h2>
-            <p className="text-slate-500 text-xl max-w-3xl">
-              From Jaipur to Dubai, from today's coffee to your daughter's
-              wedding—the Butler manages it all.
+          <Reveal>
+            <div className="mb-16">
+              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#D4A853] mb-4">
+                Intelligence in Action
+              </p>
+              <h2 className="font-display text-5xl md:text-6xl font-black text-white leading-tight mb-4">
+                Built for{" "}
+                <em className="gold-shimmer not-italic">Life's Complexity</em>
+              </h2>
+              <p className="text-white/35 text-xl max-w-2xl">
+                From Jaipur to Dubai, from today's coffee to your daughter's
+                wedding — the Butler manages it all.
+              </p>
+            </div>
+          </Reveal>
+
+          {/* Featured row */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
+            <Reveal delay={0} className="md:col-span-5">
+              <UseCaseBig
+                icon={ShoppingBag}
+                title="Point-of-Sale Intelligence"
+                desc="Standing at a Taj Hotel? Butler detects the merchant and tells you which card triggers the 10× reward multiplier — before you tap."
+                stat="10×"
+                statLabel="Reward Multiplier"
+                accent="#D4A853"
+              />
+            </Reveal>
+            <Reveal delay={0.1} className="md:col-span-7">
+              <UseCaseBig
+                icon={Briefcase}
+                title="Tax-Loss Harvesting Engine"
+                desc="Every March, the AI automatically sells loss-making units and re-buys them instantly, saving you up to ₹1 Lakh in Capital Gains tax."
+                stat="₹1L"
+                statLabel="Annual Tax Saving"
+                accent="#34d399"
+              />
+            </Reveal>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              {
+                icon: HeartPulse,
+                title: "Emergency Fund Lockbox",
+                desc: "Detects medical spends and prepares a Liquidity Plan — telling you which fund to exit first to minimize exit loads.",
+              },
+              {
+                icon: ReceiptIndianRupee,
+                title: "Rental Yield Loop",
+                desc: "Pay rent via Butler to maximize miles, then auto-invest the reward value into high-yield 11% corporate bonds.",
+              },
+              {
+                icon: Users,
+                title: "Family Office Mode",
+                desc: "Aggregate your family's spending to hit Super Milestone targets like the ₹12L fee waiver on HDFC Infinia.",
+              },
+              {
+                icon: Languages,
+                title: "Forex Hedging",
+                desc: "Traveling to Dubai? Butler compares card Forex markups vs. zero-markup cards in real time.",
+              },
+              {
+                icon: Scale,
+                title: "Stress Test Simulation",
+                desc: "Simulates a 2008-style crash on your portfolio to ensure your ₹10L goal remains on track via hedging.",
+              },
+              {
+                icon: ShieldAlert,
+                title: "Hidden Fee Audit",
+                desc: "AI scans for Dynamic Currency Conversion fees and alerts you to claim refunds for merchant-forced markups.",
+              },
+            ].map((c, i) => (
+              <Reveal key={c.title} delay={i * 0.06}>
+                <UseCaseSmall icon={c.icon} title={c.title} desc={c.desc} />
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══ BUTLER LAB (Interactive) ═══════════════════════════════════════ */}
+      <section id="butler-lab" className="py-32 px-6 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[rgba(212,168,83,0.02)] to-transparent" />
+        <div className="max-w-6xl mx-auto relative">
+          <Reveal className="text-center mb-16">
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#D4A853] mb-4">
+              Live Simulation
             </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <UseCaseCard
-              icon={ShoppingBag}
-              title="The 'Point-of-Sale' Check"
-              desc="Standing at a Taj Hotel or a local mall? Butler detects the merchant and tells you which card triggers the 10X reward multiplier."
-            />
-            <UseCaseCard
-              icon={Briefcase}
-              title="Tax-Loss Harvesting"
-              desc="Every March, the AI sells loss-making units and instantly re-buys them, saving you up to ₹1 Lakh in Capital Gains tax automatically."
-            />
-            <UseCaseCard
-              icon={HeartPulse}
-              title="Emergency Fund Lockbox"
-              desc="Detects medical spends and instantly prepares a 'Liquidity Plan'—telling you which fund to exit first to minimize exit loads."
-            />
-            <UseCaseCard
-              icon={ReceiptIndianRupee}
-              title="The Rental Yield Loop"
-              desc="Pay rent via the Butler to maximize miles, then auto-invest the 3.3% reward value into high-yield 11% corporate bonds."
-            />
-            <UseCaseCard
-              icon={Users}
-              title="Family Office Mode"
-              desc="Aggregate the spending of your whole family to hit 'Super Milestone' targets like the ₹12L fee waiver on HDFC Infinia."
-            />
-            <UseCaseCard
-              icon={Languages}
-              title="Forex Hedging"
-              desc="Traveling to Dubai? Butler compares card Forex markups vs. zero-markup cards based on real-time exchange rate volatility."
-            />
-            <UseCaseCard
-              icon={Scale}
-              title="Stress Test Simulation"
-              desc="Butler simulates a 2008-style crash on your portfolio to ensure your ₹10L goal remains on track via hedging."
-            />
-            <UseCaseCard
-              icon={History}
-              title="Dividend Tracker"
-              desc="Never let a dividend go idle. Butler detects incoming corporate dividends and sweeps them into your high-momentum SIPs."
-            />
-            <UseCaseCard
-              icon={ShieldAlert}
-              title="Fee Audit"
-              desc="AI scans for hidden 'Dynamic Currency Conversion' (DCC) fees and alerts you to claim refunds for merchant-forced markups."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* 5. BUTLER INTELLIGENCE LAB (Interactive Simulation) */}
-      <section id="butler-lab" className="py-24 px-6 bg-zinc-950/50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="font-serif text-4xl font-bold text-white mb-4 italic">
-              The Butler <span className="text-yellow-400">Lab</span>
+            <h2 className="font-display text-5xl md:text-6xl font-black text-white italic">
+              The Butler <span className="gold-shimmer">Lab</span>
             </h2>
-            <div className="flex flex-wrap justify-center gap-4 mt-8">
-              <TabBtn
-                label="Jaipur to Dubai Flight"
-                active={activeTab === "travel"}
-                onClick={() => setActiveTab("travel")}
-              />
-              <TabBtn
-                label="₹10L Wealth Goal"
-                active={activeTab === "wealth"}
-                onClick={() => setActiveTab("wealth")}
-              />
-              <TabBtn
-                label="Luxury Purchase Logic"
-                active={activeTab === "luxury"}
-                onClick={() => setActiveTab("luxury")}
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-white/10 rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl">
-            {/* Left side: Client Side */}
-            <div className="p-12 bg-zinc-900/40 backdrop-blur-md">
-              <div className="flex items-center gap-3 mb-12">
-                <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-[10px] font-bold text-slate-400 border border-white/10 italic">
-                  CLIENT
-                </div>
-                <span className="text-slate-400 text-xs font-bold uppercase tracking-widest">
-                  Query Input
-                </span>
-              </div>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeTab}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
+            <p className="text-white/35 mt-4">
+              Ask. Analyze. Execute. See it happen in real time.
+            </p>
+            <div className="flex flex-wrap justify-center gap-3 mt-10">
+              {[
+                ["travel", "✈ Jaipur → Dubai"],
+                ["wealth", "📈 ₹10L Wealth Goal"],
+                ["luxury", "💎 Luxury Purchase"],
+              ].map(([t, l]) => (
+                <button
+                  key={t}
+                  onClick={() => setActiveTab(t)}
+                  className={`px-6 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all ${
+                    activeTab === t
+                      ? "text-black shadow-lg"
+                      : "bg-white/5 text-white/40 border border-white/10 hover:border-[rgba(212,168,83,0.3)] hover:text-[#D4A853]"
+                  }`}
+                  style={
+                    activeTab === t
+                      ? {
+                          background: "linear-gradient(135deg,#D4A853,#F0C878)",
+                          boxShadow: "0 4px 20px rgba(212,168,83,0.3)",
+                        }
+                      : {}
+                  }
                 >
-                  <div className="bg-zinc-800/80 p-10 rounded-[2rem] rounded-tl-none border border-white/5 shadow-2xl relative">
-                    <p className="text-white text-2xl font-serif italic leading-relaxed">
-                      {activeTab === "travel" &&
-                        '"Butler, I am booking a Jaipur to Dubai flight for ₹45,000. Which card should I use?"'}
-                      {activeTab === "wealth" &&
-                        '"Butler, I want to SIP ₹10,000 monthly. I need ₹10 Lakhs in 5 years. Give me the alpha path."'}
-                      {activeTab === "luxury" &&
-                        '"Butler, buying a ₹2 Lakh Rolex. Is No-Cost EMI better than paying in full?"'}
-                    </p>
-                    <div className="absolute -bottom-4 -right-4 w-12 h-12 bg-gold/10 rounded-full blur-xl" />
+                  {l}
+                </button>
+              ))}
+            </div>
+          </Reveal>
+
+          {/* Terminal window */}
+          <Reveal>
+            <div
+              className="rounded-3xl border border-[rgba(212,168,83,0.15)] overflow-hidden shadow-2xl relative"
+              style={{ boxShadow: "0 0 80px rgba(212,168,83,0.08)" }}
+            >
+              {/* Terminal title bar */}
+              <div className="flex items-center gap-3 px-6 py-3 bg-[#111] border-b border-white/[0.06]">
+                <div className="w-3 h-3 rounded-full bg-red-500/60" />
+                <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
+                <div className="w-3 h-3 rounded-full bg-emerald-500/60" />
+                <span className="ml-4 text-[10px] text-white/25 font-mono uppercase tracking-widest">
+                  butler://intelligence.engine · v2.1.0
+                </span>
+                <div className="ml-auto flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#D4A853] glow-dot" />
+                  <span className="text-[9px] text-[#D4A853] font-bold uppercase tracking-widest">
+                    Online
+                  </span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2">
+                {/* Input side */}
+                <div className="p-8 sm:p-12 bg-[#0d0d0d] border-r border-white/[0.06]">
+                  <div className="flex items-center gap-3 mb-10">
+                    <div className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
+                      <span className="text-[9px] font-bold text-white/40 italic">
+                        You
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/25">
+                      Client Query
+                    </span>
                   </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Right side: AI Execution */}
-            <div className="p-12 bg-black relative">
-              <div className="flex items-center gap-3 mb-12">
-                <div className="w-10 h-10 rounded-xl bg-yellow-400 flex items-center justify-center shadow-lg shadow-gold/20">
-                  <Bot className="w-6 h-6 text-black" />
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeTab}
+                      initial={{ opacity: 0, x: -16 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 16 }}
+                      transition={{ duration: 0.25 }}
+                    >
+                      <div className="relative p-8 rounded-2xl rounded-tl-none border border-white/[0.08] bg-white/[0.02]">
+                        <p className="font-serif text-xl text-white/85 leading-relaxed italic">
+                          {activeTab === "travel" &&
+                            '"Butler, I\'m booking Jaipur → Dubai for ₹45,000. Which card should I use?"'}
+                          {activeTab === "wealth" &&
+                            '"Butler, I want to SIP ₹10,000 monthly and need ₹10 Lakhs in 5 years. Give me the alpha path."'}
+                          {activeTab === "luxury" &&
+                            '"Butler, buying a ₹2 Lakh Rolex. Is No-Cost EMI better than paying in full?"'}
+                        </p>
+                        {/* Typing cursor */}
+                        <span className="inline-block w-0.5 h-4 bg-[#D4A853] animate-pulse ml-1 align-middle" />
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
-                <span className="text-yellow-400 text-xs font-extrabold uppercase tracking-[0.2em]">
-                  Butler Intelligence Analysis
-                </span>
-              </div>
 
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeTab + "-ans"}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="space-y-8"
-                >
-                  {activeTab === "travel" && (
-                    <>
-                      <div className="flex justify-between items-end border-b border-white/10 pb-6">
-                        <h4 className="text-2xl font-bold text-white font-serif">
-                          Axis Atlas
-                        </h4>
-                        <div className="text-right">
-                          <span className="text-green-400 text-3xl font-bold">
-                            ₹7,800
-                          </span>
-                          <span className="block text-[10px] text-slate-500 font-bold uppercase">
-                            Reward Value
-                          </span>
-                        </div>
+                {/* Response side */}
+                <div className="p-8 sm:p-12 bg-black relative overflow-hidden">
+                  {/* Scan line effect */}
+                  <div className="scan-line" />
+                  <div className="flex items-center gap-3 mb-10">
+                    <div
+                      className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg"
+                      style={{
+                        background: "linear-gradient(135deg,#D4A853,#8B6914)",
+                      }}
+                    >
+                      <Bot className="w-5 h-5 text-black" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#D4A853]">
+                        Butler Analysis
+                      </span>
+                      <div className="flex items-center gap-1 mt-0.5">
+                        <span className="w-1 h-1 rounded-full bg-emerald-400 glow-dot" />
+                        <span className="text-[8px] text-emerald-400/60 uppercase tracking-widest">
+                          Processing complete
+                        </span>
                       </div>
-                      <div className="space-y-4">
-                        <ComparisonRow
-                          label="Axis Atlas (Miles Transfer)"
-                          value="17.3% Yield"
-                          active
-                        />
-                        <ComparisonRow
-                          label="HDFC Infinia (Direct)"
-                          value="13.2% Yield"
-                        />
-                      </div>
-                      <p className="text-xs text-slate-400 leading-relaxed bg-white/5 p-5 rounded-2xl border border-white/10 italic">
-                        "Analysis: Since you are ₹12k away from the Gold
-                        Milestone, this spend triggers a 2,500 bonus mile
-                        credit. Total yield beats direct cashback by 34%."
-                      </p>
-                    </>
-                  )}
-                  {activeTab === "wealth" && (
-                    <>
-                      <div className="flex justify-between items-end border-b border-white/10 pb-6">
-                        <h4 className="text-2xl font-bold text-white font-serif">
-                          Projected: ₹10.42L
-                        </h4>
-                        <div className="text-right">
-                          <span className="text-yellow-400 text-3xl font-bold">
-                            14.2%
-                          </span>
-                          <span className="block text-[10px] text-slate-500 font-bold uppercase">
-                            Required XIRR
-                          </span>
-                        </div>
-                      </div>
-                      <div className="space-y-4">
-                        <AllocationRow
-                          label="Mid-Cap Momentum (AI-Sourced)"
-                          pct="55%"
-                        />
-                        <AllocationRow label="Digital Gold (Hedge)" pct="25%" />
-                        <AllocationRow
-                          label="Indian Tech Portfolio"
-                          pct="20%"
-                        />
-                      </div>
-                      <p className="text-xs text-slate-400 leading-relaxed bg-gold/5 p-5 rounded-2xl border border-gold/10">
-                        "Butler Strategy: Your base SIP covers ₹7.8L. Butler
-                        will bridge the ₹2.2L gap by harvesting card cashback
-                        and auto-sweeping bank dividends."
-                      </p>
-                    </>
-                  )}
-                  {activeTab === "luxury" && (
-                    <>
-                      <div className="flex justify-between items-end border-b border-white/10 pb-6">
-                        <h4 className="text-2xl font-bold text-white font-serif">
-                          Pay In Full
-                        </h4>
-                        <div className="text-right">
-                          <span className="text-red-400 text-3xl font-bold">
-                            ₹1,450
-                          </span>
-                          <span className="block text-[10px] text-slate-500 font-bold uppercase">
-                            Saved in Fees
-                          </span>
-                        </div>
-                      </div>
-                      <p className="text-xs text-slate-400 leading-relaxed bg-white/5 p-6 rounded-2xl border border-white/10">
-                        "Warning: No-Cost EMI has a hidden 18% GST charge on the
-                        interest component that the bank never waives. Paying in
-                        full nets you 6,600 Reward Points (Value: ₹6,600) vs a
-                        net loss of ₹1,450 on EMI."
-                      </p>
-                    </>
-                  )}
-                </motion.div>
-              </AnimatePresence>
+                    </div>
+                  </div>
+
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeTab + "ans"}
+                      initial={{ opacity: 0, scale: 0.97 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3 }}
+                      className="space-y-6"
+                    >
+                      {activeTab === "travel" && (
+                        <>
+                          <div className="flex justify-between items-end pb-5 border-b border-white/[0.08]">
+                            <div>
+                              <p className="text-[9px] text-white/30 uppercase tracking-widest mb-1">
+                                Recommended
+                              </p>
+                              <h4 className="font-display text-2xl font-bold text-white">
+                                Axis Atlas
+                              </h4>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-display text-3xl font-bold text-emerald-400">
+                                ₹7,800
+                              </p>
+                              <p className="text-[9px] text-white/30 uppercase tracking-widest">
+                                Reward Value
+                              </p>
+                            </div>
+                          </div>
+                          <div className="space-y-2.5">
+                            <LabRow
+                              label="Axis Atlas (Miles Transfer)"
+                              val="17.3% Yield"
+                              active
+                            />
+                            <LabRow
+                              label="HDFC Infinia (Direct)"
+                              val="13.2% Yield"
+                            />
+                          </div>
+                          <div className="p-4 rounded-2xl bg-[rgba(212,168,83,0.05)] border border-[rgba(212,168,83,0.12)]">
+                            <p className="text-[11px] text-white/50 leading-relaxed italic font-serif">
+                              "Since you're ₹12k from Gold Milestone, this spend
+                              triggers 2,500 bonus miles. Total yield beats
+                              direct cashback by 34%."
+                            </p>
+                          </div>
+                        </>
+                      )}
+                      {activeTab === "wealth" && (
+                        <>
+                          <div className="flex justify-between items-end pb-5 border-b border-white/[0.08]">
+                            <div>
+                              <p className="text-[9px] text-white/30 uppercase tracking-widest mb-1">
+                                Projected Corpus
+                              </p>
+                              <h4 className="font-display text-2xl font-bold text-white">
+                                ₹10.42 Lakhs
+                              </h4>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-display text-3xl font-bold text-[#D4A853]">
+                                14.2%
+                              </p>
+                              <p className="text-[9px] text-white/30 uppercase tracking-widest">
+                                Required XIRR
+                              </p>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            {[
+                              ["Mid-Cap Momentum (AI-Sourced)", "55%"],
+                              ["Digital Gold (Hedge)", "25%"],
+                              ["Indian Tech Portfolio", "20%"],
+                            ].map(([l, p]) => (
+                              <div
+                                key={l}
+                                className="flex justify-between items-center p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.06]"
+                              >
+                                <span className="text-sm text-white/60">
+                                  {l}
+                                </span>
+                                <span className="text-sm font-bold text-white">
+                                  {p}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="p-4 rounded-2xl bg-[rgba(212,168,83,0.05)] border border-[rgba(212,168,83,0.12)]">
+                            <p className="text-[11px] text-white/50 leading-relaxed italic font-serif">
+                              "Base SIP covers ₹7.8L. Butler bridges the ₹2.2L
+                              gap by harvesting card cashback and auto-sweeping
+                              bank dividends."
+                            </p>
+                          </div>
+                        </>
+                      )}
+                      {activeTab === "luxury" && (
+                        <>
+                          <div className="flex justify-between items-end pb-5 border-b border-white/[0.08]">
+                            <div>
+                              <p className="text-[9px] text-white/30 uppercase tracking-widest mb-1">
+                                Verdict
+                              </p>
+                              <h4 className="font-display text-2xl font-bold text-white">
+                                Pay In Full
+                              </h4>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-display text-3xl font-bold text-emerald-400">
+                                ₹1,450
+                              </p>
+                              <p className="text-[9px] text-white/30 uppercase tracking-widest">
+                                Saved in Fees
+                              </p>
+                            </div>
+                          </div>
+                          <div className="p-4 rounded-2xl bg-red-500/[0.06] border border-red-500/[0.12]">
+                            <p className="text-[11px] text-white/50 leading-relaxed italic font-serif">
+                              "No-Cost EMI has a hidden 18% GST on interest.
+                              Paying in full nets 6,600 Reward Points (₹6,600
+                              value) vs a net loss of ₹1,450 on EMI."
+                            </p>
+                          </div>
+                        </>
+                      )}
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* 6. CARD META & WEALTH BENTO (Combined Master Grid) */}
+      {/* ══ MARKET DOMINANCE (Bento) ══════════════════════════════════════ */}
       <section id="wealth" className="py-32 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-            <h2 className="font-serif text-5xl font-bold text-white">
-              Market <span className="text-yellow-400">Dominance</span>.
-            </h2>
-            <div className="flex gap-4">
-              <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-slate-400">
-                SEBI REGISTERED ADVICE
+          <Reveal>
+            <div className="flex flex-col sm:flex-row justify-between items-end mb-16 gap-6">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#D4A853] mb-3">
+                  Asset Intelligence
+                </p>
+                <h2 className="font-display text-5xl md:text-6xl font-black text-white">
+                  Market <em className="gold-shimmer not-italic">Dominance.</em>
+                </h2>
               </div>
-              <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-slate-400">
-                DPDP COMPLIANT
+              <div className="flex gap-3 flex-wrap">
+                {["SEBI Registered", "DPDP Compliant", "RBI Compliant"].map(
+                  (t) => (
+                    <span
+                      key={t}
+                      className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08] text-[9px] font-bold uppercase tracking-widest text-white/35"
+                    >
+                      {t}
+                    </span>
+                  ),
+                )}
               </div>
             </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-            <InvestmentCard
-              span="md:col-span-8"
-              icon={LineChart}
-              title="Mutual Fund Alpha"
-              desc="Butler scans 2,500+ funds to find the top 1% that beat the index. Automated Tax-Loss harvesting included."
-              tags={["Direct Plans", "Momentum", "Exit Load Alert"]}
-            />
-            <InvestmentCard
-              span="md:col-span-4"
-              icon={Globe}
-              title="Indian Blue Chips"
-              desc="Fractional access to Top Performing Funds"
-              tags={["NSE", "LRS Bridge"]}
-            />
-            <InvestmentCard
-              span="md:col-span-4"
-              icon={SquareChartGantt}
-              title="Yield Bonds"
-              desc="Institutional access to AAA-rated corporate bonds with fixed 9-11% annual yields."
-              tags={["Fixed Income", "No Market Vol"]}
-            />
-            <InvestmentCard
-              span="md:col-span-8"
-              icon={CreditCard}
-              title="Credit Card Meta 2026"
-              desc="Real-time devaluation alerts, Lounge counters, and Milestone spend predictors for all Indian premium cards."
-              tags={["Infinia", "Atlas", "Magnus", "Amex"]}
-            />
+          </Reveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+            <Reveal delay={0} className="md:col-span-8">
+              <BentoCard
+                icon={LineChart}
+                title="Mutual Fund Alpha"
+                desc="Butler scans 2,500+ funds for the top 1% that beat the index. Tax-Loss harvesting included."
+                tags={["Direct Plans", "Momentum", "Exit Load Alert"]}
+                large
+              />
+            </Reveal>
+            <Reveal delay={0.1} className="md:col-span-4">
+              <BentoCard
+                icon={Globe}
+                title="Indian Blue Chips"
+                desc="Fractional access to Top Performing NSE-listed funds and equities."
+                tags={["NSE", "BSE", "LRS Bridge"]}
+              />
+            </Reveal>
+            <Reveal delay={0.2} className="md:col-span-4">
+              <BentoCard
+                icon={SquareChartGantt}
+                title="Yield Bonds"
+                desc="Institutional access to AAA-rated corporate bonds with fixed 9–11% annual yields."
+                tags={["Fixed Income", "No Vol"]}
+              />
+            </Reveal>
+            <Reveal delay={0.3} className="md:col-span-8">
+              <BentoCard
+                icon={CreditCard}
+                title="Credit Card Meta 2026"
+                desc="Real-time devaluation alerts, lounge counters, and Milestone spend predictors for all Indian premium cards."
+                tags={["Infinia", "Atlas", "Magnus", "Amex"]}
+                large
+              />
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* 7. DATA SOVEREIGNTY (Privacy First) */}
-      <section
-        id="security"
-        className="py-32 px-6 border-t border-white/5 bg-[#010101]"
-      >
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-          <div>
-            <div className="w-12 h-12 rounded-2xl bg-gold/10 flex items-center justify-center mb-8 border border-gold/20">
-              <ShieldCheck className="w-6 h-6 text-yellow-400" />
+      {/* ══ SOCIAL PROOF TICKER ═══════════════════════════════════════════ */}
+      <section className="py-16 border-y border-white/[0.05] overflow-hidden">
+        <div className="flex gap-0 whitespace-nowrap">
+          <div
+            className="ticker-inner flex gap-0"
+            style={{ animationDuration: "20s" }}
+          >
+            {[...Array(3)].map((_, g) => (
+              <React.Fragment key={g}>
+                {[
+                  "₹4.8% avg. effective reward across users",
+                  "200+ credit cards tracked daily",
+                  "₹487 Cr corpus under intelligence",
+                  "50,000+ simulations every day",
+                  "Zero data breaches since inception",
+                  "HDFC Infinia · Axis Atlas · Amex Platinum · SBI Cashback",
+                ].map((t, i) => (
+                  <span
+                    key={i}
+                    className="inline-flex items-center gap-4 px-10 text-sm font-semibold text-white/25 border-r border-white/[0.05]"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-[#D4A853]/60" />
+                    {t}
+                  </span>
+                ))}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══ PRIVACY SECTION ═══════════════════════════════════════════════ */}
+      <section id="security" className="py-32 px-6 relative">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_30%_50%,rgba(212,168,83,0.04),transparent)]" />
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center relative">
+          <Reveal>
+            <div
+              className="w-12 h-12 rounded-2xl flex items-center justify-center mb-8"
+              style={{
+                background: "rgba(212,168,83,0.1)",
+                border: "1px solid rgba(212,168,83,0.2)",
+              }}
+            >
+              <ShieldCheck className="w-6 h-6 text-[#D4A853]" />
             </div>
-            <h2 className="font-serif text-5xl font-bold text-white mb-8 italic">
-              Privacy is <span className="text-yellow-400">Luxury</span>.
-            </h2>
-            <p className="text-slate-400 text-xl leading-relaxed mb-10">
-              Free apps sell your data to banks. We sell intelligence to you.
-              PaisaDekho Luxe uses <b>Zero-Knowledge Edge Computing</b>.
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#D4A853] mb-4">
+              Data Sovereignty
             </p>
-            <div className="space-y-6">
-              <SecurityPoint
-                title="On-Device Parsing"
-                desc="Your financial SMS and PDF statements are analyzed on your phone. Our servers only see the metadata needed for execution."
-              />
-              <SecurityPoint
-                title="Institutional API Sandboxing"
-                desc="We use AES-256 encrypted tokens. We never store your bank passwords or net-banking credentials."
-              />
-              <SecurityPoint
-                title="DPDP Act 2023 Compliant"
-                desc="Full data sovereignty. You can delete your entire financial vault with a single tap. Your data, your choice."
-              />
+            <h2 className="font-display text-5xl font-black text-white leading-tight mb-8">
+              Privacy is <em className="gold-shimmer not-italic">Luxury.</em>
+            </h2>
+            <p className="text-white/40 text-lg leading-relaxed mb-10">
+              Free apps sell your data to banks. We sell intelligence to you.
+              PaisaDekho Luxe uses{" "}
+              <strong className="text-white font-semibold">
+                Zero-Knowledge Edge Computing
+              </strong>
+              .
+            </p>
+            <div className="space-y-7">
+              {[
+                {
+                  title: "On-Device Parsing",
+                  desc: "Financial SMS and PDF statements are analyzed on your phone. Our servers only see the metadata needed for execution.",
+                },
+                {
+                  title: "AES-256 Token Sandboxing",
+                  desc: "We use encrypted tokens. We never store your bank passwords or net-banking credentials.",
+                },
+                {
+                  title: "DPDP Act 2023 Compliant",
+                  desc: "Full data sovereignty. Delete your entire financial vault with a single tap. Your data, your choice.",
+                },
+              ].map((p) => (
+                <div key={p.title} className="flex gap-4">
+                  <div
+                    className="mt-2 w-1.5 h-1.5 rounded-full shrink-0"
+                    style={{
+                      background: "#D4A853",
+                      boxShadow: "0 0 10px rgba(212,168,83,0.8)",
+                    }}
+                  />
+                  <div>
+                    <h5 className="font-display text-lg font-bold text-white mb-1.5">
+                      {p.title}
+                    </h5>
+                    <p className="text-white/35 text-sm leading-relaxed">
+                      {p.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
-          <div className="grid grid-cols-2 gap-6">
-            <ComplianceBox title="Data Residency" value="INDIA" />
-            <ComplianceBox title="Audit Standard" value="SOC2" />
-            <ComplianceBox title="Encryption" value="AES-256" />
-            <ComplianceBox title="Regulation" value="ISO 27001" />
-          </div>
+          </Reveal>
+
+          <Reveal delay={0.2}>
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { title: "Data Residency", value: "INDIA" },
+                { title: "Audit Standard", value: "SOC 2" },
+                { title: "Encryption", value: "AES-256" },
+                { title: "Regulation", value: "ISO 27001" },
+              ].map((b) => (
+                <div
+                  key={b.title}
+                  className="p-10 rounded-3xl bg-[#0d0d0d] border border-white/[0.06] text-center flex flex-col justify-center hover:border-[rgba(212,168,83,0.25)] transition-colors group"
+                >
+                  <span className="font-display text-2xl font-black text-[#D4A853] mb-2 tabular-nums group-hover:gold-shimmer transition-all">
+                    {b.value}
+                  </span>
+                  <span className="text-[9px] text-white/25 uppercase tracking-[0.3em] font-bold">
+                    {b.title}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* 8. FOOTER (Master Version) */}
-      <footer className="py-24 px-6 bg-black border-t border-white/5">
+      {/* ══ FINAL CTA ═════════════════════════════════════════════════════ */}
+      <section className="py-32 px-6 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_50%,rgba(212,168,83,0.07),transparent)]" />
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(212,168,83,0.8) 1px,transparent 1px),linear-gradient(90deg,rgba(212,168,83,0.8) 1px,transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
+        />
+        <Reveal>
+          <div className="max-w-4xl mx-auto text-center relative">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[rgba(212,168,83,0.08)] border border-[rgba(212,168,83,0.2)] text-[#D4A853] text-[9px] font-bold uppercase tracking-[0.3em] mb-8">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#D4A853] glow-dot" />
+              Private Access · Limited Onboarding
+            </div>
+            <h2 className="font-display text-5xl md:text-7xl font-black text-white leading-tight mb-6">
+              Your Corpus Is <br />
+              <em className="gold-shimmer not-italic">Waiting.</em>
+            </h2>
+            <p className="text-white/35 text-xl mb-12 leading-relaxed">
+              Join 1,200+ wealth-conscious Indians who've already put their
+              money to work with Butler.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link href="/auth/login">
+                <button
+                  className="group relative overflow-hidden px-12 py-5 rounded-full text-base font-bold uppercase tracking-[0.15em] text-black transition-all hover:scale-105"
+                  style={{
+                    background:
+                      "linear-gradient(135deg,#D4A853 0%,#F0C878 50%,#D4A853 100%)",
+                    boxShadow: "0 0 60px rgba(212,168,83,0.3)",
+                  }}
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    Apply for Private Access{" "}
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </button>
+              </Link>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
+      {/* ══ FOOTER ════════════════════════════════════════════════════════ */}
+      <footer className="py-20 px-6 border-t border-white/[0.05] bg-black">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
             <div className="md:col-span-2">
-              <div className="flex items-center gap-3 mb-8">
-                <img
-                  src="/favicon.ico"
-                  alt="Logo"
-                  className="w-10 h-10 rounded-lg"
-                />
-                <span className="font-serif text-3xl font-bold text-white tracking-tighter">
+              <div className="flex items-center gap-3 mb-6">
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{
+                    background: "linear-gradient(135deg,#D4A853,#8B6914)",
+                  }}
+                >
+                  <span className="text-black font-black font-display">P</span>
+                </div>
+                <span className="font-display text-2xl font-black text-white tracking-tight">
                   PaisaDekho Luxe
                 </span>
               </div>
-              <p className="text-slate-500 text-xs font-bold uppercase tracking-[0.2em] leading-loose max-w-sm">
-                A Private Wealth Network for the Top 1%. <br />
-                Managed by PD Finserve Pvt Ltd. <br />
+              <p className="text-white/20 text-[10px] font-bold uppercase tracking-[0.2em] leading-loose max-w-sm">
+                A Private Wealth Network for the Top 1%.
+                <br />
+                Managed by PD Finserve Pvt Ltd.
+                <br />
+                Bengaluru · Dubai · London
               </p>
             </div>
             <div>
-              <h5 className="text-white font-extrabold text-[10px] uppercase tracking-[0.3em] mb-8">
+              <h5 className="text-white/50 font-bold text-[9px] uppercase tracking-[0.35em] mb-6">
                 Asset Classes
               </h5>
-              <FooterLink>Mutual Funds Alpha</FooterLink>
-              <FooterLink>Corporate Bonds</FooterLink>
-              <FooterLink>Indian Equities</FooterLink>
-              <FooterLink>Real Estate REITs</FooterLink>
+              {[
+                "Mutual Funds Alpha",
+                "Corporate Bonds",
+                "Indian Equities",
+                "Real Estate REITs",
+              ].map((l) => (
+                <Link
+                  key={l}
+                  href="#"
+                  className="block text-white/25 hover:text-[#D4A853] text-[10px] font-bold uppercase tracking-[0.2em] mb-3.5 transition-colors"
+                >
+                  {l}
+                </Link>
+              ))}
             </div>
             <div>
-              <h5 className="text-white font-extrabold text-[10px] uppercase tracking-[0.3em] mb-8">
+              <h5 className="text-white/50 font-bold text-[9px] uppercase tracking-[0.35em] mb-6">
                 Legal
               </h5>
-              <FooterLink>Privacy Vault</FooterLink>
-              <FooterLink>DPDP Rights</FooterLink>
-              <FooterLink>Terms of Service</FooterLink>
-              <FooterLink>Risk Disclosures</FooterLink>
+              {[
+                "Privacy Vault",
+                "DPDP Rights",
+                "Terms of Service",
+                "Risk Disclosures",
+              ].map((l) => (
+                <Link
+                  key={l}
+                  href="#"
+                  className="block text-white/25 hover:text-[#D4A853] text-[10px] font-bold uppercase tracking-[0.2em] mb-3.5 transition-colors"
+                >
+                  {l}
+                </Link>
+              ))}
             </div>
           </div>
-          <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-            <span className="text-[10px] text-slate-700 font-extrabold tracking-[0.4em] uppercase">
-              © 2026 PAISADEKHO LUXE • BENGALURU • DUBAI • LONDON
+          <div className="pt-10 border-t border-white/[0.05] flex flex-col md:flex-row justify-between items-center gap-4">
+            <span className="text-[9px] text-white/15 font-bold tracking-[0.4em] uppercase">
+              © 2026 PAISADEKHO LUXE · BENGALURU · DUBAI · LONDON
             </span>
-            <div className="flex gap-4">
-              <div className="w-8 h-8 rounded bg-white/5" />
-              <div className="w-8 h-8 rounded bg-white/5" />
-            </div>
+            <p className="text-[9px] text-white/15">
+              Investments are subject to market risk. Please read all scheme
+              documents carefully.
+            </p>
           </div>
         </div>
       </footer>
@@ -537,48 +1451,80 @@ export default function LandingPage() {
   );
 }
 
-// --- MASTER HELPERS ---
+// ─── SUB-COMPONENTS ───────────────────────────────────────────────────────────
 
-function NavLink({ href, children }: any) {
+function UseCaseBig({ icon: Icon, title, desc, stat, statLabel, accent }: any) {
   return (
-    <Link
-      href={href}
-      className="text-[10px] font-extrabold uppercase tracking-[0.3em] text-slate-500 hover:text-yellow-400 transition-colors"
-    >
-      {children}
-    </Link>
-  );
-}
-
-function UseCaseCard({ icon: Icon, title, desc }: any) {
-  return (
-    <div className="p-10 rounded-[2.5rem] bg-white/[0.03] border border-white/5 hover:border-gold/20 transition-all group">
-      <div className="w-14 h-14 rounded-2xl bg-gold/10 flex items-center justify-center mb-8 group-hover:bg-gold group-hover:text-black transition-all">
-        <Icon className="w-7 h-7" />
+    <div className="group h-full p-8 sm:p-10 rounded-3xl bg-white/[0.025] border border-white/[0.07] hover:border-[rgba(212,168,83,0.2)] transition-all duration-300 cursor-default relative overflow-hidden">
+      <div
+        className="absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{ background: `${accent}08`, transform: "translate(30%,-30%)" }}
+      />
+      <div
+        className="w-12 h-12 rounded-2xl flex items-center justify-center mb-8 border transition-colors"
+        style={{ background: `${accent}12`, borderColor: `${accent}25` }}
+        onMouseEnter={(e) => (e.currentTarget.style.background = `${accent}22`)}
+        onMouseLeave={(e) => (e.currentTarget.style.background = `${accent}12`)}
+      >
+        <Icon className="w-6 h-6" style={{ color: accent }} />
       </div>
-      <h4 className="text-xl font-bold text-white mb-4 tracking-tight font-serif">
+      <h4 className="font-display text-2xl font-bold text-white mb-4 leading-tight">
         {title}
       </h4>
-      <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
+      <p className="text-white/35 text-sm leading-relaxed mb-8">{desc}</p>
+      <div className="flex items-end gap-2">
+        <span
+          className="font-display text-4xl font-black"
+          style={{ color: accent }}
+        >
+          {stat}
+        </span>
+        <span className="text-[10px] text-white/25 uppercase tracking-widest font-bold mb-1">
+          {statLabel}
+        </span>
+      </div>
     </div>
   );
 }
 
-function InvestmentCard({ icon: Icon, title, desc, span, tags }: any) {
+function UseCaseSmall({ icon: Icon, title, desc }: any) {
+  return (
+    <div className="group p-7 rounded-2xl bg-white/[0.025] border border-white/[0.07] hover:border-[rgba(212,168,83,0.2)] transition-all duration-300 cursor-default">
+      <div className="w-10 h-10 rounded-xl bg-[rgba(212,168,83,0.08)] border border-[rgba(212,168,83,0.15)] flex items-center justify-center mb-6 group-hover:bg-[rgba(212,168,83,0.15)] transition-colors">
+        <Icon className="w-5 h-5 text-[#D4A853]" />
+      </div>
+      <h4 className="font-display text-lg font-bold text-white mb-3">
+        {title}
+      </h4>
+      <p className="text-white/30 text-sm leading-relaxed">{desc}</p>
+    </div>
+  );
+}
+
+function BentoCard({ icon: Icon, title, desc, tags, large }: any) {
   return (
     <div
-      className={`${span} p-10 rounded-[3rem] bg-zinc-900/40 border border-white/5 hover:border-gold/30 transition-all group cursor-pointer relative overflow-hidden`}
+      className={`group p-8 sm:p-10 rounded-3xl bg-[#0d0d0d] border border-white/[0.06] hover:border-[rgba(212,168,83,0.2)] transition-all duration-300 cursor-default relative overflow-hidden ${large ? "h-full" : ""}`}
     >
-      <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-8 group-hover:bg-gold group-hover:text-black transition-all">
-        <Icon className="w-7 h-7" />
+      <div
+        className="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{
+          background: "rgba(212,168,83,0.05)",
+          transform: "translate(30%,-30%)",
+        }}
+      />
+      <div className="w-12 h-12 rounded-2xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center mb-8 group-hover:bg-[rgba(212,168,83,0.1)] group-hover:border-[rgba(212,168,83,0.2)] transition-all">
+        <Icon className="w-6 h-6 text-white/40 group-hover:text-[#D4A853] transition-colors" />
       </div>
-      <h4 className="text-2xl font-bold text-white mb-4 font-serif">{title}</h4>
-      <p className="text-slate-400 text-sm leading-relaxed mb-8">{desc}</p>
+      <h4 className="font-display text-2xl font-bold text-white mb-3">
+        {title}
+      </h4>
+      <p className="text-white/35 text-sm leading-relaxed mb-7">{desc}</p>
       <div className="flex flex-wrap gap-2">
-        {tags.map((tag: any) => (
+        {tags.map((tag: string) => (
           <span
             key={tag}
-            className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[9px] font-bold uppercase text-slate-500 group-hover:text-slate-200"
+            className="px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-[9px] font-bold uppercase tracking-widest text-white/25 group-hover:text-white/50 transition-colors"
           >
             {tag}
           </span>
@@ -588,94 +1534,29 @@ function InvestmentCard({ icon: Icon, title, desc, span, tags }: any) {
   );
 }
 
-function TabBtn({ label, active, onClick }: any) {
-  return (
-    <button
-      onClick={onClick}
-      className={`px-8 py-3 rounded-full text-[10px] font-extrabold uppercase tracking-widest transition-all ${active ? "bg-yellow-400 text-black shadow-lg shadow-gold/20" : "bg-white/5 text-slate-500 border border-white/10 hover:border-white/20"}`}
-    >
-      {label}
-    </button>
-  );
-}
-
-function ComparisonRow({ label, value, active }: any) {
+function LabRow({
+  label,
+  val,
+  active,
+}: {
+  label: string;
+  val: string;
+  active?: boolean;
+}) {
   return (
     <div
-      className={`flex justify-between p-5 rounded-2xl border ${active ? "border-gold/30 bg-gold/5" : "border-white/5 bg-white/5"}`}
+      className={`flex justify-between items-center p-4 rounded-xl border transition-colors ${active ? "bg-[rgba(212,168,83,0.06)] border-[rgba(212,168,83,0.2)]" : "bg-white/[0.03] border-white/[0.06]"}`}
     >
       <span
-        className={`text-sm ${active ? "text-white font-bold" : "text-slate-400"}`}
+        className={`text-sm ${active ? "text-white font-semibold" : "text-white/40"}`}
       >
         {label}
       </span>
       <span
-        className={`text-sm ${active ? "text-yellow-400 font-bold" : "text-slate-500"}`}
+        className={`text-sm font-bold ${active ? "text-[#D4A853]" : "text-white/25"}`}
       >
-        {value}
+        {val}
       </span>
     </div>
-  );
-}
-
-function AllocationRow({ label, pct }: any) {
-  return (
-    <div className="flex justify-between items-center p-5 rounded-2xl bg-white/5 border border-white/5">
-      <span className="text-sm text-slate-400 font-medium">{label}</span>
-      <span className="text-sm font-bold text-white">{pct}</span>
-    </div>
-  );
-}
-
-function SecurityPoint({ title, desc }: any) {
-  return (
-    <div className="flex gap-5 mb-8">
-      <div className="mt-1.5 w-2 h-2 rounded-full bg-gold shrink-0 shadow-[0_0_10px_rgba(212,175,55,0.8)]" />
-      <div>
-        <h5 className="text-white font-bold text-lg mb-2">{title}</h5>
-        <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
-      </div>
-    </div>
-  );
-}
-
-function ComplianceBox({ title, value }: any) {
-  return (
-    <div className="p-10 rounded-[2.5rem] bg-black border border-white/5 text-center flex flex-col justify-center">
-      <span className="block text-yellow-400 font-bold text-2xl mb-2 tracking-tighter">
-        {value}
-      </span>
-      <span className="text-slate-600 text-[9px] uppercase tracking-[0.3em] font-extrabold">
-        {title}
-      </span>
-    </div>
-  );
-}
-
-function StepCard({ num, icon: Icon, title, desc }: any) {
-  return (
-    <div className="p-10 rounded-[2.5rem] bg-white/[0.03] border border-white/5 hover:border-gold/20 transition-all relative group">
-      <span className="absolute top-6 right-8 text-5xl font-serif font-bold text-white/[0.03] group-hover:text-yellow-400/5 transition-colors">
-        {num}
-      </span>
-      <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center mb-8 border border-gold/20">
-        <Icon className="w-6 h-6 text-yellow-400" />
-      </div>
-      <h4 className="text-xl font-bold text-white mb-3 tracking-tight">
-        {title}
-      </h4>
-      <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
-    </div>
-  );
-}
-
-function FooterLink({ children }: any) {
-  return (
-    <Link
-      href="#"
-      className="block text-slate-600 hover:text-yellow-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 transition-colors"
-    >
-      {children}
-    </Link>
   );
 }

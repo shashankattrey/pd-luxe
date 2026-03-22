@@ -16,6 +16,7 @@ const SAMPLE_SPEND = {
   fuel: 2000,
   rent: 0,
   other: 4000,
+  grocery: 4000,
 };
 
 const COMPARE_ROWS = [

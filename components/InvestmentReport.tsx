@@ -21,6 +21,8 @@ import {
 import { useFundData } from "@/hooks/useFundData";
 import type { FundData as FundLiveData } from "@/hooks/useFundData";
 import { cn } from "@/lib/utils";
+import { WaterfallProgress } from "@/components/WaterfallProgress";
+import { WealthScore } from "./WealthScore";
 
 interface InvestmentReportProps {
   profile: FinancialProfile;
@@ -1232,6 +1234,28 @@ export default function InvestmentReport({
   userName = "Investor",
   marketData,
 }: InvestmentReportProps) {
+  const calculateHealthScore = () => {
+    let score = 0;
+    const monthlyExp = profile.monthlyExpenses || 1;
+    const emergencyMonths = (profile.emergencyFund || 0) / monthlyExp;
+  
+    // 1. Emergency Fund (Max 40 points)
+    score += Math.min(emergencyMonths * 6.6, 40);
+  
+    // 2. Insurance (Max 30 points)
+    if (profile.insuranceTerm) score += 15;
+    if (profile.insuranceHealth) score += 15;
+  
+    // 3. Goal Feasibility (Max 30 points)
+    const surplus = (profile.monthlyIncome || 0) - (profile.monthlyExpenses || 0);
+const feasibility = assessGoalFeasibility(profile, surplus);
+    if (feasibility.status === "achievable") score += 30;
+    if (feasibility.status === "stretch") score += 15;
+  
+    return Math.round(score);
+  };
+  
+  const healthScore = calculateHealthScore();
   const [showAllFunds, setShowAllFunds] = useState(false);
   const {
     allFunds,
@@ -1276,6 +1300,7 @@ export default function InvestmentReport({
     () => generatePlanSummary(profile, recs),
     [recs, profile],
   );
+
   const feasibility = useMemo(() => {
     const sp = Math.max(
       0,
@@ -1411,6 +1436,7 @@ export default function InvestmentReport({
           style={{ background: "rgba(245,158,11,0.04)" }}
         />
       </div>
+
 
       {/* HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 pt-2">

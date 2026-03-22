@@ -3,21 +3,19 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  User,
+  User as UserIcon, // Renamed to avoid conflict with User type
   Building2,
   Plus,
   Trash2,
   ShieldCheck,
   TrendingUp,
   Wallet,
-  CreditCard,
-  ArrowUpRight,
-  Info,
   X,
-  Bot,
+  Loader2, // Added for loading state
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import StatementUpload from "@/components/StatementUpload"; // Ensure path is correct
+import StatementUpload from "@/components/StatementUpload";
+import { useUser } from "@/context/UserContext"; // Update this path to your context file
 
 interface LinkedAccount {
   id: number;
@@ -29,9 +27,9 @@ interface LinkedAccount {
 }
 
 export default function ProfilePage() {
+  const { user, isLoading } = useUser(); // 👈 Consume the context
   const [isUploadOpen, setIsUploadOpen] = useState(false);
 
-  // Lazy initialization for localStorage
   const [accounts, setAccounts] = useState<LinkedAccount[]>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("paisa_linked_accounts");
@@ -53,7 +51,7 @@ export default function ProfilePage() {
     const updated = [...accounts, newAccount];
     setAccounts(updated);
     localStorage.setItem("paisa_linked_accounts", JSON.stringify(updated));
-    setIsUploadOpen(false); // Close modal after success
+    setIsUploadOpen(false);
   };
 
   const removeAccount = (id: number) => {
@@ -67,6 +65,15 @@ export default function ProfilePage() {
     0,
   );
 
+  // Show a loading spinner while fetching user data
+  if (isLoading) {
+    return (
+      <div className="flex h-[60vh] items-center justify-center">
+        <Loader2 className="w-8 h-8 text-amber-400 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-5xl mx-auto space-y-8 pb-32 animate-in fade-in duration-700">
       {/* ─── Profile Header ─── */}
@@ -76,7 +83,7 @@ export default function ProfilePage() {
           <div className="relative">
             <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-amber-500 to-yellow-200 p-1">
               <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
-                <User size={40} className="text-amber-400" />
+                <UserIcon size={40} className="text-amber-400" />
               </div>
             </div>
             <div className="absolute -bottom-1 -right-1 bg-green-500 w-7 h-7 rounded-full border-4 border-black flex items-center justify-center">
@@ -85,14 +92,19 @@ export default function ProfilePage() {
           </div>
           <div className="text-center md:text-left flex-1">
             <h1 className="text-3xl font-serif font-bold text-white mb-1">
-              Shashank Attrey
+              {/* 👈 Dynamic User Name */}
+              {user?.name || "Anonymous User"}
             </h1>
+            <p className="text-sm text-muted-foreground mb-2">
+              {/* 👈 Dynamic Email */}
+              {user?.email}
+            </p>
             <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-2">
               <span className="text-[10px] bg-amber-400/10 text-amber-400 px-3 py-1 rounded-full border border-amber-400/20 font-bold uppercase tracking-widest">
-                Founder Status
+                Verified Member
               </span>
               <span className="text-[10px] bg-white/5 text-muted-foreground px-3 py-1 rounded-full border border-white/10 font-bold uppercase tracking-widest">
-                pd-luxe
+                Tier 1
               </span>
             </div>
           </div>
@@ -172,7 +184,6 @@ export default function ProfilePage() {
           </section>
         </div>
 
-        {/* Sidebar Summary */}
         <div className="space-y-6">
           <div className="p-8 rounded-[2rem] bg-gradient-to-br from-amber-400 to-orange-600 text-black shadow-2xl relative overflow-hidden group">
             <h4 className="font-bold text-xs uppercase opacity-70 mb-1">
@@ -196,7 +207,6 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* ─── UPLOAD MODAL ─── */}
       <AnimatePresence>
         {isUploadOpen && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">

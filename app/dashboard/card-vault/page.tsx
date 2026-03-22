@@ -60,6 +60,7 @@ export default function CardVaultPage() {
   // ALIGNED: Using the keys expected by calculateInDepthSavings
   const [spend, setSpend] = useState<SpendProfile>({
     food: 10000,
+    grocery: 5000,
     shopping: 20000, // Mapping for Amazon/Flipkart
     travel: 15000, // Mapping for Flights/Hotels
     utilities: 5000,

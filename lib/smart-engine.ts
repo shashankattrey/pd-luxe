@@ -100,6 +100,8 @@ export interface FinancialProfile {
   prefersOldRegime: boolean;
   includeStepUp: boolean;
   inflationRate: number; // default 6
+  insuranceTerm: boolean;
+  insuranceHealth: boolean;
 }
 
 export const DEFAULT_PROFILE: FinancialProfile = {
@@ -136,6 +138,8 @@ export const DEFAULT_PROFILE: FinancialProfile = {
   prefersOldRegime: false,
   includeStepUp: false,
   inflationRate: 6,
+  insuranceTerm: false,   // ADD THIS
+  insuranceHealth: false, // ADD THIS
 };
 
 export interface LiveRates {
@@ -455,7 +459,8 @@ export function assessGoalFeasibility(
 
   alts.push({
     label: `1. Lower target to ₹${(projected / 100_000).toFixed(0)}L`,
-    description: `What you CAN achieve in ${p.goalYears} years with ₹${goalSurplus.toLocaleString()}/mo SIP`,
+    // Use a fallback of 0 if goalSurplus is missing
+    description: `What you CAN achieve in ${p.goalYears} years with ₹${(goalSurplus || 0).toLocaleString()}/mo SIP`,
     action: `Start the plan below — you'll reach ₹${(projected / 100_000).toFixed(0)}L by ${new Date().getFullYear() + p.goalYears} (worth ₹${(realProjected / 100_000).toFixed(0)}L in today's money)`,
   });
 
