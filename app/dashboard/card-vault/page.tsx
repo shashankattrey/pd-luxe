@@ -42,7 +42,7 @@ import {
 const PieChartClient = dynamic(() => import("@/components/PieChartClient"), {
   ssr: false,
   loading: () => (
-    <div className="h-52 md:h-64 w-full bg-white/5 animate-pulse rounded-full mx-auto aspect-square" />
+    <div className="h-52 w-full bg-white/5 animate-pulse rounded-full" />
   ),
 });
 
