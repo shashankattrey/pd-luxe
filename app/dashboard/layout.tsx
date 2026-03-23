@@ -374,20 +374,7 @@ export default function DashboardLayout({
               </span>
             </div>
             {/* Header right: alerts + profile avatar */}
-            <div className="flex items-center gap-3">
-              <Link href="/dashboard/alerts">
-                <button className="relative w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/5 text-muted-foreground hover:text-foreground transition-colors">
-                  <Bell className="w-4 h-4" />
-                  {/* Alert dot */}
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-amber-400 rounded-full" />
-                </button>
-              </Link>
-              <Link href="/dashboard/settings">
-                <button className="w-8 h-8 rounded-full bg-amber-400/20 flex items-center justify-center text-amber-400 hover:bg-amber-400/30 transition-colors">
-                  <User className="w-4 h-4" />
-                </button>
-              </Link>
-            </div>
+            
           </header>
         )}
 

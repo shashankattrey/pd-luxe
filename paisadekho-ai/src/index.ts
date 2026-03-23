@@ -28,22 +28,31 @@ export interface Env {
   PROD_FRONTEND_URL: string;
   GOOGLE_CLIENT_ID: string;
   GOOGLE_CLIENT_SECRET: string;
+  DB: any; // ✅ Add this so TypeScript doesn't complain
 }
 
 // --- WORKER CODE ---
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
-    const origin = "https://pd-luxe.vercel.app";
+    const requestOrigin = request.headers.get("Origin");
+    const allowedOrigins = [
+      "https://pd-luxe.vercel.app",
+      "http://localhost:3000",
+      "http://127.0.0.1:3000",
+    ];
 
     // Helper to apply CORS headers to all responses
+    const corsOrigin = allowedOrigins.includes(requestOrigin || "")
+      ? requestOrigin!
+      : "https://pd-luxe.vercel.app";
+
     const corsHeaders = {
-      "Access-Control-Allow-Origin": origin,
+      "Access-Control-Allow-Origin": corsOrigin,
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
       "Access-Control-Allow-Credentials": "true",
     };
-
     // --- HANDLE CORS PREFLIGHT ---
     if (request.method === "OPTIONS") {
       return new Response(null, { headers: corsHeaders });
@@ -165,6 +174,40 @@ export default {
       } catch (err) {
         return new Response(`Unauthorized: ${err}`, {
           status: 401,
+          headers: corsHeaders,
+        });
+      }
+    }
+    if (url.pathname === "/api/ipos" && request.method === "GET") {
+      try {
+        // 1. Query your specific table
+        const { results } = await env.DB.prepare(
+          "SELECT * FROM ipo_tracker WHERE status IN ('🔥 OPEN NOW', '⏳ Upcoming') ORDER BY open_date DESC",
+        ).all();
+
+        // 2. Map DB columns to Frontend keys
+        const formattedIpos = results.map((ipo: any) => ({
+          id: ipo.id.toString(),
+          company: ipo.company_name, // Mapping company_name -> company
+          status: ipo.status?.toLowerCase() || "upcoming",
+          priceRange: ipo.price_range,
+          lotSize: ipo.lot_size,
+          opens: ipo.open_date,
+          closes: ipo.close_date,
+          issue: ipo.issue_size_cr ? `₹${ipo.issue_size_cr} Cr` : "TBD",
+          listing: ipo.listing_at,
+          // Visual defaults since these aren't in your DB table yet
+          logo: ipo.company_name.substring(0, 2).toUpperCase(),
+          accent: "#38bdf8",
+          gradient: "from-sky-900 to-blue-950",
+        }));
+
+        return new Response(JSON.stringify(formattedIpos), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      } catch (err: any) {
+        return new Response(JSON.stringify({ error: err.message }), {
+          status: 500,
           headers: corsHeaders,
         });
       }

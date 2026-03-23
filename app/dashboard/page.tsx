@@ -1,7 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useTransform,
+  animate,
+} from "framer-motion";
 import Link from "next/link";
 import {
   Sparkles,
@@ -17,15 +23,15 @@ import {
   Flame,
   Bell,
   Calendar,
-  Tag,
   Loader2,
+  ChevronLeft,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { creditCards } from "@/lib/credit-cards-data";
 import { useUser } from "@/context/UserContext";
 import { useFundData } from "@/hooks/useFundData";
 
-// ─── ANIMATION ───────────────────────────────────────────────────────────────
+// ─── ANIMATION HELPER ────────────────────────────────────────────────────────
 const stagger = (i: number) => ({
   initial: { opacity: 0, y: 20 },
   animate: {
@@ -48,212 +54,122 @@ function getTimeOfDay() {
   return { label: "evening", emoji: "🌆" };
 }
 
-// 1. Loading Shield: Prevents static fallback flicker
+const getMinInvestment = (priceRange: any, lotSize: any): string => {
+  try {
+    // Extracts "98.00" from "93.00 to 98.00"
+    const parts = priceRange.split("to");
+    const upperPrice = parseFloat(
+      parts[parts.length - 1].replace(/,/g, "").trim(),
+    );
 
-// ─── IPO DATA ─────────────────────────────────────────────────────────────────
-export const IPOS = [
-  {
-    id: "1",
-    company: "Hyundai India",
-    sector: "Automobile",
-    type: "Mainboard",
-    status: "ongoing" as const,
-    priceRange: "₹1,865 – ₹1,960",
-    lotSize: 7,
-    minInvest: "₹13,720",
-    gmp: "+₹180 (9.2%)",
-    gmpPos: true,
-    opens: "Oct 15, 2025",
-    closes: "Oct 17, 2025",
-    allotment: "Oct 18, 2025",
-    listing: "Oct 22, 2025",
-    issue: "₹27,870 Cr",
-    closesMs: new Date("2025-10-17T18:00:00").getTime(),
-    logo: "HY",
-    gradient: "from-sky-900 to-blue-950",
-    accent: "#38bdf8",
-    about:
-      "Hyundai Motor India Limited is the Indian arm of South Korean automotive giant Hyundai Motor Company. It is one of India's largest passenger vehicle manufacturers with a strong presence across segments.",
-    strengths: [
-      "Strong brand equity & parent backing",
-      "Expanding EV lineup with Creta Electric",
-      "14% market share in Indian PV segment",
-    ],
-    risks: [
-      "High competition from Maruti & Tata Motors",
-      "EV transition capital intensity",
-      "Global supply chain dependence",
-    ],
-    financials: {
-      revenue: "₹71,302 Cr",
-      pat: "₹6,060 Cr",
-      roe: "39.8%",
-      pe: "26.3×",
-    },
-  },
-  {
-    id: "2",
-    company: "Sagility India",
-    sector: "Healthcare IT",
-    type: "Mainboard",
-    status: "upcoming" as const,
-    priceRange: "₹28 – ₹30",
-    lotSize: 500,
-    minInvest: "₹15,000",
-    gmp: "+₹6 (20%)",
-    gmpPos: true,
-    opens: "Nov 05, 2025",
-    closes: "Nov 07, 2025",
-    allotment: "Nov 10, 2025",
-    listing: "Nov 12, 2025",
-    issue: "₹2,106 Cr",
-    closesMs: new Date("2025-11-07T18:00:00").getTime(),
-    logo: "SA",
-    gradient: "from-violet-900 to-purple-950",
-    accent: "#a78bfa",
-    about:
-      "Sagility India provides technology-enabled services to US health insurers and healthcare providers. Formerly part of Hinduja Global Solutions, it focuses exclusively on the US healthcare market.",
-    strengths: [
-      "100% focus on high-margin healthcare BPO",
-      "Long-term US insurer contracts",
-      "Improving EBITDA margins",
-    ],
-    risks: [
-      "Single geography concentration (US)",
-      "Customer concentration risk",
-      "Regulatory changes in US healthcare",
-    ],
-    financials: {
-      revenue: "₹4,754 Cr",
-      pat: "₹228 Cr",
-      roe: "11.2%",
-      pe: "46×",
-    },
-  },
-  {
-    id: "3",
-    company: "Swiggy",
-    sector: "Food Tech",
-    type: "Mainboard",
-    status: "upcoming" as const,
-    priceRange: "₹371 – ₹390",
-    lotSize: 38,
-    minInvest: "₹14,820",
-    gmp: "+₹22 (5.6%)",
-    gmpPos: true,
-    opens: "Nov 06, 2025",
-    closes: "Nov 08, 2025",
-    allotment: "Nov 11, 2025",
-    listing: "Nov 13, 2025",
-    issue: "₹11,327 Cr",
-    closesMs: new Date("2025-11-08T18:00:00").getTime(),
-    logo: "SW",
-    gradient: "from-orange-900 to-red-950",
-    accent: "#fb923c",
-    about:
-      "Swiggy is India's leading on-demand food delivery and quick commerce platform. It operates Instamart for 10-minute grocery delivery and competes directly with Zomato across major Indian cities.",
-    strengths: [
-      "#2 food delivery platform in India",
-      "Instamart quick commerce growing fast",
-      "Strong brand in urban India",
-    ],
-    risks: [
-      "Persistent losses — not yet profitable",
-      "Intense competition from Zomato",
-      "High cash burn in quick commerce expansion",
-    ],
-    financials: {
-      revenue: "₹11,247 Cr",
-      pat: "-₹2,350 Cr",
-      roe: "Negative",
-      pe: "N/M",
-    },
-  },
-  {
-    id: "4",
-    company: "NTPC Green Energy",
-    sector: "Renewable Energy",
-    type: "Mainboard",
-    status: "upcoming" as const,
-    priceRange: "₹102 – ₹108",
-    lotSize: 138,
-    minInvest: "₹14,904",
-    gmp: "+₹15 (13.9%)",
-    gmpPos: true,
-    opens: "Nov 19, 2025",
-    closes: "Nov 22, 2025",
-    allotment: "Nov 25, 2025",
-    listing: "Nov 27, 2025",
-    issue: "₹10,000 Cr",
-    closesMs: new Date("2025-11-22T18:00:00").getTime(),
-    logo: "NT",
-    gradient: "from-emerald-900 to-teal-950",
-    accent: "#34d399",
-    about:
-      "NTPC Green Energy is the renewable energy subsidiary of NTPC Limited, India's largest power utility. It targets 60 GW of renewable capacity by 2032 through solar, wind and hydro projects.",
-    strengths: [
-      "Sovereign-backed parent (NTPC)",
-      "Aggressive 60 GW capacity target",
-      "Attractive green energy tailwind",
-    ],
-    risks: [
-      "Execution risk at scale",
-      "Land acquisition challenges",
-      "Intermittent nature of renewables",
-    ],
-    financials: {
-      revenue: "₹1,962 Cr",
-      pat: "₹344 Cr",
-      roe: "8.6%",
-      pe: "58×",
-    },
-  },
-  {
-    id: "5",
-    company: "Envision Solar",
-    sector: "Clean Energy",
-    type: "SME",
-    status: "listed" as const,
-    priceRange: "₹52 – ₹55",
-    lotSize: 200,
-    minInvest: "₹11,000",
-    gmp: "+₹8 (14.5%)",
-    gmpPos: true,
-    opens: "Oct 01, 2025",
-    closes: "Oct 03, 2025",
-    allotment: "Oct 06, 2025",
-    listing: "Oct 08, 2025",
-    issue: "₹180 Cr",
-    closesMs: new Date("2025-10-03T18:00:00").getTime(),
-    logo: "EN",
-    gradient: "from-yellow-900 to-amber-950",
-    accent: "#fbbf24",
-    listedAt: "₹71 (+29.1%)",
-    about:
-      "Envision Solar develops turnkey solar power projects for industrial and commercial customers in Tier 2 and Tier 3 cities across India, with an asset-light execution model.",
-    strengths: [
-      "Asset-light model with good margins",
-      "Strong SME segment tailwinds",
-      "High 29% listing gain validates price",
-    ],
-    risks: [
-      "Small scale limits growth capital",
-      "Execution dependent on project pipeline",
-      "SME liquidity risk post-listing",
-    ],
-    financials: { revenue: "₹84 Cr", pat: "₹11 Cr", roe: "18.4%", pe: "32×" },
-  },
-] as const;
+    // Extracts "1200" from "1,200 Shares"
+    const units = parseInt(lotSize.replace(/[^0-9]/g, ""), 10);
 
-export type IPO = (typeof IPOS)[number];
-type IpoStatus = "ongoing" | "upcoming" | "listed";
-type IpoFilter = "all" | IpoStatus;
+    if (isNaN(upperPrice) || isNaN(units)) return "TBD";
 
+    const total = upperPrice * units;
+
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0,
+    }).format(total);
+  } catch (e) {
+    return "TBD";
+  }
+};
+
+// Handle manual drag end (remains the same)
+
+export interface IPO {
+  id: string;
+  company: string;
+  logo: string;
+  type: string;
+  sector: string;
+  priceRange: string;
+  issue: string;
+  opens: string;
+  closes: string;
+  status: string;
+  gmp: string;
+  gmpPos: boolean;
+  accent: string;
+  gradient: string;
+  closesMs: number;
+  minInvest: string;
+  lotSize: string | number; // Support both types from API
+  allotment: string;
+  listing: string;
+  about: string;
+  financials: {
+    revenue: string;
+    pat: string;
+    roe: string;
+    pe: string;
+  };
+  strengths: string[];
+  risks: string[];
+  listedAt?: string;
+}
+type IpoFilter = "all" | "ongoing" | "upcoming" | "listed";
 const devaluationAlerts = creditCards.filter(
   (c: any) =>
     (c.notesTnc ?? "").toLowerCase().includes("critical") ||
     (c.notesTnc ?? "").toLowerCase().includes("devaluation"),
 );
+
+// ─── TICKER ───────────────────────────────────────────────────────────────────
+function LiveTicker({
+  items,
+}: {
+  items: { label: string; val: string; up: boolean }[];
+}) {
+  if (!items.length) return null;
+  const tripled = [...items, ...items, ...items];
+  return (
+    <div className="fixed top-0 right-0 z-[250] overflow-hidden bg-black/60 backdrop-blur-xl border-b border-white/5 py-2.5 left-0 lg:left-64">
+      <div className="flex whitespace-nowrap animate-ticker-scroll">
+        {tripled.map((item, i) => (
+          <div key={i} className="inline-flex items-center mx-10 space-x-2.5">
+            <span className="text-[10px] font-bold text-white/40 tracking-[0.15em] uppercase">
+              {item.label}
+            </span>
+            <span className="text-[10px] font-black text-white tabular-nums">
+              {item.val}
+            </span>
+            <span
+              className={cn(
+                "text-[9px] font-bold",
+                item.up ? "text-emerald-400" : "text-rose-400",
+              )}
+            >
+              {item.up ? "▲" : "▼"}
+            </span>
+          </div>
+        ))}
+      </div>
+      <style jsx>{`
+        .animate-ticker-scroll {
+          display: flex;
+          width: max-content;
+          animation: ticker-slide 30s linear infinite;
+        }
+        @keyframes ticker-slide {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-33.33%);
+          }
+        }
+        .animate-ticker-scroll:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+    </div>
+  );
+}
 
 // ─── MINI SPARKLINE ───────────────────────────────────────────────────────────
 function MiniSparkline({
@@ -266,26 +182,20 @@ function MiniSparkline({
   const pts = positive
     ? [8, 13, 11, 17, 15, 20, 18, 22, 20, 25, 22, 27, 24, 30, 26, 28]
     : [28, 23, 25, 21, 23, 18, 21, 16, 19, 14, 17, 12, 14, 9, 11, 8];
-
-  const W = 60;
-  const H = 28;
-
-  const mn = Math.min(...pts);
-  const mx = Math.max(...pts);
-  const rng = mx - mn || 1;
-
+  const W = 60,
+    H = 28;
+  const mn = Math.min(...pts),
+    mx = Math.max(...pts),
+    rng = mx - mn || 1;
   const coords = pts.map((v, i) => ({
     x: (i / (pts.length - 1)) * W,
     y: H - ((v - mn) / rng) * (H - 4) - 2,
   }));
-
   const pathStr = coords
     .map((c, i) => (i === 0 ? "M" : "L") + `${c.x},${c.y}`)
     .join(" ");
   const area = pathStr + ` L${W},${H + 2} L0,${H + 2} Z`;
-  const lastPoint = coords[coords.length - 1];
   const uid = `sg${positive ? "p" : "n"}${color.replace("#", "")}`;
-
   return (
     <svg
       width={W}
@@ -299,8 +209,6 @@ function MiniSparkline({
           <stop offset="100%" stopColor={color} stopOpacity="0" />
         </linearGradient>
       </defs>
-
-      {/* ─── ANIMATED AREA FILL ─── */}
       <motion.path
         d={area}
         fill={`url(#${uid})`}
@@ -308,8 +216,6 @@ function MiniSparkline({
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.5 }}
       />
-
-      {/* ─── ANIMATED PATH DRAW ─── */}
       <motion.path
         d={pathStr}
         fill="none"
@@ -319,33 +225,13 @@ function MiniSparkline({
         strokeLinejoin="round"
         initial={{ pathLength: 0 }}
         animate={{ pathLength: 1 }}
-        transition={{
-          duration: 1.5,
-          ease: "easeInOut",
-          delay: 0.2,
-        }}
+        transition={{ duration: 1.5, ease: "easeInOut", delay: 0.2 }}
       />
-
-      {/* ─── LIVE PULSE POINT ─── */}
-      <motion.g
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 1.6, duration: 0.3 }}
-        transform={`translate(${lastPoint.x}, ${lastPoint.y})`}
-      >
-        <circle
-          r="3"
-          fill={color}
-          className="animate-pulse-slow"
-          style={{ transformOrigin: "center" }}
-        />
-        <circle r="1.5" fill={color} />
-      </motion.g>
     </svg>
   );
 }
 
-// ─── COUNTDOWN ────────────────────────────────────────────────────────────────
+// ─── COUNTDOWN ───────────────────────────────────────────────────────────────
 function Countdown({ targetMs }: { targetMs: number }) {
   const [parts, setParts] = useState({ d: 0, h: 0, m: 0 });
   useEffect(() => {
@@ -371,21 +257,182 @@ function Countdown({ targetMs }: { targetMs: number }) {
   );
 }
 
-// ─── IPO CARD (compact, no subscription bar) ──────────────────────────────────
-function IpoCard({ ipo, onClick }: { ipo: IPO; onClick: () => void }) {
+// ─── SWIPE CAROUSEL ───────────────────────────────────────────────────────────
+// A proper snap-scroll carousel:
+// • The active card is centered and full-width
+// • Prev/next cards peek in from the sides at reduced opacity + scale
+// • Swipe left/right OR tap arrow buttons to navigate
+// • Dot indicators at the bottom
+// • NO overflow from the parent — the carousel is fully self-contained
+
+interface CarouselProps<T> {
+  items: T[];
+  renderCard: (item: T, isActive: boolean) => React.ReactNode;
+  keyExtractor: (item: T) => string;
+  accentColor?: (item: T) => string;
+  autoPlay?: boolean; // New prop
+  interval?: number; // New prop
+}
+
+function SwipeCarousel<T>({
+  items,
+  renderCard,
+  keyExtractor,
+  accentColor,
+  autoPlay = true,
+  interval = 5000,
+}: CarouselProps<T>) {
+  const [active, setActive] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const dragX = useMotionValue(0);
+
+  const goTo = useCallback((idx: number, dir: number) => {
+    setDirection(dir);
+    setActive(idx);
+  }, []);
+
+  // This handles the automatic rotation
+  useEffect(() => {
+    if (!autoPlay || items.length <= 1) return;
+
+    const timer = setInterval(() => {
+      const nextIndex = active === items.length - 1 ? 0 : active + 1;
+      const dir = nextIndex === 0 ? -1 : 1;
+      goTo(nextIndex, dir);
+    }, interval);
+
+    return () => clearInterval(timer);
+  }, [active, items.length, autoPlay, interval, goTo]);
+
+  const handleDragEnd = useCallback(
+    (_: any, info: any) => {
+      const threshold = 60;
+      if (info.offset.x < -threshold && active < items.length - 1)
+        goTo(active + 1, 1);
+      else if (info.offset.x > threshold && active > 0) goTo(active - 1, -1);
+      dragX.set(0);
+    },
+    [active, items.length, goTo, dragX],
+  );
+  const variants = {
+    enter: (dir: number) => ({
+      x: dir > 0 ? "100%" : "-100%",
+      opacity: 0,
+      scale: 0.88,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      transition: { type: "spring" as const, stiffness: 340, damping: 34 },
+    },
+    exit: (dir: number) => ({
+      x: dir > 0 ? "-100%" : "100%",
+      opacity: 0,
+      scale: 0.88,
+      transition: { duration: 0.2 },
+    }),
+  };
+
+  if (!items.length) return null;
+  const accent = accentColor ? accentColor(items[active]) : "#fbbf24";
+
+  return (
+    <div className="w-full select-none">
+      {/* Card stage — overflow-hidden here clips ONLY the card visuals */}
+      <div
+        className="relative overflow-hidden rounded-2xl"
+        style={{ minHeight: 280 }}
+      >
+        {/* Peek shadow left */}
+        {active > 0 && (
+          <div className="absolute left-0 inset-y-0 w-8 flex items-center justify-start z-20 pl-1">
+            <div
+              className="w-6 h-6 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center cursor-pointer"
+              onClick={() => goTo(active - 1, -1)}
+            >
+              <ChevronLeft className="w-3.5 h-3.5 text-white/60" />
+            </div>
+          </div>
+        )}
+        {/* Peek shadow right */}
+        {active < items.length - 1 && (
+          <div className="absolute right-0 inset-y-0 w-8 flex items-center justify-end z-20 pr-1">
+            <div
+              className="w-6 h-6 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center cursor-pointer"
+              onClick={() => goTo(active + 1, 1)}
+            >
+              <ChevronRight className="w-3.5 h-3.5 text-white/60" />
+            </div>
+          </div>
+        )}
+
+        <AnimatePresence initial={false} custom={direction} mode="popLayout">
+          <motion.div
+            key={keyExtractor(items[active])}
+            custom={direction}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.15}
+            onDragEnd={handleDragEnd}
+            style={{ x: dragX, cursor: "grab" }}
+            className="w-full active:cursor-grabbing"
+          >
+            {renderCard(items[active], true)}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Dot indicators */}
+      {items.length > 1 && (
+        <div className="flex items-center justify-center gap-1.5 mt-4">
+          {items.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i, i > active ? 1 : -1)}
+              className="transition-all duration-200"
+            >
+              <div
+                className="rounded-full transition-all duration-300"
+                style={{
+                  width: i === active ? 20 : 6,
+                  height: 6,
+                  background: i === active ? accent : "rgba(255,255,255,0.15)",
+                }}
+              />
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Counter */}
+      <p className="text-center text-[10px] text-white/25 mt-2 tabular-nums">
+        {active + 1} / {items.length}
+      </p>
+    </div>
+  );
+}
+
+// ─── IPO CARD (for carousel) ──────────────────────────────────────────────────
+function IpoCard({
+  ipo,
+  onClick,
+  isActive,
+}: {
+  ipo: IPO;
+  onClick: () => void;
+  isActive?: boolean;
+}) {
   return (
     <div
       onClick={onClick}
-      className={cn(
-        "relative overflow-hidden rounded-2xl border cursor-pointer group transition-all duration-200 select-none",
-        ipo.status === "ongoing"
-          ? "border-orange-400/30  hover:border-orange-400/55"
-          : ipo.status === "listed"
-            ? "border-emerald-400/20 hover:border-emerald-400/45"
-            : "border-white/[0.08]   hover:border-white/[0.20]",
-      )}
+      className="relative overflow-hidden rounded-2xl cursor-pointer select-none"
     >
-      {/* BG */}
+      {/* BG layers */}
       <div
         className={cn(
           "absolute inset-0 bg-gradient-to-br opacity-55",
@@ -394,19 +441,19 @@ function IpoCard({ ipo, onClick }: { ipo: IPO; onClick: () => void }) {
       />
       <div className="absolute inset-0 bg-black/58" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_90%_10%,rgba(255,255,255,0.06),transparent)]" />
-      {/* Subtle dot-grid texture */}
       <div
         className="absolute inset-0 opacity-[0.06]"
         style={{
           backgroundImage:
-            "radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)",
+            "radial-gradient(circle,rgba(255,255,255,0.8) 1px,transparent 1px)",
           backgroundSize: "18px 18px",
         }}
       />
 
       {/* Status badge */}
       <div className="absolute top-3 right-3 z-10">
-        {ipo.status === "ongoing" ? (
+        {/* Check for the exact string from your DB */}
+        {ipo.status === "🔥 OPEN NOW" ? (
           <span className="flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-orange-400/20 text-orange-300 border border-orange-400/30">
             <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse inline-block" />
             LIVE
@@ -417,25 +464,26 @@ function IpoCard({ ipo, onClick }: { ipo: IPO; onClick: () => void }) {
           </span>
         ) : (
           <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-white/8 text-white/45 border border-white/10">
-            SOON
+            {/* Handle "⏳ Upcoming" or any other status */}
+            {ipo.status === "⏳ Upcoming" ? "SOON" : ipo.status.toUpperCase()}
           </span>
         )}
       </div>
 
-      <div className="relative p-4">
-        {/* Logo + company */}
-        <div className="flex items-center gap-3 mb-4 pr-14">
+      <div className="relative p-5">
+        {/* Logo + name */}
+        <div className="flex items-center gap-3 mb-5 pr-16">
           <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-xs font-black text-white shrink-0"
+            className="w-11 h-11 rounded-xl flex items-center justify-center text-sm font-black text-white shrink-0"
             style={{
-              background: `${ipo.accent}20`,
+              background: `${ipo.accent}22`,
               border: `1px solid ${ipo.accent}35`,
             }}
           >
             {ipo.logo}
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-bold text-white leading-tight truncate">
+            <p className="text-base font-bold text-white leading-tight line-clamp-2">
               {ipo.company}
             </p>
             <div className="flex items-center gap-1.5 mt-0.5">
@@ -445,37 +493,37 @@ function IpoCard({ ipo, onClick }: { ipo: IPO; onClick: () => void }) {
               >
                 {ipo.type}
               </span>
-              <span className="text-[9px] text-white/30">{ipo.sector}</span>
+              <span className="text-[9px] text-white/35">{ipo.sector}</span>
             </div>
           </div>
         </div>
 
-        {/* 4-metric grid */}
-        <div className="grid grid-cols-2 gap-1.5 mb-3">
+        {/* 2-metric grid */}
+        <div className="grid grid-cols-2 gap-2 mb-3">
           {[
             { label: "Price Band", value: ipo.priceRange },
             { label: "Issue Size", value: ipo.issue },
           ].map((m) => (
-            <div key={m.label} className="rounded-xl bg-black/30 p-2.5">
+            <div key={m.label} className="rounded-xl bg-black/35 p-2.5">
               <p className="text-[9px] text-white/30 uppercase tracking-widest">
                 {m.label}
               </p>
-              <p className="text-[11px] font-bold text-white mt-0.5 tabular-nums leading-tight">
+              <p className="text-[12px] font-bold text-white mt-0.5 tabular-nums leading-tight">
                 {m.value}
               </p>
             </div>
           ))}
         </div>
 
-        {/* Dates row */}
-        <div className="flex items-center gap-1.5 mb-3 p-2 rounded-xl bg-black/20">
+        {/* Date strip */}
+        <div className="flex items-center gap-1.5 mb-4 px-2.5 py-2 rounded-xl bg-black/25">
           <Calendar className="w-3 h-3 text-white/25 shrink-0" />
-          <span className="text-[10px] text-white/40">{ipo.opens}</span>
+          <span className="text-[10px] text-white/45">{ipo.opens}</span>
           <span className="text-[10px] text-white/20">→</span>
-          <span className="text-[10px] text-white/40">{ipo.closes}</span>
+          <span className="text-[10px] text-white/45">{ipo.closes}</span>
         </div>
 
-        {/* GMP + status-specific bottom */}
+        {/* GMP + right stat */}
         <div className="flex items-end justify-between">
           <div>
             <p className="text-[9px] text-white/30 uppercase tracking-widest mb-0.5">
@@ -483,7 +531,7 @@ function IpoCard({ ipo, onClick }: { ipo: IPO; onClick: () => void }) {
             </p>
             <p
               className={cn(
-                "text-sm font-bold tabular-nums",
+                "text-base font-bold tabular-nums",
                 ipo.gmpPos ? "text-emerald-400" : "text-red-400",
               )}
             >
@@ -495,24 +543,27 @@ function IpoCard({ ipo, onClick }: { ipo: IPO; onClick: () => void }) {
               <p className="text-[9px] text-white/30 uppercase tracking-widest mb-0.5">
                 Listed at
               </p>
-              <p className="text-sm font-bold text-emerald-400 tabular-nums">
+              <p className="text-base font-bold text-emerald-400 tabular-nums">
                 {ipo.listedAt}
               </p>
             </div>
-          ) : ipo.status === "ongoing" ? (
+          ) : ipo.status === "🔥 OPEN NOW" ? ( // FIXED THIS LINE
             <div className="text-right">
               <p className="text-[9px] text-white/30 uppercase tracking-widest mb-0.5">
                 Closes in
               </p>
-              <Countdown targetMs={ipo.closesMs} />
+              <p className="text-base font-bold text-white tracking-tight">
+                <Countdown targetMs={ipo.closesMs} />
+              </p>
             </div>
           ) : (
-            <div className="text-right">
-              <p className="text-[9px] text-white/30 uppercase tracking-widest mb-0.5">
+            <div className="space-y-1">
+              <p className="text-[10px] text-white/30 uppercase tracking-wider">
                 Min. Invest
               </p>
-              <p className="text-[11px] font-bold text-white/70 tabular-nums">
-                {ipo.minInvest}
+              <p className="text-sm font-bold text-white">
+                {/* Use the helper here */}
+                {getMinInvestment(ipo.priceRange, ipo.lotSize)}
               </p>
             </div>
           )}
@@ -522,538 +573,692 @@ function IpoCard({ ipo, onClick }: { ipo: IPO; onClick: () => void }) {
   );
 }
 
-// ─── CARD TILE (replacing the cramped list rows) ──────────────────────────────
-function CardTile({ card, rank }: { card: any; rank: number }) {
+// ─── CREDIT CARD CAROUSEL CARD ───────────────────────────────────────────────
+function CreditCardCarouselItem({ card, rank }: { card: any; rank: number }) {
   const rate = (card.baseRewardRate * card.pointValue).toFixed(1);
   const isFree = card.annualFee === 0 || card.isLtf;
+
   return (
-    <Link href={`/dashboard/explore?card=${card.id}`}>
-      <motion.div
-        whileHover={{ y: -3 }}
-        whileTap={{ scale: 0.98 }}
-        className="group relative overflow-hidden rounded-2xl border border-white/[0.07] hover:border-amber-400/25 bg-white/[0.025] hover:bg-white/[0.04] transition-all cursor-pointer p-4"
-      >
-        {/* Rank */}
-        <span className="absolute top-3 right-3 text-[10px] font-black text-white/10 tabular-nums">
+    <Link
+      href={`/dashboard/explore?card=${card.id}`}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="relative overflow-hidden rounded-2xl bg-white/[0.025] border border-white/[0.09] p-5 cursor-pointer">
+        {/* Rank ghost */}
+        <span className="absolute top-4 right-4 text-[11px] font-black text-white/8 tabular-nums">
           #{rank}
         </span>
 
-        {/* Card visual */}
+        {/* Card physical visual */}
         <div
           className={cn(
-            "w-full h-16 rounded-xl bg-gradient-to-br relative overflow-hidden mb-3 shadow-lg",
+            "w-full rounded-2xl bg-gradient-to-br relative overflow-hidden mb-5 shadow-2xl",
             card.imageGradient || "from-zinc-700 to-zinc-900",
           )}
+          style={{ height: 130 }}
         >
           <div className="absolute inset-0 bg-gradient-to-br from-white/12 to-transparent" />
+          {/* Shimmer strip */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/8 to-transparent -skew-x-12" />
           {/* EMV chip */}
-          <div className="absolute top-3 left-3 w-7 h-5 rounded-md bg-gradient-to-br from-amber-300/30 to-amber-500/20 border border-white/15" />
-          {/* Contactless */}
-          <div className="absolute top-3.5 right-3 opacity-20">
-            <div className="w-3.5 h-3.5 rounded-full border border-white" />
-            <div className="w-5 h-5 rounded-full border border-white absolute -top-0.5 -left-0.5" />
+          <div className="absolute top-4 left-4 w-9 h-7 rounded-lg bg-gradient-to-br from-amber-300/40 to-amber-500/25 border border-white/20">
+            <div className="absolute inset-1 grid grid-cols-2 gap-px opacity-40">
+              <div className="rounded-sm bg-white/30" />
+              <div className="rounded-sm bg-white/30" />
+              <div className="rounded-sm bg-white/30" />
+              <div className="rounded-sm bg-white/30" />
+            </div>
           </div>
-          {/* Bank name */}
-          <div className="absolute bottom-2.5 left-3">
-            <p className="text-[9px] font-bold text-white/60 uppercase tracking-widest">
+          {/* Contactless */}
+          <div className="absolute top-5 right-4 opacity-25">
+            <div className="w-4 h-4 rounded-full border border-white" />
+            <div className="w-6 h-6 rounded-full border border-white absolute -top-1 -left-1" />
+            <div className="w-8 h-8 rounded-full border border-white absolute -top-2 -left-2" />
+          </div>
+          {/* Network */}
+          <div className="absolute bottom-3 right-4">
+            <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
+              {card.network}
+            </span>
+          </div>
+          {/* Bank */}
+          <div className="absolute bottom-3 left-4">
+            <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest">
               {card.bank}
             </p>
           </div>
+          {/* Horizontal line detail */}
+          <div className="absolute bottom-10 left-0 right-0 h-px bg-white/5" />
         </div>
 
-        <p className="text-sm font-semibold text-white/85 group-hover:text-white transition-colors leading-snug line-clamp-1 mb-1">
+        {/* Card name */}
+        <p className="text-[15px] font-bold text-white leading-snug mb-3 line-clamp-2">
           {card.name}
         </p>
 
+        {/* Bottom row */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2 flex-wrap">
             {isFree && (
-              <span className="text-[9px] font-bold text-emerald-400 bg-emerald-400/10 px-1.5 py-px rounded-full border border-emerald-400/20">
+              <span className="text-[9px] font-bold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-full border border-emerald-400/20">
                 FREE
               </span>
             )}
             {card.devaluation2026 && (
-              <span className="text-[9px] text-orange-400 bg-orange-400/10 px-1.5 py-px rounded-full">
+              <span className="text-[9px] text-orange-400 bg-orange-400/10 px-2 py-0.5 rounded-full border border-orange-400/15">
                 ⚠ 2026
               </span>
             )}
             {!isFree && !card.devaluation2026 && (
-              <span className="text-[10px] text-white/30 tabular-nums">
+              <span className="text-[11px] text-white/30 tabular-nums">
                 ₹{card.annualFee.toLocaleString()}/yr
               </span>
             )}
           </div>
-          <p className="text-base font-bold text-amber-400 tabular-nums">
-            {rate}%
-          </p>
+          <div className="text-right">
+            <p className="text-xl font-black text-amber-400 tabular-nums leading-none">
+              {rate}%
+            </p>
+            <p className="text-[9px] text-white/25 mt-0.5">reward rate</p>
+          </div>
         </div>
-      </motion.div>
+
+        {/* Stats strip */}
+        <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-white/[0.06]">
+          {[
+            {
+              label: "Dining",
+              val: card.diningRate > 0 ? `${card.diningRate}%` : "—",
+            },
+            {
+              label: "Online",
+              val:
+                Math.max(card.amazonRate || 0, card.flipkartRate || 0) > 0
+                  ? `${Math.max(card.amazonRate || 0, card.flipkartRate || 0)}%`
+                  : "—",
+            },
+            {
+              label: "Lounge",
+              val:
+                card.domesticLounge === "Unlimited"
+                  ? "∞"
+                  : (parseInt(card.domesticLounge) || 0) > 0
+                    ? String(parseInt(card.domesticLounge))
+                    : "—",
+            },
+          ].map((s) => (
+            <div key={s.label} className="text-center">
+              <p className="text-[11px] font-bold text-white/60 tabular-nums">
+                {s.val}
+              </p>
+              <p className="text-[8px] text-white/25 uppercase tracking-widest mt-0.5">
+                {s.label}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
     </Link>
   );
 }
 
-// ─── MAIN DASHBOARD ───────────────────────────────────────────────────────────
+// ─── DIVIDER ─────────────────────────────────────────────────────────────────
+function Divider({ label }: { label: string }) {
+  return (
+    <div className="flex items-center gap-3 mb-4">
+      <div className="h-px flex-1 bg-white/[0.06]" />
+      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/20 shrink-0">
+        {label}
+      </p>
+      <div className="h-px flex-1 bg-white/[0.06]" />
+    </div>
+  );
+}
+
+function SectionHeader({
+  title,
+  subtitle,
+  href,
+  accent = "#fbbf24",
+}: {
+  title: string;
+  subtitle: string;
+  href: string;
+  accent?: string;
+}) {
+  return (
+    <div className="flex items-end justify-between mb-4">
+      <div>
+        <h2 className="text-base font-bold text-white">{title}</h2>
+        <p className="text-xs text-white/35 mt-0.5">{subtitle}</p>
+      </div>
+      <Link href={href}>
+        <button
+          className="flex items-center gap-1 text-xs hover:opacity-80 transition-opacity"
+          style={{ color: accent }}
+        >
+          See all <ArrowRight className="w-3 h-3" />
+        </button>
+      </Link>
+    </div>
+  );
+}
+
+// ─── MAIN DASHBOARD ──────────────────────────────────────────────────────────
 export default function DashboardHome() {
   const { user } = useUser();
   const isNewUser = !(user as any)?.hasCompletedOnboarding;
   const time = getTimeOfDay();
-  const [ipoFilter, setIpoFilter] = useState<IpoFilter>("all");
   const [selectedIpo, setSelectedIpo] = useState<IPO | null>(null);
-  const { rates, ratesLoading } = useFundData();
-  if (ratesLoading || !rates) {
-    return (
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-        {[...Array(4)].map((_, i) => (
-          <div
-            key={i}
-            className="h-[108px] rounded-2xl bg-white/[0.02] border border-white/5 animate-pulse flex items-center justify-center"
-          >
-            <Loader2 className="w-4 h-4 text-white/10 animate-spin" />
-          </div>
-        ))}
-      </div>
-    );
-  }
+  const {
+    ipos: rawIpos,
+    iposLoading,
+    rates,
+    ratesLoading,
+    loading: fundsLoading,
+  } = useFundData();
+  const ipos = rawIpos as unknown as IPO[];
+  const [ipoFilter, setIpoFilter] = useState<IpoFilter>("all");
 
-  const marketItems = [
-    {
-      label: "NIFTY 50",
-      value: rates.equity.nifty50.value.toLocaleString("en-IN"),
-      change: `${rates.equity.nifty50.changePct >= 0 ? "+" : ""}${rates.equity.nifty50.changePct.toFixed(2)}%`,
-      pos: rates.equity.nifty50.changePct >= 0,
-      sub: "NSE Index",
-    },
-    {
-      label: "SENSEX",
-      value: rates.equity.sensex.value.toLocaleString("en-IN"),
-      change: `${rates.equity.sensex.changePct >= 0 ? "+" : ""}${rates.equity.sensex.changePct.toFixed(2)}%`,
-      pos: rates.equity.sensex.changePct >= 0,
-      sub: "BSE Index",
-    },
-    {
-      label: "Gold 24K",
-      value: `₹${rates.gold.price24k.toLocaleString("en-IN")}`,
-      change: `+${rates.gold.sgb.interestRate}%`,
-      pos: true,
-      sub: "SGB Yield / 10g",
-    },
-    {
-      label: "USD / INR",
-      value: `₹${rates.macro.usdInr.toFixed(2)}`,
-      change: `${rates.macro.inflation}%`,
-      pos: rates.macro.inflation < 6, // Green if inflation is under control
-      sub: "Macro Inflation",
-    },
-  ];
-  const topCards = [...creditCards]
-    .sort(
-      (a: any, b: any) =>
-        b.baseRewardRate * b.pointValue - a.baseRewardRate * a.pointValue,
-    )
-    .slice(0, 4);
+  // const activeIpos = useMemo(
+  //   () => ipos.filter((ipo) => ipo.status === "ongoing"),
+  //   [ipos],
+  // );
 
-  const filteredIpos = IPOS.filter(
-    (i) => ipoFilter === "all" || i.status === ipoFilter,
+  // const upcomingIpos = useMemo(
+  //   () => ipos.filter((ipo) => ipo.status === "upcoming"),
+  //   [ipos],
+  // );
+
+  const filteredIpos = useMemo(() => {
+    if (ipoFilter === "all") return ipos;
+
+    // Use the EXACT strings from your console log
+    const statusMap: Record<string, string> = {
+      ongoing: "🔥 open now",
+      upcoming: "⏳ upcoming",
+      listed: "listed",
+    };
+
+    const filtered = ipos.filter((ipo) => ipo.status === statusMap[ipoFilter]);
+    return filtered;
+  }, [ipos, ipoFilter]);
+
+  const topCards = useMemo(
+    () =>
+      [...creditCards]
+        .sort(
+          (a: any, b: any) =>
+            b.baseRewardRate * b.pointValue - a.baseRewardRate * a.pointValue,
+        )
+        .slice(0, 6),
+    [],
   );
 
-  // Show IPO detail overlay
+  const tickerItems = useMemo(() => {
+    if (!rates) return [];
+    return [
+      {
+        label: "Nifty 50",
+        val: rates.equity.nifty50.value.toLocaleString("en-IN"),
+        up: rates.equity.nifty50.changePct >= 0,
+      },
+      {
+        label: "Sensex",
+        val: rates.equity.sensex.value.toLocaleString("en-IN"),
+        up: rates.equity.sensex.changePct >= 0,
+      },
+      {
+        label: "Gold 24K",
+        val: `₹${rates.gold.price24k.toLocaleString("en-IN")}`,
+        up: true,
+      },
+      { label: "USD/INR", val: rates.macro.usdInr.toFixed(2), up: false },
+      { label: "PPF", val: `${rates.govtSchemes.ppf.rate}%`, up: true },
+      { label: "SGB", val: `${rates.govtSchemes.rbiBonds.rate}%`, up: true },
+      { label: "Inflation", val: `${rates.macro.inflation}%`, up: false },
+    ];
+  }, [rates]);
+
+  const marketItems = useMemo(() => {
+    if (!rates) return [];
+    return [
+      {
+        label: "NIFTY 50",
+        value: rates.equity.nifty50.value.toLocaleString("en-IN"),
+        change: `${rates.equity.nifty50.changePct >= 0 ? "+" : ""}${rates.equity.nifty50.changePct.toFixed(2)}%`,
+        pos: rates.equity.nifty50.changePct >= 0,
+        sub: "NSE Index",
+      },
+      {
+        label: "SENSEX",
+        value: rates.equity.sensex.value.toLocaleString("en-IN"),
+        change: `${rates.equity.sensex.changePct >= 0 ? "+" : ""}${rates.equity.sensex.changePct.toFixed(2)}%`,
+        pos: rates.equity.sensex.changePct >= 0,
+        sub: "BSE Index",
+      },
+      {
+        label: "Gold 24K",
+        value: `₹${rates.gold.price24k.toLocaleString("en-IN")}`,
+        change: `+${rates.gold.sgb.interestRate}%`,
+        pos: true,
+        sub: "SGB Yield/10g",
+      },
+      {
+        label: "USD / INR",
+        value: `₹${rates.macro.usdInr.toFixed(2)}`,
+        change: `${rates.macro.inflation}%`,
+        pos: rates.macro.inflation < 6,
+        sub: "Macro Inflation",
+      },
+    ];
+  }, [rates]);
+
   if (selectedIpo)
     return <IpoDetail ipo={selectedIpo} onBack={() => setSelectedIpo(null)} />;
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-4 sm:px-0 space-y-8 pb-12">
-      {/* ══ HERO ═══════════════════════════════════════════════════════ */}
-      <motion.div
-        {...stagger(0)}
-        className="relative overflow-hidden rounded-3xl"
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-950" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_85%_20%,rgba(251,191,36,0.09),transparent)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_40%_60%_at_5%_85%,rgba(52,211,153,0.06),transparent)]" />
-        <div
-          className="absolute inset-0 opacity-[0.035]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,1) 1px,transparent 1px)",
-            backgroundSize: "44px 44px",
-          }}
-        />
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
-
-        <div className="relative p-6 sm:p-8">
-          <div className="flex items-center gap-2 mb-5">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
-            </span>
-            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-400/70">
-              PaisaDekho · Live
-            </span>
-          </div>
-          <p className="text-xs text-white/35 uppercase tracking-widest font-medium mb-1">
-            Good {time.label} {time.emoji}
-          </p>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-none">
-            {user?.name ?? (
-              <span className="inline-block w-36 h-9 bg-white/8 rounded-xl animate-pulse align-middle" />
-            )}
-          </h1>
-          <p className="text-sm text-white/40 mt-2 mb-7">
-            {isNewUser
-              ? "Your AI financial co-pilot is ready."
-              : "Here's your financial snapshot for today."}
-          </p>
-          <div className="flex gap-2 flex-wrap">
-            {[
-              {
-                label: "Cards in vault",
-                val: creditCards.length,
-                color: "#fbbf24",
-              },
-              {
-                label: "2026 alerts",
-                val: devaluationAlerts.length,
-                color: "#f87171",
-              },
-              {
-                label: "IPOs live",
-                val: IPOS.filter((i) => i.status === "ongoing").length,
-                color: "#34d399",
-              },
-              {
-                label: "Upcoming IPOs",
-                val: IPOS.filter((i) => i.status === "upcoming").length,
-                color: "#a78bfa",
-              },
-            ].map((s) => (
-              <div
-                key={s.label}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/[0.08]"
-              >
-                <span
-                  className="text-sm font-bold tabular-nums"
-                  style={{ color: s.color }}
+    <div className="min-h-screen">
+      <LiveTicker items={tickerItems} />
+      <div className="w-full mt-10 max-w-2xl mx-auto px-4 sm:px-0 space-y-8 pb-12">
+        {/* ══ HERO ═══════════════════════════════════════════════════════ */}
+        <motion.div
+          {...stagger(0)}
+          className="relative overflow-hidden rounded-3xl"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-950" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_85%_20%,rgba(251,191,36,0.09),transparent)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_40%_60%_at_5%_85%,rgba(52,211,153,0.06),transparent)]" />
+          <div
+            className="absolute inset-0 opacity-[0.035]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,1) 1px,transparent 1px)",
+              backgroundSize: "44px 44px",
+            }}
+          />
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
+          <div className="relative p-6 sm:p-8">
+            <div className="flex items-center gap-2 mb-5">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+              </span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-400/70">
+                PaisaDekho · Live
+              </span>
+            </div>
+            <p className="text-xs text-white/35 uppercase tracking-widest font-medium mb-1">
+              Good {time.label} {time.emoji}
+            </p>
+            <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-none">
+              {user?.name ?? (
+                <span className="inline-block w-36 h-9 bg-white/8 rounded-xl animate-pulse align-middle" />
+              )}
+            </h1>
+            <p className="text-sm text-white/40 mt-2 mb-7">
+              {isNewUser
+                ? "Your AI financial co-pilot is ready."
+                : "Here's your financial snapshot for today."}
+            </p>
+            <div className="flex gap-2 flex-wrap">
+              {[
+                {
+                  label: "Cards in vault",
+                  val: creditCards.length,
+                  color: "#fbbf24",
+                },
+                {
+                  label: "2026 alerts",
+                  val: devaluationAlerts.length,
+                  color: "#f87171",
+                },
+                {
+                  label: "IPOs live",
+                  // Change "ongoing" to "🔥 OPEN NOW"
+                  val: ipos.filter((i) => i.status?.trim() === "🔥 open now")
+                    .length,
+                  color: "#34d399",
+                },
+                {
+                  label: "Upcoming IPOs",
+                  // Change "upcoming" to "⏳ Upcoming"
+                  val: ipos.filter((i) => i.status?.trim() === "⏳ upcoming")
+                    .length,
+                  color: "#a78bfa",
+                },
+              ].map((s) => (
+                <div
+                  key={s.label}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/[0.08]"
                 >
-                  {s.val}
-                </span>
-                <span className="text-[10px] text-white/35">{s.label}</span>
-              </div>
-            ))}
+                  <span
+                    className="text-sm font-bold tabular-nums"
+                    style={{ color: s.color }}
+                  >
+                    {s.val}
+                  </span>
+                  <span className="text-[10px] text-white/35">{s.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
 
-      {/* ══ ONBOARDING ═════════════════════════════════════════════════ */}
-      {isNewUser && (
-        <motion.div {...stagger(1)}>
-          <Link href="/dashboard/advisor">
-            <div className="group relative overflow-hidden rounded-2xl border border-amber-400/20 bg-gradient-to-br from-amber-500/10 via-zinc-900/80 to-zinc-900 cursor-pointer hover:border-amber-400/40 transition-all duration-300">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-400/6 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
-              <div className="absolute top-0 right-0 w-40 h-40 bg-amber-400/5 rounded-full blur-3xl" />
-              <div className="relative flex items-start gap-4 p-5">
-                <div className="relative shrink-0 mt-0.5">
-                  <div className="w-14 h-9 rounded-xl bg-gradient-to-br from-amber-400/25 to-amber-600/15 border border-amber-400/30 flex items-center justify-center shadow-xl shadow-amber-900/40">
-                    <Sparkles className="w-5 h-5 text-amber-400" />
+        {/* ══ ONBOARDING ════════════════════════════════════════════════ */}
+        {isNewUser && (
+          <motion.div {...stagger(1)}>
+            <Link href="/dashboard/advisor">
+              <div className="group relative overflow-hidden rounded-2xl border border-amber-400/20 bg-gradient-to-br from-amber-500/10 via-zinc-900/80 to-zinc-900 cursor-pointer hover:border-amber-400/40 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-400/6 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
+                <div className="absolute top-0 right-0 w-40 h-40 bg-amber-400/5 rounded-full blur-3xl" />
+                <div className="relative flex items-start gap-4 p-5">
+                  <div className="relative shrink-0 mt-0.5">
+                    <div className="w-14 h-9 rounded-xl bg-gradient-to-br from-amber-400/25 to-amber-600/15 border border-amber-400/30 flex items-center justify-center shadow-xl shadow-amber-900/40">
+                      <Sparkles className="w-5 h-5 text-amber-400" />
+                    </div>
+                    <div className="absolute -bottom-1.5 -right-1.5 w-14 h-9 rounded-xl bg-white/[0.04] border border-white/8 -z-10" />
+                    <div className="absolute -bottom-3 -right-3 w-14 h-9 rounded-xl bg-white/[0.02] border border-white/5 -z-20" />
                   </div>
-                  <div className="absolute -bottom-1.5 -right-1.5 w-14 h-9 rounded-xl bg-white/[0.04] border border-white/8 -z-10" />
-                  <div className="absolute -bottom-3 -right-3 w-14 h-9 rounded-xl bg-white/[0.02] border border-white/5 -z-20" />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-white text-[15px] leading-snug">
+                      Get your AI financial plan
+                    </p>
+                    <p className="text-sm text-white/45 mt-1">
+                      Upload your statement · personalised card + SIP in 30s
+                    </p>
+                    <div className="flex items-center gap-4 mt-3">
+                      {(
+                        [
+                          ["Upload", Upload],
+                          ["AI analysis", Sparkles],
+                          ["30 sec", Zap],
+                        ] as const
+                      ).map(([label, Icon]) => (
+                        <span
+                          key={label}
+                          className="flex items-center gap-1 text-[10px] text-white/35"
+                        >
+                          <Icon className="w-3 h-3" /> {label}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-amber-400/10 border border-amber-400/20 flex items-center justify-center group-hover:bg-amber-400/20 transition-colors shrink-0 mt-0.5">
+                    <ArrowRight className="w-4 h-4 text-amber-400 group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </motion.div>
+        )}
+
+        {/* ══ ALERTS ════════════════════════════════════════════════════ */}
+        {devaluationAlerts.length > 0 && (
+          <motion.div {...stagger(2)}>
+            <Link href="/dashboard/alerts">
+              <div className="group flex items-center gap-3 p-4 rounded-xl bg-red-500/[0.06] border border-red-500/[0.14] hover:border-red-500/30 transition-all cursor-pointer">
+                <div className="w-8 h-8 rounded-full bg-red-500/15 flex items-center justify-center shrink-0">
+                  <Bell className="w-4 h-4 text-red-400" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-bold text-white text-[15px] leading-snug">
-                    Get your AI financial plan
+                  <p className="text-sm font-semibold text-red-300">
+                    {devaluationAlerts.length} card
+                    {devaluationAlerts.length > 1 ? "s" : ""} with 2026 reward
+                    changes
                   </p>
-                  <p className="text-sm text-white/45 mt-1">
-                    Upload your statement · personalised card + SIP in 30s
+                  <p className="text-xs text-white/30 mt-0.5 truncate">
+                    {devaluationAlerts
+                      .slice(0, 2)
+                      .map((c: any) => c.name)
+                      .join(" · ")}
+                    {devaluationAlerts.length > 2 &&
+                      ` +${devaluationAlerts.length - 2} more`}
                   </p>
-                  <div className="flex items-center gap-4 mt-3">
-                    {(
-                      [
-                        ["Upload", Upload],
-                        ["AI analysis", Sparkles],
-                        ["30 sec", Zap],
-                      ] as const
-                    ).map(([label, Icon]) => (
-                      <span
-                        key={label}
-                        className="flex items-center gap-1 text-[10px] text-white/35"
-                      >
-                        <Icon className="w-3 h-3" /> {label}
-                      </span>
-                    ))}
-                  </div>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-amber-400/10 border border-amber-400/20 flex items-center justify-center group-hover:bg-amber-400/20 transition-colors shrink-0 mt-0.5">
-                  <ArrowRight className="w-4 h-4 text-amber-400 group-hover:translate-x-0.5 transition-transform" />
-                </div>
+                <ChevronRight className="w-4 h-4 text-red-400/40 group-hover:text-red-400 group-hover:translate-x-0.5 transition-all shrink-0" />
               </div>
-            </div>
-          </Link>
-        </motion.div>
-      )}
-
-      {/* ══ ALERTS ═════════════════════════════════════════════════════ */}
-      {devaluationAlerts.length > 0 && (
-        <motion.div {...stagger(2)}>
-          <Link href="/dashboard/alerts">
-            <div className="group flex items-center gap-3 p-4 rounded-xl bg-red-500/[0.06] border border-red-500/[0.14] hover:border-red-500/30 transition-all cursor-pointer">
-              <div className="w-8 h-8 rounded-full bg-red-500/15 flex items-center justify-center shrink-0">
-                <Bell className="w-4 h-4 text-red-400" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-red-300">
-                  {devaluationAlerts.length} card
-                  {devaluationAlerts.length > 1 ? "s" : ""} with 2026 reward
-                  changes
-                </p>
-                <p className="text-xs text-white/30 mt-0.5 truncate">
-                  {devaluationAlerts
-                    .slice(0, 2)
-                    .map((c: any) => c.name)
-                    .join(" · ")}
-                  {devaluationAlerts.length > 2 &&
-                    ` +${devaluationAlerts.length - 2} more`}
-                </p>
-              </div>
-              <ChevronRight className="w-4 h-4 text-red-400/40 group-hover:text-red-400 group-hover:translate-x-0.5 transition-all shrink-0" />
-            </div>
-          </Link>
-        </motion.div>
-      )}
-
-      {/* ══ QUICK ACTIONS ══════════════════════════════════════════════ */}
-      <motion.div {...stagger(3)}>
-        <Divider label="Quick Actions" />
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-          {(
-            [
-              {
-                icon: Sparkles,
-                title: "Best Card",
-                sub: "For my spending",
-                href: "/dashboard/advisor",
-                c: "#fbbf24",
-                bg: "from-amber-500/12  to-amber-500/3",
-              },
-              {
-                icon: TrendingUp,
-                title: "Plan SIP",
-                sub: "Investment advice",
-                href: "/dashboard/wealth-advisor",
-                c: "#34d399",
-                bg: "from-emerald-500/12 to-emerald-500/3",
-              },
-              {
-                icon: BarChart3,
-                title: "Compare",
-                sub: "Cards side by side",
-                href: "/dashboard/compare",
-                c: "#60a5fa",
-                bg: "from-blue-500/12    to-blue-500/3",
-              },
-              {
-                icon: Wallet,
-                title: "Funds",
-                sub: "500+ direct funds",
-                href: "/dashboard/funds",
-                c: "#a78bfa",
-                bg: "from-violet-500/12  to-violet-500/3",
-              },
-            ] as const
-          ).map((item) => (
-            <Link key={item.href} href={item.href}>
-              <motion.div
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className={cn(
-                  "relative overflow-hidden p-4 rounded-2xl bg-gradient-to-br border border-white/[0.07] cursor-pointer group hover:border-white/[0.14] transition-all",
-                  item.bg,
-                )}
-              >
-                <div
-                  className="w-8 h-8 rounded-xl flex items-center justify-center mb-3"
-                  style={{ background: `${item.c}18` }}
-                >
-                  <item.icon className="w-4 h-4" style={{ color: item.c }} />
-                </div>
-                <p className="text-sm font-bold text-white leading-tight">
-                  {item.title}
-                </p>
-                <p className="text-[10px] text-white/35 mt-0.5">{item.sub}</p>
-              </motion.div>
             </Link>
-          ))}
-        </div>
-      </motion.div>
+          </motion.div>
+        )}
 
-      {/* ══ IPO TRACKER ════════════════════════════════════════════════ */}
-      <motion.div {...stagger(4)}>
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2.5">
-            <Flame className="w-4 h-4 text-orange-400" />
-            <h2 className="text-base font-bold text-white">IPO Tracker</h2>
-            {IPOS.filter((i) => i.status === "ongoing").length > 0 && (
-              <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-orange-400/15 text-orange-400 border border-orange-400/20">
-                {IPOS.filter((i) => i.status === "ongoing").length} LIVE
-              </span>
+        {/* ══ QUICK ACTIONS ═════════════════════════════════════════════ */}
+        <motion.div {...stagger(3)}>
+          <Divider label="Quick Actions" />
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            {(
+              [
+                {
+                  icon: Sparkles,
+                  title: "Best Card",
+                  sub: "For my spending",
+                  href: "/dashboard/advisor",
+                  c: "#fbbf24",
+                  bg: "from-amber-500/12  to-amber-500/3",
+                },
+                {
+                  icon: TrendingUp,
+                  title: "Plan SIP",
+                  sub: "Investment advice",
+                  href: "/dashboard/wealth-advisor",
+                  c: "#34d399",
+                  bg: "from-emerald-500/12 to-emerald-500/3",
+                },
+                {
+                  icon: BarChart3,
+                  title: "Compare",
+                  sub: "Cards side by side",
+                  href: "/dashboard/compare",
+                  c: "#60a5fa",
+                  bg: "from-blue-500/12    to-blue-500/3",
+                },
+                {
+                  icon: Wallet,
+                  title: "Funds",
+                  sub: "500+ direct funds",
+                  href: "/dashboard/funds",
+                  c: "#a78bfa",
+                  bg: "from-violet-500/12  to-violet-500/3",
+                },
+              ] as const
+            ).map((item) => (
+              <Link key={item.href} href={item.href}>
+                <motion.div
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.97 }}
+                  className={cn(
+                    "relative overflow-hidden p-4 rounded-2xl bg-gradient-to-br border border-white/[0.07] cursor-pointer group hover:border-white/[0.14] transition-all",
+                    item.bg,
+                  )}
+                >
+                  <div
+                    className="w-8 h-8 rounded-xl flex items-center justify-center mb-3"
+                    style={{ background: `${item.c}18` }}
+                  >
+                    <item.icon className="w-4 h-4" style={{ color: item.c }} />
+                  </div>
+                  <p className="text-sm font-bold text-white leading-tight">
+                    {item.title}
+                  </p>
+                  <p className="text-[10px] text-white/35 mt-0.5">{item.sub}</p>
+                </motion.div>
+              </Link>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* ══ IPO TRACKER — SWIPE CAROUSEL ══════════════════════════════ */}
+        <motion.div {...stagger(4)}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2.5">
+              <Flame className="w-4 h-4 text-orange-400" />
+              <h2 className="text-base font-bold text-white">IPO Tracker</h2>
+
+              {/* ✅ FIXED: Changed "ongoing" to "🔥 OPEN NOW" to match your DB */}
+              {ipos.filter((i) => i.status === "🔥 OPEN NOW").length > 0 && (
+                <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-orange-400/15 text-orange-400 border border-orange-400/20">
+                  {ipos.filter((i) => i.status === "🔥 OPEN NOW").length} LIVE
+                </span>
+              )}
+            </div>
+
+            {/* <button className="text-xs text-amber-400/70 hover:text-amber-400 flex items-center gap-1 transition-colors">
+              View all <ArrowRight className="w-3 h-3" />
+            </button> */}
+          </div>
+
+          {/* Filter pills — Logic looks good here as you already updated to emoji strings */}
+          <div className="flex gap-2 mb-5 overflow-x-auto scrollbar-none pb-0.5">
+            {(["all", "ongoing", "upcoming", "listed"] as IpoFilter[]).map(
+              (f) => {
+                const count =
+                  f === "all"
+                    ? ipos.length
+                    : f === "ongoing"
+                      ? ipos.filter((i) => i.status === "🔥 open now").length
+                      : f === "upcoming"
+                        ? ipos.filter((i) => i.status === "⏳ upcoming").length
+                        : ipos.filter((i) => i.status === "listed").length;
+
+                return (
+                  <button
+                    key={f}
+                    onClick={() => setIpoFilter(f)}
+                    className={cn(
+                      "shrink-0 h-7 px-3.5 rounded-full text-[11px] font-semibold border transition-all capitalize",
+                      ipoFilter === f
+                        ? "bg-white/10 border-white/20 text-white"
+                        : "bg-transparent border-white/[0.07] text-white/30 hover:text-white/60",
+                    )}
+                  >
+                    {f === "all"
+                      ? `All (${count})`
+                      : f === "ongoing"
+                        ? `Live (${count})`
+                        : f === "upcoming"
+                          ? `Coming (${count})`
+                          : `Listed (${count})`}
+                  </button>
+                );
+              },
             )}
           </div>
-          <button className="text-xs text-amber-400/70 hover:text-amber-400 flex items-center gap-1 transition-colors">
-            View all <ArrowRight className="w-3 h-3" />
-          </button>
-        </div>
 
-        {/* Filter pills */}
-        <div className="flex gap-2 mb-4 overflow-x-auto scrollbar-none pb-0.5">
-          {(
-            [
-              ["all", `All (${IPOS.length})`],
-              [
-                "ongoing",
-                `Live (${IPOS.filter((i) => i.status === "ongoing").length})`,
-              ],
-              [
-                "upcoming",
-                `Coming (${IPOS.filter((i) => i.status === "upcoming").length})`,
-              ],
-              [
-                "listed",
-                `Listed (${IPOS.filter((i) => i.status === "listed").length})`,
-              ],
-            ] as [IpoFilter, string][]
-          ).map(([f, label]) => (
-            <button
-              key={f}
-              onClick={() => setIpoFilter(f)}
-              className={cn(
-                "shrink-0 h-7 px-3.5 rounded-full text-[11px] font-semibold border transition-all",
-                ipoFilter === f
-                  ? "bg-white/10 border-white/20 text-white"
-                  : "bg-transparent border-white/[0.07] text-white/30 hover:text-white/60",
-              )}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-
-        {/*
-          Carousel overflow fix.
-          The page wrapper has px-4 padding. To allow mobile horizontal scroll
-          without cropping, we use a viewport-relative trick:
-            - The scroll div itself breaks out of the column with a negative margin
-              equal to the padding, and adds the same padding back as left/right
-              padding on the inner row — so the first card aligns with content.
-            - `overflow-x-auto` is set only on the direct scroll wrapper.
-            - On sm+, we switch to a standard 2-col grid (no scrolling).
-          Crucially there is NO overflow-x-hidden anywhere in the ancestor chain,
-          which would create a scroll container that traps the overflow and prevents
-          scrolling from working.
-        */}
-        {/* Mobile: break out of padded column so scroll rail touches screen edges */}
-        <div className="sm:hidden -mx-4 overflow-x-auto scrollbar-none pb-2">
-          <div className="flex gap-3 px-4" style={{ width: 2 }}>
-            <AnimatePresence mode="popLayout">
-              {filteredIpos.map((ipo, i) => (
-                <motion.div
-                  key={ipo.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.94 }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                    transition: { delay: i * 0.05 },
-                  }}
-                  exit={{ opacity: 0, scale: 0.94 }}
-                  style={{ width: 248 }}
-                >
-                  <IpoCard ipo={ipo} onClick={() => setSelectedIpo(ipo)} />
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-        </div>
-        {/* sm+: regular 2-col grid, no scrolling */}
-        <div className="hidden sm:grid sm:grid-cols-2 gap-3">
-          {filteredIpos.map((ipo) => (
-            <IpoCard
-              key={ipo.id}
-              ipo={ipo}
-              onClick={() => setSelectedIpo(ipo)}
+          {/* Swipe Carousel */}
+          {ipos.length > 0 ? (
+            <SwipeCarousel
+              items={filteredIpos}
+              interval={4000}
+              keyExtractor={(ipo) => ipo?.id || Math.random().toString()}
+              accentColor={(ipo) => ipo?.accent || "#38bdf8"}
+              renderCard={(ipo, isActive) => {
+                // Corrected Syntax: Use curly braces and an explicit return
+                if (!ipo) return null;
+                return (
+                  <IpoCard
+                    ipo={ipo}
+                    isActive={isActive}
+                    onClick={() => setSelectedIpo(ipo)}
+                  />
+                );
+              }}
             />
-          ))}
-        </div>
-
-        <p className="text-[10px] text-white/20 mt-2.5 text-right">
-          GMP = Grey Market Premium · indicative only · not investment advice
-        </p>
-      </motion.div>
-
-      {/* ══ TOP CARDS (2-col tile grid, not list) ══════════════════════ */}
-      <motion.div {...stagger(5)}>
-        <SectionHeader
-          title="Top Cards"
-          subtitle="2026 effective reward rate"
-          href="/dashboard/explore"
-          accent="#fbbf24"
-        />
-        <div className="grid grid-cols-2 gap-3">
-          {topCards.map((card: any, i: number) => (
-            <CardTile key={card.id ?? i} card={card} rank={i + 1} />
-          ))}
-        </div>
-      </motion.div>
-
-      {/* ══ MARKET SNAPSHOT ════════════════════════════════════════════ */}
-      <motion.div {...stagger(6)}>
-        <Divider label="Market Snapshot" />
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-          {marketItems.map((m) => (
-            <div
-              key={m.label}
-              className="p-3.5 rounded-2xl bg-white/[0.025] border border-white/[0.07] group hover:bg-white/[0.045] transition-all duration-300"
-            >
-              <div className="flex items-start justify-between mb-2">
-                <p className="text-[9px] text-white/30 uppercase tracking-widest font-black">
-                  {m.label}
+          ) : (
+            !iposLoading && (
+              <div className="py-12 text-center border border-dashed border-white/10 rounded-2xl">
+                <p className="text-xs text-white/20 italic">
+                  No IPOs in this category
                 </p>
-                <span
-                  className={cn(
-                    "text-[10px] font-bold flex items-center gap-0.5 shrink-0 px-1.5 py-0.5 rounded-md",
-                    m.pos
-                      ? "text-emerald-400 bg-emerald-400/10"
-                      : "text-red-400 bg-red-400/10",
-                  )}
+              </div>
+            )
+          )}
+          <p className="text-[10px] text-white/20 mt-3 text-right">
+            GMP = Grey Market Premium · indicative only
+          </p>
+        </motion.div>
+
+        {/* ══ TOP CARDS — SWIPE CAROUSEL ════════════════════════════════ */}
+        <motion.div {...stagger(5)}>
+          <SectionHeader
+            title="Top Cards"
+            subtitle="2026 effective reward rate · swipe to explore"
+            href="/dashboard/explore"
+            accent="#fbbf24"
+          />
+          <SwipeCarousel
+            items={topCards}
+            interval={6000} // Rotates every 6 seconds
+            keyExtractor={(card: any) => String(card.id)}
+            accentColor={() => "#fbbf24"}
+            renderCard={(card: any, _) => (
+              <CreditCardCarouselItem
+                card={card}
+                rank={topCards.indexOf(card) + 1}
+              />
+            )}
+          />
+        </motion.div>
+
+        {/* ══ MARKET SNAPSHOT ═══════════════════════════════════════════ */}
+        <motion.div {...stagger(6)}>
+          <Divider label="Market Snapshot" />
+          {ratesLoading || !rates ? (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              {[...Array(4)].map((_, i) => (
+                <div
+                  key={i}
+                  className="h-[108px] rounded-2xl bg-white/[0.02] border border-white/5 animate-pulse flex items-center justify-center"
                 >
-                  {m.pos ? (
-                    <ArrowUpRight className="w-2.5 h-2.5" />
-                  ) : (
-                    <ArrowDownRight className="w-2.5 h-2.5" />
-                  )}
-                  {m.change}
-                </span>
-              </div>
-
-              <p className="text-[17px] font-serif font-bold text-white tabular-nums tracking-tight">
-                {m.value}
-              </p>
-              <p className="text-[10px] text-white/20 mt-0.5 font-medium">
-                {m.sub}
-              </p>
-
-              {/* Restored MiniSparkline with live data injection */}
-              <div className="mt-3.5 opacity-40 group-hover:opacity-80 transition-opacity duration-500">
-                <MiniSparkline
-                  positive={m.pos}
-                  color={m.pos ? "#34d399" : "#f87171"}
-                />
-              </div>
+                  <Loader2 className="w-4 h-4 text-white/10 animate-spin" />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <p className="text-[10px] text-white/18 mt-2 text-right">
-          Indicative · 15-min delayed
-        </p>
-      </motion.div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              {marketItems.map((m) => (
+                <div
+                  key={m.label}
+                  className="p-3.5 rounded-2xl bg-white/[0.025] border border-white/[0.07] group hover:bg-white/[0.045] transition-all duration-300"
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <p className="text-[9px] text-white/30 uppercase tracking-widest font-black">
+                      {m.label}
+                    </p>
+                    <span
+                      className={cn(
+                        "text-[10px] font-bold flex items-center gap-0.5 shrink-0 px-1.5 py-0.5 rounded-md",
+                        m.pos
+                          ? "text-emerald-400 bg-emerald-400/10"
+                          : "text-red-400 bg-red-400/10",
+                      )}
+                    >
+                      {m.pos ? (
+                        <ArrowUpRight className="w-2.5 h-2.5" />
+                      ) : (
+                        <ArrowDownRight className="w-2.5 h-2.5" />
+                      )}
+                      {m.change}
+                    </span>
+                  </div>
+                  <p className="text-[17px] font-bold text-white tabular-nums tracking-tight">
+                    {m.value}
+                  </p>
+                  <p className="text-[10px] text-white/20 mt-0.5">{m.sub}</p>
+                  <div className="mt-3.5 opacity-40 group-hover:opacity-80 transition-opacity duration-500">
+                    <MiniSparkline
+                      positive={m.pos}
+                      color={m.pos ? "#34d399" : "#f87171"}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          <p className="text-[10px] text-white/18 mt-2 text-right">
+            Indicative · 15-min delayed
+          </p>
+        </motion.div>
+      </div>
     </div>
   );
 }
@@ -1061,8 +1266,8 @@ export default function DashboardHome() {
 // ─── IPO DETAIL PAGE ──────────────────────────────────────────────────────────
 function IpoDetail({ ipo, onBack }: { ipo: IPO; onBack: () => void }) {
   const isListed = ipo.status === "listed";
-  const isOngoing = ipo.status === "ongoing";
-
+  const isOngoing = ipo.status === "🔥 OPEN NOW";
+  const isUpcoming = ipo.status === "⏳ Upcoming";
   return (
     <motion.div
       initial={{ opacity: 0, x: 40 }}
@@ -1071,7 +1276,6 @@ function IpoDetail({ ipo, onBack }: { ipo: IPO; onBack: () => void }) {
       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       className="w-full max-w-2xl mx-auto px-4 sm:px-0 pb-16"
     >
-      {/* Back */}
       <button
         onClick={onBack}
         className="flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors pt-4 pb-6"
@@ -1079,9 +1283,8 @@ function IpoDetail({ ipo, onBack }: { ipo: IPO; onBack: () => void }) {
         <ChevronRight className="w-4 h-4 rotate-180" /> Back to dashboard
       </button>
 
-      {/* ── Hero ── */}
+      {/* Hero */}
       <div className="relative overflow-hidden rounded-3xl mb-6">
-        {/* Multi-layer background */}
         <div
           className={cn(
             "absolute inset-0 bg-gradient-to-br opacity-60",
@@ -1089,16 +1292,14 @@ function IpoDetail({ ipo, onBack }: { ipo: IPO; onBack: () => void }) {
           )}
         />
         <div className="absolute inset-0 bg-black/55" />
-        {/* Dot-grid texture */}
         <div
           className="absolute inset-0 opacity-[0.07]"
           style={{
             backgroundImage:
-              "radial-gradient(circle, rgba(255,255,255,0.9) 1px, transparent 1px)",
+              "radial-gradient(circle,rgba(255,255,255,0.9) 1px,transparent 1px)",
             backgroundSize: "20px 20px",
           }}
         />
-        {/* Hexagonal pattern overlay */}
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -1106,20 +1307,16 @@ function IpoDetail({ ipo, onBack }: { ipo: IPO; onBack: () => void }) {
             backgroundSize: "60px 52px",
           }}
         />
-        {/* Radial accent glow */}
         <div
           className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl opacity-30"
           style={{ background: ipo.accent }}
         />
-        {/* Bottom fade */}
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/40 to-transparent" />
-
         <div className="relative p-6 sm:p-8">
-          {/* Status + type badges */}
           <div className="flex items-center gap-2 mb-5">
             {isOngoing ? (
               <span className="flex items-center gap-1.5 text-[10px] font-bold px-2.5 py-1 rounded-full bg-orange-400/20 text-orange-300 border border-orange-400/30">
-                <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse inline-block" />{" "}
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse inline-block" />
                 LIVE NOW
               </span>
             ) : isListed ? (
@@ -1145,8 +1342,6 @@ function IpoDetail({ ipo, onBack }: { ipo: IPO; onBack: () => void }) {
               {ipo.sector}
             </span>
           </div>
-
-          {/* Logo + name */}
           <div className="flex items-center gap-4 mb-6">
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center text-sm font-black text-white shrink-0 shadow-2xl"
@@ -1166,8 +1361,6 @@ function IpoDetail({ ipo, onBack }: { ipo: IPO; onBack: () => void }) {
               </p>
             </div>
           </div>
-
-          {/* Key metrics */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {[
               { label: "Price Band", value: ipo.priceRange },
@@ -1191,7 +1384,7 @@ function IpoDetail({ ipo, onBack }: { ipo: IPO; onBack: () => void }) {
         </div>
       </div>
 
-      {/* ── GMP + Listed price ── */}
+      {/* GMP + Status */}
       <div className="grid grid-cols-2 gap-3 mb-5">
         <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.07]">
           <p className="text-[10px] text-white/35 uppercase tracking-widest mb-1">
@@ -1244,72 +1437,52 @@ function IpoDetail({ ipo, onBack }: { ipo: IPO; onBack: () => void }) {
         )}
       </div>
 
-      {/* ── Timeline ── */}
+      {/* Timeline */}
       <div className="p-4 rounded-2xl bg-white/[0.025] border border-white/[0.07] mb-5">
         <p className="text-xs font-bold text-white/40 uppercase tracking-widest mb-4">
           IPO Timeline
         </p>
-        <div className="space-y-0">
-          {[
-            {
-              label: "Open Date",
-              date: ipo.opens,
-              done: ipo.status !== "upcoming",
-            },
-            {
-              label: "Close Date",
-              date: ipo.closes,
-              done: ipo.status === "listed",
-            },
-            {
-              label: "Allotment",
-              date: ipo.allotment,
-              done: ipo.status === "listed",
-            },
-            {
-              label: "Listing Date",
-              date: ipo.listing,
-              done: ipo.status === "listed",
-            },
-          ].map((step, i, arr) => (
-            <div key={step.label} className="flex items-start gap-3">
-              <div className="flex flex-col items-center">
+        {[
+          { label: "Open Date", date: ipo.opens, done: !isUpcoming },
+          { label: "Close Date", date: ipo.closes, done: isListed },
+          { label: "Allotment", date: ipo.allotment, done: isListed },
+          { label: "Listing Date", date: ipo.listing, done: isListed },
+        ].map((step, i, arr) => (
+          <div key={step.label} className="flex items-start gap-3">
+            <div className="flex flex-col items-center">
+              <div
+                className={cn(
+                  "w-3 h-3 rounded-full border-2 shrink-0 mt-0.5 transition-colors",
+                  step.done
+                    ? "border-emerald-400 bg-emerald-400"
+                    : "border-white/20 bg-transparent",
+                )}
+              />
+              {i < arr.length - 1 && (
                 <div
                   className={cn(
-                    "w-3 h-3 rounded-full border-2 shrink-0 mt-0.5 transition-colors",
-                    step.done
-                      ? "border-emerald-400 bg-emerald-400"
-                      : "border-white/20 bg-transparent",
+                    "w-px flex-1 mt-1 mb-1 min-h-[20px]",
+                    step.done ? "bg-emerald-400/40" : "bg-white/[0.08]",
                   )}
                 />
-                {i < arr.length - 1 && (
-                  <div
-                    className={cn(
-                      "w-px flex-1 mt-1 mb-1 min-h-[20px]",
-                      step.done ? "bg-emerald-400/40" : "bg-white/[0.08]",
-                    )}
-                  />
-                )}
-              </div>
-              <div className="pb-3 min-w-0">
-                <p
-                  className={cn(
-                    "text-sm font-semibold",
-                    step.done ? "text-white" : "text-white/40",
-                  )}
-                >
-                  {step.label}
-                </p>
-                <p className="text-xs text-white/30 tabular-nums">
-                  {step.date}
-                </p>
-              </div>
+              )}
             </div>
-          ))}
-        </div>
+            <div className="pb-3 min-w-0">
+              <p
+                className={cn(
+                  "text-sm font-semibold",
+                  step.done ? "text-white" : "text-white/40",
+                )}
+              >
+                {step.label}
+              </p>
+              <p className="text-xs text-white/30 tabular-nums">{step.date}</p>
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* ── About ── */}
+      {/* About */}
       <div className="p-4 rounded-2xl bg-white/[0.025] border border-white/[0.07] mb-5">
         <p className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3">
           About the Company
@@ -1317,7 +1490,7 @@ function IpoDetail({ ipo, onBack }: { ipo: IPO; onBack: () => void }) {
         <p className="text-sm text-white/65 leading-relaxed">{ipo.about}</p>
       </div>
 
-      {/* ── Financials ── */}
+      {/* Financials */}
       <div className="p-4 rounded-2xl bg-white/[0.025] border border-white/[0.07] mb-5">
         <p className="text-xs font-bold text-white/40 uppercase tracking-widest mb-4">
           Key Financials
@@ -1353,37 +1526,33 @@ function IpoDetail({ ipo, onBack }: { ipo: IPO; onBack: () => void }) {
         </div>
       </div>
 
-      {/* ── Strengths & Risks ── */}
+      {/* Strengths & Risks */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
         <div className="p-4 rounded-2xl bg-emerald-500/[0.05] border border-emerald-500/[0.15]">
           <p className="text-xs font-bold text-emerald-400/70 uppercase tracking-widest mb-3">
             Strengths
           </p>
-          <div className="space-y-2.5">
-            {ipo.strengths.map((s, i) => (
-              <div key={i} className="flex items-start gap-2.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0" />
-                <p className="text-sm text-white/65 leading-snug">{s}</p>
-              </div>
-            ))}
-          </div>
+          {ipo.strengths.map((s, i) => (
+            <div key={i} className="flex items-start gap-2.5 mb-2.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0" />
+              <p className="text-sm text-white/65 leading-snug">{s}</p>
+            </div>
+          ))}
         </div>
         <div className="p-4 rounded-2xl bg-red-500/[0.05] border border-red-500/[0.15]">
           <p className="text-xs font-bold text-red-400/70 uppercase tracking-widest mb-3">
             Risks
           </p>
-          <div className="space-y-2.5">
-            {ipo.risks.map((r, i) => (
-              <div key={i} className="flex items-start gap-2.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1.5 shrink-0" />
-                <p className="text-sm text-white/65 leading-snug">{r}</p>
-              </div>
-            ))}
-          </div>
+          {ipo.risks.map((r, i) => (
+            <div key={i} className="flex items-start gap-2.5 mb-2.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1.5 shrink-0" />
+              <p className="text-sm text-white/65 leading-snug">{r}</p>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* ── Apply CTA ── */}
+      {/* Apply CTA */}
       {!isListed && (
         <div
           className="p-4 rounded-2xl border text-center space-y-3"
@@ -1413,47 +1582,5 @@ function IpoDetail({ ipo, onBack }: { ipo: IPO; onBack: () => void }) {
         </div>
       )}
     </motion.div>
-  );
-}
-
-// ─── UTILITY COMPONENTS ───────────────────────────────────────────────────────
-function Divider({ label }: { label: string }) {
-  return (
-    <div className="flex items-center gap-3 mb-4">
-      <div className="h-px flex-1 bg-white/[0.06]" />
-      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/22 shrink-0">
-        {label}
-      </p>
-      <div className="h-px flex-1 bg-white/[0.06]" />
-    </div>
-  );
-}
-
-function SectionHeader({
-  title,
-  subtitle,
-  href,
-  accent = "#fbbf24",
-}: {
-  title: string;
-  subtitle: string;
-  href: string;
-  accent?: string;
-}) {
-  return (
-    <div className="flex items-end justify-between mb-4">
-      <div>
-        <h2 className="text-base font-bold text-white">{title}</h2>
-        <p className="text-xs text-white/35 mt-0.5">{subtitle}</p>
-      </div>
-      <Link href={href}>
-        <button
-          className="flex items-center gap-1 text-xs hover:opacity-80 transition-opacity"
-          style={{ color: accent }}
-        >
-          See all <ArrowRight className="w-3 h-3" />
-        </button>
-      </Link>
-    </div>
   );
 }

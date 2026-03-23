@@ -14,3 +14,8 @@ id = "96ef850463a6448dae80785dffaa6493"
 
 [vars]
 PROD_FRONTEND_URL = "https://pd-luxe.vercel.app"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ipo_tracker"
+database_id = "04f3ce7b-39eb-434d-989e-c1d88094b967"

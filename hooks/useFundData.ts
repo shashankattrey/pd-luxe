@@ -20,7 +20,20 @@ export interface FundData {
   aum?: number; // Add this
   expenseRatio?: number; // Add this
 }
-
+export interface IpoData {
+  id: string;
+  company: string;
+  status: "ongoing" | "upcoming" | "listed";
+  priceRange: string;
+  lotSize: string;
+  opens: string;
+  closes: string;
+  issue: string;
+  listing: string;
+  logo: string;
+  accent: string;
+  gradient: string;
+}
 /** All live rates the smart-engine's LiveRates interface expects */
 export interface LiveRates {
   govtSchemes: {
@@ -105,9 +118,11 @@ export interface LiveRates {
 export interface FundDataState {
   funds: Record<string, FundData[]>;
   allFunds: FundData[];
+  ipos: IpoData[]; // ✅ Added to interface
   rates: LiveRates | null;
   loading: boolean;
   ratesLoading: boolean;
+  iposLoading: boolean; // ✅ Added to interface
   error: string | null;
 }
 
@@ -229,9 +244,31 @@ export function useFundData(): FundDataState {
     allFunds: [],
     rates: FALLBACK_RATES,
     loading: true,
+    ipos: [],
+    iposLoading: true,
     ratesLoading: true,
     error: null,
   });
+
+  const loadIpos = useCallback(async () => {
+    try {
+      const res = await fetch(
+        "https://paisadekho-ai.paisadekhogroup.workers.dev/api/ipos",
+      );
+      if (!res.ok) throw new Error("Failed to fetch IPOs");
+      const data = await res.json();
+      console.log("Fetched IPO Data Sample:", data[0]);
+      console.log(
+        "All Statuses:",
+        data.map((i: any) => i.status),
+      );
+
+      setState((s) => ({ ...s, ipos: data, iposLoading: false }));
+    } catch (e) {
+      console.error("IPO Load Error:", e);
+      setState((s) => ({ ...s, iposLoading: false }));
+    }
+  }, []);
 
   const loadFunds = useCallback(async () => {
     try {
@@ -313,10 +350,11 @@ export function useFundData(): FundDataState {
   useEffect(() => {
     loadFunds();
     loadRates();
+    loadIpos();
 
     const interval = setInterval(loadRates, 300000); // 5-minute refresh
     return () => clearInterval(interval);
-  }, [loadFunds, loadRates]);
+  }, [loadFunds, loadRates, loadIpos]);
 
   return state;
 }

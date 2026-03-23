@@ -210,3 +210,18 @@ input[type="range"]::-moz-range-thumb {
 .animate-pulse-slow {
   animation: live-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* -50% because we doubled the array */
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+/* Stops stretching on mobile */
+.overflow-hidden {
+  contain: paint;
+}

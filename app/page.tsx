@@ -40,6 +40,7 @@ import {
   Lock,
   Database,
 } from "lucide-react";
+import { useFundData } from "@/hooks/useFundData"; // Adjust path as needed
 
 // ─── GLOBAL FONT INJECTION ────────────────────────────────────────────────────
 const FontStyle = () => (
@@ -140,70 +141,57 @@ const FontStyle = () => (
 // ─── STATIC RATES FROM useFundData FALLBACK ──────────────────────────────────
 // Values mirror FALLBACK_RATES in useFundData.ts (Q1 2026)
 // When you wire up the real hook, replace these with the live rates object.
-const RATES = {
-  nifty50: { value: 24148, changePct: +0.42 },
-  sensex: { value: 79480, changePct: +0.38 },
-  niftyBank: { value: 52340, changePct: -0.12 },
-  niftyMid: { value: 49200, changePct: +0.61 },
-  gold24k: { value: 79420, changePct: +0.21 }, // ₹/10g live proxy
-  usdInr: { value: 83.2, changePct: -0.05 },
-  ppf: { rate: 7.1 },
-  ssy: { rate: 8.2 },
-  scss: { rate: 8.2 },
-  rbiBonds: { rate: 8.05 },
-  nsc: { rate: 7.7 },
-  sgb: { interestRate: 2.5, lastIssuePrice: 6263 },
-  hdfcFD: { rate365: 7.0 },
-  repoRate: { value: 6.5 },
-  inflation: { value: 5.1 },
-};
+
+
+
 
 // Build ticker items from real rate data — wealth-first, not card-first
-const TICKER_ITEMS = [
-  {
-    label: "NIFTY 50",
-    val: RATES.nifty50.value.toLocaleString("en-IN"),
-    up: RATES.nifty50.changePct >= 0,
-  },
-  {
-    label: "SENSEX",
-    val: RATES.sensex.value.toLocaleString("en-IN"),
-    up: RATES.sensex.changePct >= 0,
-  },
-  {
-    label: "NIFTY BANK",
-    val: RATES.niftyBank.value.toLocaleString("en-IN"),
-    up: RATES.niftyBank.changePct >= 0,
-  },
-  {
-    label: "NIFTY MIDCAP",
-    val: RATES.niftyMid.value.toLocaleString("en-IN"),
-    up: RATES.niftyMid.changePct >= 0,
-  },
-  {
-    label: "GOLD / 10g",
-    val: `₹${RATES.gold24k.value.toLocaleString("en-IN")}`,
-    up: RATES.gold24k.changePct >= 0,
-  },
-  {
-    label: "USD/INR",
-    val: RATES.usdInr.value.toFixed(2),
-    up: RATES.usdInr.changePct >= 0,
-  },
-  { label: "PPF RATE", val: `${RATES.ppf.rate}%`, up: true },
-  { label: "SSY RATE", val: `${RATES.ssy.rate}%`, up: true },
-  { label: "RBI BONDS", val: `${RATES.rbiBonds.rate}%`, up: true },
-  { label: "HDFC FD 1Y", val: `${RATES.hdfcFD.rate365}%`, up: true },
-  { label: "SGB YIELD", val: `${RATES.sgb.interestRate}% + Gold`, up: true },
-  { label: "REPO RATE", val: `${RATES.repoRate.value}%`, up: false },
-  { label: "INFLATION", val: `${RATES.inflation.value}%`, up: false },
-  { label: "NSC RATE", val: `${RATES.nsc.rate}%`, up: true },
-  { label: "SCSS RATE", val: `${RATES.scss.rate}%`, up: true },
-];
+// const TICKER_ITEMS = [
+//   {
+//     label: "NIFTY 50",
+//     val: RATES.nifty50.value.toLocaleString("en-IN"),
+//     up: RATES.nifty50.changePct >= 0,
+//   },
+//   {
+//     label: "SENSEX",
+//     val: RATES.sensex.value.toLocaleString("en-IN"),
+//     up: RATES.sensex.changePct >= 0,
+//   },
+//   {
+//     label: "NIFTY BANK",
+//     val: RATES.niftyBank.value.toLocaleString("en-IN"),
+//     up: RATES.niftyBank.changePct >= 0,
+//   },
+//   {
+//     label: "NIFTY MIDCAP",
+//     val: RATES.niftyMid.value.toLocaleString("en-IN"),
+//     up: RATES.niftyMid.changePct >= 0,
+//   },
+//   {
+//     label: "GOLD / 10g",
+//     val: `₹${RATES.gold24k.value.toLocaleString("en-IN")}`,
+//     up: RATES.gold24k.changePct >= 0,
+//   },
+//   {
+//     label: "USD/INR",
+//     val: RATES.usdInr.value.toFixed(2),
+//     up: RATES.usdInr.changePct >= 0,
+//   },
+//   { label: "PPF RATE", val: `${RATES.ppf.rate}%`, up: true },
+//   { label: "SSY RATE", val: `${RATES.ssy.rate}%`, up: true },
+//   { label: "RBI BONDS", val: `${RATES.rbiBonds.rate}%`, up: true },
+//   { label: "HDFC FD 1Y", val: `${RATES.hdfcFD.rate365}%`, up: true },
+//   { label: "SGB YIELD", val: `${RATES.sgb.interestRate}% + Gold`, up: true },
+//   { label: "REPO RATE", val: `${RATES.repoRate.value}%`, up: false },
+//   { label: "INFLATION", val: `${RATES.inflation.value}%`, up: false },
+//   { label: "NSC RATE", val: `${RATES.nsc.rate}%`, up: true },
+//   { label: "SCSS RATE", val: `${RATES.scss.rate}%`, up: true },
+// ];
 
-function LiveTicker() {
+function LiveTicker({ items }: { items: any[] }) {
+  if (items.length === 0) return null; // Or show a loading skeleton
   // Triple the items so the seamless loop always has content visible
-  const tripled = [...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS];
+  const tripled = [...items, ...items, ...items];
   return (
     <div className="fixed top-0 left-0 right-0 z-[200] overflow-hidden h-7 bg-black border-b border-[rgba(212,168,83,0.2)] flex items-center font-sans">
       <div className="shrink-0 px-4 text-[10px] font-bold uppercase tracking-widest text-[#D4A853] border-r border-[rgba(212,168,83,0.2)] h-full flex items-center gap-1.5 bg-[rgba(212,168,83,0.05)]">
@@ -372,6 +360,33 @@ function Reveal({
 
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 export default function LandingPage() {
+
+  const { rates, ratesLoading } = useFundData();
+  const liveTickerItems = rates ? [
+    { 
+      label: "NIFTY 50", 
+      val: rates.equity.nifty50.value.toLocaleString("en-IN"), 
+      up: rates.equity.nifty50.changePct >= 0 
+    },
+    { 
+      label: "SENSEX", 
+      val: rates.equity.sensex.value.toLocaleString("en-IN"), 
+      up: rates.equity.sensex.changePct >= 0 
+    },
+    { 
+      label: "GOLD 24K", 
+      val: `₹${rates.gold.price24k.toLocaleString("en-IN")}`, 
+      up: true 
+    },
+    { 
+      label: "GOLD 22K", 
+      val: `₹${rates.gold.price22k.toLocaleString("en-IN")}`, 
+      up: true 
+    },
+    { label: "PPF RATE", val: `${rates.govtSchemes.ppf.rate}%`, up: true },
+    { label: "USD/INR", val: rates.macro.usdInr.toFixed(2), up: true },
+    { label: "INFLATION", val: `${rates.macro.inflation}%`, up: false },
+  ] : [];
   const [activeTab, setActiveTab] = useState("travel");
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
@@ -389,7 +404,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[#080808] text-slate-200 selection:bg-[#D4A853] selection:text-black overflow-x-hidden font-sans">
       <FontStyle />
-      <LiveTicker />
+      <LiveTicker items={liveTickerItems} />
 
       {/* ══ NAVIGATION ════════════════════════════════════════════════════ */}
       <nav className="fixed top-7 left-0 right-0 z-[100]">
@@ -500,31 +515,34 @@ export default function LandingPage() {
           </FloatWidget>
 
           {/* Gold / SGB widget — top right */}
-          <FloatWidget delay={0.5} top="16%" right="3%" rotate={7}>
-            <div className="w-48 rounded-2xl bg-gradient-to-br from-amber-950 to-zinc-950 border border-amber-400/15 p-4 shadow-2xl">
-              <div className="scan-line" />
-              <p className="text-[9px] font-bold uppercase tracking-widest text-[#D4A853]/60 mb-3">
-                Gold / SGB
-              </p>
-              <div className="flex items-end justify-between mb-1">
-                <p className="text-xl font-black text-[#D4A853] font-display">
-                  ₹79,420
-                </p>
-                <span className="text-[9px] text-emerald-400 font-bold">
-                  ▲ 0.21%
-                </span>
-              </div>
-              <p className="text-[9px] text-white/30">Per 10g · 24k</p>
-              <div className="mt-3 pt-3 border-t border-white/5">
-                <p className="text-[9px] text-white/30 mb-0.5">
-                  SGB Interest Rate
-                </p>
-                <p className="text-sm font-bold text-[#D4A853]">
-                  {RATES.sgb.interestRate}% p.a. + Gains
-                </p>
-              </div>
-            </div>
-          </FloatWidget>
+          {/* Gold / SGB widget update in page.tsx */}
+<FloatWidget delay={0.5} top="16%" right="3%" rotate={7}>
+  <div className="w-48 rounded-2xl bg-gradient-to-br from-amber-950 to-zinc-950 border border-amber-400/15 p-4 shadow-2xl">
+    <div className="scan-line" />
+    <p className="text-[9px] font-bold uppercase tracking-widest text-[#D4A853]/60 mb-3">Gold Rates</p>
+    
+    <div className="space-y-3">
+      <div>
+        <div className="flex items-center justify-between text-[9px] text-white/30 mb-0.5">
+          <span>24K (99.9%)</span>
+          <span className="text-emerald-400">▲ Live</span>
+        </div>
+        <p className="text-lg font-black text-[#D4A853] font-display">
+          ₹{rates?.gold.price24k.toLocaleString("en-IN") || "---"}
+        </p>
+      </div>
+
+      <div className="pt-2 border-t border-white/5">
+        <div className="flex items-center justify-between text-[9px] text-white/30 mb-0.5">
+          <span>22K (Jewellery)</span>
+        </div>
+        <p className="text-md font-bold text-[#D4A853]/80">
+          ₹{rates?.gold.price22k.toLocaleString("en-IN") || "---"}
+        </p>
+      </div>
+    </div>
+  </div>
+</FloatWidget>
 
           {/* Portfolio donut widget — bottom left */}
           <FloatWidget delay={0.7} top="60%" left="2%" rotate={4}>
@@ -585,29 +603,26 @@ export default function LandingPage() {
           </FloatWidget>
 
           {/* Govt scheme rates widget — bottom right */}
-          <FloatWidget delay={0.9} top="56%" right="2%" rotate={-5}>
-            <div className="w-48 rounded-2xl bg-gradient-to-br from-sky-950 to-zinc-950 border border-sky-400/12 p-4 shadow-2xl">
-              <div className="scan-line" />
-              <p className="text-[9px] font-bold uppercase tracking-widest text-sky-400/60 mb-3">
-                Govt Schemes
-              </p>
-              <div className="space-y-2">
-                {[
-                  ["PPF", `${RATES.ppf.rate}%`, "#34d399"],
-                  ["SSY", `${RATES.ssy.rate}%`, "#D4A853"],
-                  ["RBI Bonds", `${RATES.rbiBonds.rate}%`, "#60a5fa"],
-                  ["SCSS", `${RATES.scss.rate}%`, "#a78bfa"],
-                ].map(([name, rate, color]) => (
-                  <div key={name} className="flex items-center justify-between">
-                    <span className="text-[9px] text-white/35">{name}</span>
-                    <span className="text-[9px] font-black" style={{ color }}>
-                      {rate}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </FloatWidget>
+         {/* Govt scheme rates widget — bottom right */}
+<FloatWidget delay={0.9} top="56%" right="2%" rotate={-5}>
+  <div className="w-48 rounded-2xl bg-gradient-to-br from-sky-950 to-zinc-950 border border-sky-400/12 p-4 shadow-2xl">
+    <div className="scan-line" />
+    <p className="text-[9px] font-bold uppercase tracking-widest text-sky-400/60 mb-3">Govt Schemes</p>
+    <div className="space-y-2">
+      {[
+        ["PPF", `${rates?.govtSchemes.ppf.rate}%`, "#34d399"],
+        ["SSY", `${rates?.govtSchemes.ssy.rate}%`, "#D4A853"],
+        ["RBI Bonds", `${rates?.govtSchemes.rbiBonds.rate}%`, "#60a5fa"],
+        ["SCSS", `${rates?.govtSchemes.scss.rate}%`, "#a78bfa"],
+      ].map(([name, rate, color]) => (
+        <div key={name} className="flex items-center justify-between">
+          <span className="text-[9px] text-white/35">{name}</span>
+          <span className="text-[9px] font-black" style={{ color }}>{rate}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</FloatWidget>
         </motion.div>
 
         {/* Hero text */}
