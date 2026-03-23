@@ -12,15 +12,15 @@ import {
   AlertTriangle,
   Fingerprint,
 } from "lucide-react";
-import {
-  Radar,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  ResponsiveContainer,
-} from "recharts";
+
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import dynamic from "next/dynamic";
+
+const RadarChartClient = dynamic(
+  () => import("@/components/RadarChartClient"),
+  { ssr: false },
+);
 
 // --- THE NEURAL ENGINE DATA ---
 const PILLARS = [
@@ -231,27 +231,7 @@ export default function AdvancedRiskProfiler() {
                 </p>
 
                 <div className="h-[300px] w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart
-                      cx="50%"
-                      cy="50%"
-                      outerRadius="80%"
-                      data={analysis?.radarData}
-                    >
-                      <PolarGrid stroke="rgba(255,255,255,0.1)" />
-                      <PolarAngleAxis
-                        dataKey="subject"
-                        tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 10 }}
-                      />
-                      <Radar
-                        name="Investor DNA"
-                        dataKey="value"
-                        stroke="#D4AF37"
-                        fill="#D4AF37"
-                        fillOpacity={0.3}
-                      />
-                    </RadarChart>
-                  </ResponsiveContainer>
+                  <RadarChartClient data={analysis?.radarData || []} />
                 </div>
               </div>
             </div>
