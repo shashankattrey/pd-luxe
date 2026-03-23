@@ -26,7 +26,7 @@ import {
   IndianRupee,
   Pencil,
 } from "lucide-react";
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+import dynamic from "next/dynamic";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -38,6 +38,13 @@ import {
   type CreditCard as CardType,
   type SpendProfile,
 } from "@/lib/credit-cards-data";
+
+const PieChartClient = dynamic(() => import("@/components/PieChartClient"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-52 md:h-64 w-full bg-white/5 animate-pulse rounded-full mx-auto aspect-square" />
+  ),
+});
 
 interface Filters {
   search: string;
@@ -1150,8 +1157,8 @@ function CardAuditTrace({ audit }: { audit: any }) {
   );
 }
 function RewardChart({ audit }: { audit: any }) {
+  // 1. Move COLORS here so both the Chart and Legend can use them
   const COLORS = ["#f59e0b", "#10b981", "#3b82f6", "#ef4444", "#8b5cf6"];
-  // Define a color palette to sync the chart and the labels
 
   const data = audit.breakdown
     .filter((i: any) => i.plus)
@@ -1164,22 +1171,8 @@ function RewardChart({ audit }: { audit: any }) {
     <div className="flex flex-col items-center">
       {/* Chart Container */}
       <div className="h-52 md:h-64 w-full">
-        <ResponsiveContainer>
-          <PieChart>
-            <Pie
-              data={data}
-              dataKey="value"
-              outerRadius={80}
-              innerRadius={50}
-              paddingAngle={5}
-            >
-              {data.map((_: unknown, i: number) => (
-                <Cell key={i} fill={COLORS[i % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
-        </ResponsiveContainer>
+        {/* Pass only the data to the client-side component */}
+        <PieChartClient data={data} />
       </div>
 
       {/* Custom Legend/Labels below */}
@@ -1187,10 +1180,16 @@ function RewardChart({ audit }: { audit: any }) {
         {data.map((item: any, i: number) => (
           <div key={i} className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full" />
-              <span className="text-gray-600">{item.name}</span>
+              {/* Added dynamic color to the legend dots */}
+              <div
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: COLORS[i % COLORS.length] }}
+              />
+              <span className="text-zinc-400 text-xs">{item.name}</span>
             </div>
-            <span className="font-bold">{item.value}</span>
+            <span className="font-bold text-xs text-white">
+              ₹{Math.round(item.value).toLocaleString()}
+            </span>
           </div>
         ))}
       </div>
