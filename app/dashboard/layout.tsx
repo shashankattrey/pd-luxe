@@ -106,7 +106,7 @@ const desktopNavItems = [
     group: "Cards",
     items: [
       {
-        href: "/dashboard/explore",
+        href: "/dashboard/card-vault",
         icon: Search,
         label: "Explore Cards",
         badge: null,
@@ -374,7 +374,6 @@ export default function DashboardLayout({
               </span>
             </div>
             {/* Header right: alerts + profile avatar */}
-            
           </header>
         )}
 

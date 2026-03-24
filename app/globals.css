@@ -225,3 +225,11 @@ input[type="range"]::-moz-range-thumb {
 .overflow-hidden {
   contain: paint;
 }
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

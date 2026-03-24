@@ -580,7 +580,7 @@ function CreditCardCarouselItem({ card, rank }: { card: any; rank: number }) {
 
   return (
     <Link
-      href={`/dashboard/explore?card=${card.id}`}
+      href={`/dashboard/card-vault?card=${card.id}`}
       onClick={(e) => e.stopPropagation()}
     >
       <div className="relative overflow-hidden rounded-2xl bg-white/[0.025] border border-white/[0.09] p-5 cursor-pointer">
@@ -1182,7 +1182,7 @@ export default function DashboardHome() {
           <SectionHeader
             title="Top Cards"
             subtitle="2026 effective reward rate · swipe to explore"
-            href="/dashboard/explore"
+            href="/dashboard/card-vault"
             accent="#fbbf24"
           />
           <SwipeCarousel

@@ -42,7 +42,12 @@ import {
   deriveMaxFee,
   type CreditCard as CardType,
   type SpendProfile,
-  type StatementRecommendation,
+  type StatementAnalysis,
+  type CardAudit,
+  type ParsedTransaction,
+  type MerchantCategory,
+  analyseStatement,
+  type CreditCard,
 } from "@/lib/credit-cards-data";
 import MoneySlider from "@/components/ui/moneyslider";
 import StatementUpload from "@/components/StatementUpload";
@@ -220,8 +225,12 @@ export default function AIAdvisorPage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [inputMode, setInputMode] = useState<InputMode>(null);
-  const [statementResult, setStatementResult] =
-    useState<StatementRecommendation | null>(null);
+  const [statementResult, setStatementResult] = useState<{
+    analysis: StatementAnalysis;
+    topCards: Array<{ card: CreditCard; audit: CardAudit; score: number }>;
+    maxFee: number;
+    categoryKeyword: string;
+  } | null>(null);
   const [activeSpend, setActiveSpend] = useState<SpendProfile | null>(null);
 
   const handleStatementParsed = (parsedData: any) => {
@@ -1119,7 +1128,7 @@ function ResultsPage({
     fuel: 0,
     rent: 0,
     other: profile.monthlySpend * 0.5,
-    grocery:0,
+    grocery: 0,
   };
   const analysis = statementResult?.analysis;
   const monthlyIncome = profile.income > 0 ? profile.income / 12 : null;
