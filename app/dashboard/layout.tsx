@@ -69,7 +69,7 @@ const mobileNavItems = [
     activeClass: "text-emerald-400 bg-emerald-400/10",
   },
   {
-    href: "/dashboard/explore",
+    href: "/dashboard/card-vault",
     icon: Search,
     label: "Explore",
     activeClass: "text-amber-400 bg-amber-400/10",
