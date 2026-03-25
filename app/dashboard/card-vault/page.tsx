@@ -2798,23 +2798,23 @@ function CapsExclusionsTab({
                       (Accelerated)
                     </span>{" "}
                   </td>
-                  <td className="py-2 text-right font-bold text-amber-400">
+                  <td className="py-2 text-center font-bold text-amber-400">
                     {row.rate_percent}%
                   </td>
-                  <td className="py-2 text-right text-white/60">
+                  <td className="py-2 text-center text-white/60">
                     {row.qualifying_spend
                       ? `₹${row.qualifying_spend.amount.toLocaleString()}/${row.qualifying_spend.period}`
                       : "-"}
                   </td>
-                  <td className="py-2 text-right text-white/60">
+                  <td className="py-2 text-center text-white/60">
                     {row.cap.amount
                       ? `${row.cap.amount.toLocaleString()} ${row.cap.unit}`
                       : "No Cap"}
                   </td>
-                  <td className="py-2 text-right text-white/40">
+                  <td className="py-2 text-center text-white/40">
                     {row.cap.period}
                   </td>
-                  <td className="py-2 text-right  text-white/60">
+                  <td className="py-2 text-center  text-white/60">
                     {row.conditions}
                   </td>
                 </tr>
