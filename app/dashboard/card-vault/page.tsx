@@ -249,13 +249,14 @@ export default function CardVaultPage() {
             filters.categories.some((cat) => {
               const lowerCat = safeToLowerCase(cat);
               return (
-                // 1. Use optional chaining and cast to 'any' or check if property exists
-                ((card as any).category &&
-                  safeToLowerCase((card as any).category).includes(lowerCat)) ||
-                // 2. Check the tags array (This is usually where these values live)
+                // 1. Check the primary category field
+                safeToLowerCase(card.category).includes(lowerCat) ||
+                // 2. Check the tags array (existing logic)
                 (card.tags ?? []).some((tag: string) =>
                   safeToLowerCase(tag).includes(lowerCat),
-                )
+                ) ||
+                // 3. Fallback: check searchTags for common matches
+                safeToLowerCase(card.searchTags).includes(lowerCat)
               );
             });
 

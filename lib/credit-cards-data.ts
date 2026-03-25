@@ -32,6 +32,7 @@ export interface CreditCard {
   tags: string[];
   lifetimeFree: boolean;
   monthlyRewardCap: string | number;
+  category?: string;
 
   // Core reward economics
   baseRewardRate: number;
