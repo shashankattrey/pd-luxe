@@ -476,7 +476,7 @@ export default function CardVaultPage() {
               <div
                 className={cn(
                   "w-14 h-9 rounded-xl shrink-0 bg-gradient-to-br shadow-sm relative overflow-hidden",
-                  card.imageGradient || "from-zinc-700 to-zinc-900",
+                  `${card.imageGradient}` || "from-zinc-700 to-zinc-900",
                 )}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
@@ -935,7 +935,9 @@ function CardDetail({ card, onBack }: { card: CCType; onBack: () => void }) {
               <span
                 className={cn(
                   "text-sm",
-                  'dim' in r && r.dim ? "text-muted-foreground/40" : "text-muted-foreground",
+                  "dim" in r && r.dim
+                    ? "text-muted-foreground/40"
+                    : "text-muted-foreground",
                 )}
               >
                 {r.label}
@@ -950,7 +952,7 @@ function CardDetail({ card, onBack }: { card: CCType; onBack: () => void }) {
                   "text-sm font-semibold tabular-nums shrink-0",
                   r.accent
                     ? "text-amber-400"
-                    : ('dim' in r ? r.dim : false)
+                    : ("dim" in r ? r.dim : false)
                       ? "text-muted-foreground/30"
                       : "text-foreground",
                 )}
